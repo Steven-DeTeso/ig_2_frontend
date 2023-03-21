@@ -7,13 +7,22 @@ export default function Post({ post }) {
   }
   return (
     <div className="post-container">
-      <h3>{post.author}</h3>
+      <h3>{post.author.username}</h3>
       <img
         src={post.image[0].signed_image_url}
         alt={post.caption}
         className="post-image"
       />
       <p>{post.caption}</p>
+      <p>
+        Liked by:{" "}
+        {post.likes.map((like, index) => (
+          <React.Fragment key={like.id}>
+            {like.username}
+            {index !== post.likes.length - 1 && ", "}
+          </React.Fragment>
+        ))}
+      </p>
     </div>
   );
 }
