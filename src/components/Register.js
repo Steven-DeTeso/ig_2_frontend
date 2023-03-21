@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
+import AuthContext from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+
+    const { setToken } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -14,10 +21,15 @@ export default function Register() {
             email: email,
             password: password,
             username: username,
+            first_name: firstName,
+            last_name: lastName,
         });
 
         console.log(response.data);
-      // Redirect to the login page or save the user data and tokens to the local storage or context
+        const token = response.data.access;
+        setToken(token);
+        localStorage.setItem('token', token);
+        navigate('/feed')
     } catch (error) {
         console.error('Error:', error);
     }
@@ -50,6 +62,22 @@ export default function Register() {
                     placeholder="Password"
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
+                />
+                <label htmlFor='firstName'>First Name</label>
+                <input
+                    id='firstName'
+                    type="text"
+                    placeholder='First Name'
+                    value={firstName}
+                    onChange={(event) => setFirstName(event.target.value)}
+                />
+                <label htmlFor='lastName'>Last Name</label>
+                <input
+                    id='lastName'
+                    type="text"
+                    placeholder='Last Name'
+                    value={lastName}
+                    onChange={(event) => setLastName(event.target.value)}
                 />
                 <button type="submit">Register</button>
             </form>

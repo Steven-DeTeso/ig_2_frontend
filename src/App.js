@@ -1,14 +1,17 @@
 import './App.css';
-import Login from './components/Login';
-import Register from './components/Register';
+import Auth from './components/Auth';
+import MainFeed from './components/MainFeed';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 function App() {
   return (
-    <div >
-      <h1>Instagram Clone</h1>
-      <Login />
-      <Register />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Auth />} />
+        <Route path='/feed' element={<MainFeed />} />
+      </Routes>
+    </Router>
+    
   );
 }
 

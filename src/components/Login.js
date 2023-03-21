@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
+import AuthContext from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const { setToken } = useContext(AuthContext);
+    const navigate = useNavigate();
+
     const handelSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8000/api/tokin/', {
+            const response = await axios.post('http://localhost:8000/api/token/', {
                 email: email,
                 password: password,
             });
             console.log(response.data)
+            const token = response.data.access;
+            setToken(token);
+            localStorage.setItem('token', token);
+            navigate('/feed')
         } catch (error) {
             console.error('Error: ', error);
         }
