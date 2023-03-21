@@ -9,4 +9,4 @@ export default function Auth() {
             <Register />
         </div>
     );
-}
+};
