@@ -43,10 +43,10 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="login-wrapper">
       <h1>Login</h1>
       {errorMessage && <p>{errorMessage}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-form">
         <label>
           Email:
           <input

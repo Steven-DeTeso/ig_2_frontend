@@ -10,3 +10,21 @@
     height: auto;
     object-fit: cover;
 }
+
+.login-wrapper, .register-wrapper {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+.login-wrapper > h1, .register-wrapper > h1 {
+    align-items: center;
+    margin: auto;
+}
+
+.register-form, .login-form {
+    display: inline-flex;
+    flex-direction: column;
+    width: 200px;
+    margin: auto;
+}
