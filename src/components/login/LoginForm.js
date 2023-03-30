@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthContext from "../AuthContext";
 import Link from "next/link";
+import styles from "./LoginForm.module.css";
 
 export default function Login() {
   const { setToken } = useContext(AuthContext);
@@ -54,16 +55,16 @@ export default function Login() {
   };
 
   return (
-    <div className="login-wrapper">
-      <h1>Login</h1>
-      {errorMessage && <p>{errorMessage}</p>}
-      <form onSubmit={handleSubmit} className="login-form">
+    <div className={styles.loginWrapper}>
+      {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+      <form onSubmit={handleSubmit} className={styles.loginForm}>
         <input
           type="email"
           name="email"
           placeholder="Email"
           value={formData.email}
           onChange={handleInputChange}
+          className={styles.input}
         />
         <input
           type="password"
@@ -71,12 +72,17 @@ export default function Login() {
           placeholder="Password"
           value={formData.password}
           onChange={handleInputChange}
+          className={styles.input}
         />
-        <button type="submit" disabled={isLoading}>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className={styles.submitButton}
+        >
           {isLoading ? "Loading..." : "Login"}
         </button>
       </form>
-      <p>
+      <p className={styles.signupLink}>
         Don't have an account? <Link href={"/register"}>Sign up</Link>
       </p>
     </div>

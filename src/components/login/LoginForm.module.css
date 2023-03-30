@@ -1,0 +1,38 @@
+.loginWrapper {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.errorMessage {
+    /* Add your styles for the error message paragraph here */
+}
+
+.loginForm {
+    display: inline-flex;
+    flex-direction: column;
+    width: 200px;
+    margin: auto;
+}
+
+.input {
+    /* Add your styles for the input elements here */
+}
+
+.submitButton {
+    /* Add your styles for the submit button here */
+}
+
+.signupLink {
+    /* Add your styles for the sign-up link paragraph here */
+}
+
+
+
+.register-form, .login-form {
+    display: inline-flex;
+    flex-direction: column;
+    width: 200px;
+    margin: auto;
+}
