@@ -58,28 +58,27 @@ export default function Login() {
       <h1>Login</h1>
       {errorMessage && <p>{errorMessage}</p>}
       <form onSubmit={handleSubmit} className="login-form">
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-          />
-        </label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleInputChange}
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleInputChange}
+        />
         <button type="submit" disabled={isLoading}>
           {isLoading ? "Loading..." : "Login"}
         </button>
       </form>
+      <p>
+        Don't have an account? <Link href={"/register"}>Sign up</Link>
+      </p>
     </div>
   );
 }

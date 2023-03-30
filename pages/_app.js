@@ -1,4 +1,4 @@
-import "../styles.css";
+import "../styles.module.css";
 import AuthContext from "../src/components/AuthContext";
 import { useState } from "react";
 

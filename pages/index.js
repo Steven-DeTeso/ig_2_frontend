@@ -1,8 +1,7 @@
-import Auth from "../src/components/Auth";
-import MainFeed from "../src/components/MainFeed";
+import Login from "../src/components/Login";
 
 function App() {
-  return <Auth />;
+  return <Login />;
 }
 
 export default App;
