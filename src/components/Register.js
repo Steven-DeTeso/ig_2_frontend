@@ -43,6 +43,8 @@ export default function Register() {
       const token = data.access;
       setToken(token);
       localStorage.setItem("token", token);
+      console.log(`logging token in regsiter.js ${token}`);
+      console.log(data);
 
       router.push("/feed");
     } catch (error) {
