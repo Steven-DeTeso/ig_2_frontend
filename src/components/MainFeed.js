@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Post from "./Post";
 
 export default function MainFeed() {
@@ -8,12 +7,14 @@ export default function MainFeed() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/posts/", {
+        const response = await fetch("http://localhost:8000/posts/", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        setPosts(response.data);
+        const data = await response.json();
+        console.log(data);
+        setPosts(data);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }

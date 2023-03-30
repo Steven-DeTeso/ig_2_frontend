@@ -1,10 +1,9 @@
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthContext from "./AuthContext";
-import { useNavigate } from "react-router-dom";
 
 export default function Register() {
-  // const { setToken } = useContext(AuthContext);
+  const { setToken } = useContext(AuthContext);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -37,19 +36,21 @@ export default function Register() {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-      console.log(response);
-      // const token = response.data.access;
-      // setToken(token);
-      // localStorage.setItem("token", token);
       if (!data) {
         throw new Error("Invalid entry");
       }
+
+      const token = data.access;
+      setToken(token);
+      localStorage.setItem("token", token);
+
+      router.push("/feed");
     } catch (error) {
       console.error("Error:", error);
       setErrorMessage(error.message);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    router.push("/feed");
   };
 
   return (

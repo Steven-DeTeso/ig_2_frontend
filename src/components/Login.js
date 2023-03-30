@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
+import AuthContext from "./AuthContext";
 import Link from "next/link";
 
 export default function Login() {
-  // const { setToken } = useContext(AuthContext);
+  const { setToken } = useContext(AuthContext);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -32,21 +33,24 @@ export default function Login() {
         },
         body: JSON.stringify(formData),
       });
-      // const token = response.data.access;
-      // setToken(token);
-      // localStorage.setItem("token", token);
       const data = await response.json();
-      console.log(response);
-      if (!data) {
+      if (!data.access) {
         throw new Error("Invalid email or password.");
       }
+
+      const token = data.access;
+      setToken(token);
+      localStorage.setItem("token", token);
+      console.log(`logging token in login.js ${token}`);
+      console.log(data);
+
+      router.push("/feed");
     } catch (error) {
       console.log("Error: ", error);
       setErrorMessage(error.message);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
-    router.push("/feed");
   };
 
   return (
