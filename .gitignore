@@ -6,8 +6,10 @@
 .pnp.js
 
 # next.js
+/.next
 /.next/
 /out/
+/Users/stevendeteso/Desktop/Projects/ig_2_frontend/.next
 
 # testing
 /coverage
