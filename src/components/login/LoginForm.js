@@ -57,6 +57,7 @@ export default function Login() {
   return (
     <div className={styles.loginWrapper}>
       {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+      <h1>Clone-a-gram</h1>
       <form onSubmit={handleSubmit} className={styles.loginForm}>
         <input
           type="email"
@@ -79,12 +80,9 @@ export default function Login() {
           disabled={isLoading}
           className={styles.submitButton}
         >
-          {isLoading ? "Loading..." : "Login"}
+          {isLoading ? "Loading..." : "Log in"}
         </button>
       </form>
-      <p className={styles.signupLink}>
-        Don't have an account? <Link href={"/register"}>Sign up</Link>
-      </p>
     </div>
   );
 }

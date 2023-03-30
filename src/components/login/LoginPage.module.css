@@ -1,27 +1,36 @@
 /* components/LoginPage.css */
-.login-page-container {
+.loginPageContainer {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
     width: 100%;
+    
   }
   
-  .login-image-container,
-  .form-container {
-    flex: 1;
-    text-align: center;
-    padding: 20px;
-    max-width: 350px;
-  }
-  
-  .login-image-container img {
-    max-width: 100%;
-    height: auto;
-  }
+.loginImageContainer,
+.formContainer {
+  flex: 1;
+  text-align: center;
+}
 
-  .form-container {
-    flex-direction: column;
-    justify-content: center;
-  }
-  
+.loginImageContainer img {
+  width: 500px;
+  height: auto;
+}
+
+.formContainer{
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signupContainer {
+  margin: 10px auto;
+  padding: 20px;
+  max-width: 350px;
+  border: 1px solid rgb(219, 219, 219);
+}
+
+.signupText {
+  color: blue;
+}
