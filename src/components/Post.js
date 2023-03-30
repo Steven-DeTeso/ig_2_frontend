@@ -1,15 +1,15 @@
 import React from "react";
-import "./Post.css";
+import "./Post.module.css";
 
 export default function Post({ post }) {
-  if (!post.image || !post.image[0] || !post.image[0].signed_image_url) {
+  if (!post.images || !post.images[0] || !post.images[0].signed_image_url) {
     return null;
   }
   return (
     <div className="post-container">
       <h3>{post.author.username}</h3>
       <img
-        src={post.image[0].signed_image_url}
+        src={post.images[0].signed_image_url}
         alt={post.caption}
         className="post-image"
       />

@@ -1,13 +1,12 @@
 import React, { useContext, useState } from "react";
-import axios from "axios";
-import AuthContext from "./AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Login() {
-  const { setToken } = useContext(AuthContext);
-  const navigate = useNavigate();
+  // const { setToken } = useContext(AuthContext);
+  const router = useRouter();
 
-  const [formValues, setFormValues] = useState({
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
@@ -15,31 +14,39 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/token/",
-        formValues
-      );
-      const token = response.data.access;
-      setToken(token);
-      localStorage.setItem("token", token);
-      navigate("/feed");
+      const response = await fetch("http://localhost:8000/api/token/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      // const token = response.data.access;
+      // setToken(token);
+      // localStorage.setItem("token", token);
+      const data = await response.json();
+      console.log(response);
+      if (!data) {
+        throw new Error("Invalid email or password.");
+      }
     } catch (error) {
       console.log("Error: ", error);
-      setErrorMessage("Invalid email or password.");
+      setErrorMessage(error.message);
     }
 
     setIsLoading(false);
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues({ ...formValues, [name]: value });
+    router.push("/feed");
   };
 
   return (
@@ -52,7 +59,7 @@ export default function Login() {
           <input
             type="email"
             name="email"
-            value={formValues.email}
+            value={formData.email}
             onChange={handleInputChange}
           />
         </label>
@@ -61,7 +68,7 @@ export default function Login() {
           <input
             type="password"
             name="password"
-            value={formValues.password}
+            value={formData.password}
             onChange={handleInputChange}
           />
         </label>
