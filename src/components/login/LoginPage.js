@@ -1,4 +1,5 @@
 import LoginForm from "./LoginForm";
+import Footer from "./Footer";
 import styles from "./LoginPage.module.css";
 import Link from "next/link";
 
@@ -24,6 +25,7 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
