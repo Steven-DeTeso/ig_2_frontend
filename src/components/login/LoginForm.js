@@ -58,15 +58,20 @@ export default function Login() {
   return (
     <>
       <div className={styles.loginFormWrapper}>
-        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
         <h1 className={style.cloneFont}>Clone-a-gram</h1>
         <form onSubmit={handleSubmit} className={styles.loginForm}>
-          <button className={styles.fbButton}>Continue with Facebook</button>
+          <button
+            className={styles.fbButton}
+            onClick={() => alert("This is not enabled right now!")}
+            >
+            Continue with Facebook
+          </button>
           <div className={styles.orContainer}>
             <div className={styles.orLine}></div>
             <p className={styles.or}>OR</p>
             <div className={styles.orLine}></div>
           </div>
+            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           <input
             type="email"
             name="email"
@@ -83,6 +88,11 @@ export default function Login() {
             onChange={handleInputChange}
             className={styles.loginInput}
           />
+          <div className={styles.passwordContainer}>
+            <a href="#">
+              <span className={styles.forgotPassword}>Forgot Password?</span>
+            </a>
+          </div>
           <button
             type="submit"
             disabled={isLoading}
@@ -91,11 +101,6 @@ export default function Login() {
             {isLoading ? "Loading..." : "Log in"}
           </button>
         </form>
-        <div>
-          <a href="#">
-            <span className={styles.forgotPassword}>Forgot Password?</span>
-          </a>
-        </div>
         <div>
           <p className={styles.signupLink}>
             Don't have an account?{" "}

@@ -48,11 +48,10 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  font-size: 12px;
+  font-size: 14px;
   color: rgb(142, 142, 142);
-  margin-top: 30px;
-  margin-bottom: 50px;
-  padding-top: 10px;
+  margin: 30px 20px 50px 20px;
+  /* padding: 10px 0; */
 }
 
 .loginRegFooter > a {
@@ -60,6 +59,7 @@
   text-decoration: none;
   color: rgb(142, 142, 142);
   cursor: pointer;
+  padding: 10px 0;
 }
 
 

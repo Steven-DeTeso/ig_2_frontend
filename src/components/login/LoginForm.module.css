@@ -10,10 +10,9 @@
     position: relative;
 }
 
-/* .loginFormWrapper > h1 {
-    margin: 36px 0;
-} */
-
+.errorMessage{
+    margin: 0 10px 10px;
+}
 .loginForm {
     display: inline-flex;
     flex-direction: column;
@@ -49,11 +48,12 @@
     border-radius: 8px;
     color: white;
     text-align: center;
+    margin: 8px 0;
 }
 
 .submitButton,
 .fbButton {
-    font-size: 14px;
+    font-size: 16px;
     padding: 7px 16px;
     width: 222px;
 }
@@ -77,8 +77,17 @@
     margin: 0 10px;
 }
 
+.passwordContainer {
+    display: flex;
+    justify-items: flex-end;
+    align-items: center;
+    height: 50px;
+    margin-left: 100px;
+}
+
 .forgotPassword {
-    color: rgb(0, 149, 246);
+    text-align: right;
+    font-weight: 300;
 }
 
 .signupLink {
@@ -91,5 +100,9 @@
 .forgotPassword {
     color: rgb(0, 149, 246);
     text-decoration: none;
+    
+}
+
+.signupText{
     font-weight: bold;
 }
