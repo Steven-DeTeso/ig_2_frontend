@@ -16,6 +16,7 @@ const LoginPage = () => {
           <LoginForm />
         </div>
       </div>
+        <img className={styles.metaLogo}src="/images/meta-logo.png" alt="meta logo"/>
       <Footer />
     </>
   );

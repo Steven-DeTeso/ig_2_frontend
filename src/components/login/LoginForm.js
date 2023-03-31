@@ -63,7 +63,8 @@ export default function Login() {
           <button
             className={styles.fbButton}
             onClick={() => alert("This is not enabled right now!")}
-            >
+          >
+            {/* <img src="/images/" alt="fb-logo" /> */}
             Continue with Facebook
           </button>
           <div className={styles.orContainer}>
@@ -71,7 +72,9 @@ export default function Login() {
             <p className={styles.or}>OR</p>
             <div className={styles.orLine}></div>
           </div>
-            {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+          {errorMessage && (
+            <p className={styles.errorMessage}>{errorMessage}</p>
+          )}
           <input
             type="email"
             name="email"

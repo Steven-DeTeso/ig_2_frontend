@@ -1,11 +1,6 @@
 /* components/LoginPage.css */
 .loginPageContainer {
-    /* outtermost container for login page */
-    /* display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; */
-    min-height: 100vh;
+    min-height: 90vh;
     width: 100vh;
     margin: auto;
   }
@@ -19,6 +14,7 @@
 .loginPageTopDiv > p{
   margin-top: 16px;
   margin-bottom: 60px;
+  cursor: pointer;
 }
 
 .loginImageContainer,
@@ -51,7 +47,6 @@
   font-size: 14px;
   color: rgb(142, 142, 142);
   margin: 30px 20px 50px 20px;
-  /* padding: 10px 0; */
 }
 
 .loginRegFooter > a {
@@ -60,6 +55,12 @@
   color: rgb(142, 142, 142);
   cursor: pointer;
   padding: 10px 0;
+}
+
+.metaLogo {
+  width: 75px;
+  display: block;
+  margin: 0 auto 50px;
 }
 
 
