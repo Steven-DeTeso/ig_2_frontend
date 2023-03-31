@@ -1,1 +1,16 @@
 /* global styles for the whole application */
+
+@font-face {
+    font-family: 'Clone-a-gram';
+    src: url('/fonts/ig-font.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.cloneFont {
+    font-family: 'Clone-a-gram', sans-serif;
+    font-size: 50px;
+    font-weight: normal;
+    text-align: center;
+    margin: none;
+}

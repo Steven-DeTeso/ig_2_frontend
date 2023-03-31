@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
-import AuthContext from "./AuthContext";
+import AuthContext from "../AuthContext";
 
-export default function Register() {
+export default function RegisterForm() {
   const { setToken } = useContext(AuthContext);
   const router = useRouter();
 

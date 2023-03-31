@@ -1,44 +1,48 @@
 /* components/LoginPage.css */
 .loginPageContainer {
-    display: flex;
+    /* outtermost container for login page */
+    /* display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
     min-height: 100vh;
-    width: 100%;
-    position: relative;
+    width: 100vh;
+    margin: auto;
   }
-  
+
+.loginPageTopDiv {
+    position: relative;
+    text-align: center;
+    color: rgb(142, 142, 142);
+}
+
+.loginPageTopDiv > p{
+  margin-top: 16px;
+  margin-bottom: 60px;
+}
+
 .loginImageContainer,
 .formContainer {
+  /* two side by side divs */
   width: 50%;
   text-align: center;
+  margin: auto;
 }
 
 .loginImageContainer img {
-  width: 500px;
+  width: 480px;
   height: auto;
 }
 
 .formContainer{
-  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.signupContainer {
-  margin: 10px auto;
-  padding: 20px;
-  max-width: 350px;
-  border: 1px solid rgb(219, 219, 219);
-}
-
-.signupText {
-  color: blue;
+  margin: auto;
 }
 
 .loginRegFooter {
-  position: absolute;
+  position: relative;
   bottom: 0;
   display: flex;
   flex-wrap: wrap;
@@ -47,6 +51,7 @@
   font-size: 12px;
   color: rgb(142, 142, 142);
   margin-top: 30px;
+  margin-bottom: 50px;
   padding-top: 10px;
 }
 
@@ -59,12 +64,18 @@
 
 
 @media only screen and (max-width: 480px) {
-  .loginImageContainer {
-    /* display: none; */
-  }
+  /* .loginImageContainer {
+  
+  } */
 }
 
 @media only screen and (max-width: 768px) {
+  /* .loginImageContainer {
+    
+  } */
+}
+
+@media only screen and (max-width: 1025px) {
   .loginImageContainer {
     display: none;
   }
