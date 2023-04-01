@@ -1,0 +1,8 @@
+.registerFormContainer {
+    /* display: flex; */
+}
+
+.registerForm {
+    display: flex;
+    flex-direction: column;
+}

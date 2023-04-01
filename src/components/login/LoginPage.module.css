@@ -1,9 +1,9 @@
 .loginPageContainer {
-    min-height: 90vh;
-    margin: auto;
     display: flex;
     flex-direction: column;
     max-width: fit-content;
+    min-height: 90vh;
+    margin: auto;
   }
 
 .loginPageTopDiv {
