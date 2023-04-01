@@ -106,3 +106,15 @@
 .signupText{
     font-weight: bold;
 }
+
+@media only screen and (max-width: 768px) {
+    .loginFormWrapper {
+        width: none;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+.loginFormWrapper {
+    width: 320px;
+}
+}

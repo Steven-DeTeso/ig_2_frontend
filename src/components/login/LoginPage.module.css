@@ -1,9 +1,9 @@
 .loginPageContainer {
     min-height: 90vh;
-    width: 100vh;
     margin: auto;
     display: flex;
     flex-direction: column;
+    max-width: fit-content;
   }
 
 .loginPageTopDiv {
@@ -69,13 +69,18 @@
   padding: 10px 0;
 }
 
+@media only screen and (max-width: 1439px) {
+  /* .loginPagecontainer {
+    max-width: 1024px;
+  } */
+}
 
 @media only screen and (max-width: 1023px) {
+  .loginFormContainer {
+    width: fit-content;
+  }
   .loginImageContainer {
     display: none;
-  }
-  .loginFormContainer {
-    width: auto;
   }
 }
 
