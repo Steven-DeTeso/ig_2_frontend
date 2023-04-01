@@ -9,15 +9,21 @@ const LoginPage = () => {
         <div className={styles.loginPageTopDiv}>
           <p>English</p>
         </div>
-        {/* <div className={styles.loginImageContainer}>
-        <img src="/IG_login_img.png" alt="ig_logo" />
-      </div> */}
-        <div className={styles.loginFormContainer}>
-          <LoginForm />
+        <div className={styles.flex}>
+          <div className={styles.loginImageContainer}>
+            <img src="/images/IG_login_img.png" alt="ig_logo" />
+          </div>
+          <div className={styles.loginFormContainer}>
+            <LoginForm />
+          </div>
         </div>
-      </div>
-        <img className={styles.metaLogo}src="/images/meta-logo.png" alt="meta logo"/>
+      <img
+        className={styles.metaLogo}
+        src="/images/meta-logo.png"
+        alt="meta logo"
+      />
       <Footer />
+      </div>
     </>
   );
 };

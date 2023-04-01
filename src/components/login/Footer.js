@@ -4,7 +4,9 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <div className={styles.loginRegFooter}>
+    <div 
+    className={styles.loginRegFooter}
+    >
       <Link href="#">Meta</Link>
       <Link href="#">About</Link>
       <Link href="#">Blog</Link>

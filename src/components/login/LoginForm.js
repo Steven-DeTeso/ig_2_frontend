@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthContext from "../AuthContext";
 import styles from "./LoginForm.module.css";
+// style is global css
 import style from "/styles.module.css";
 import Link from "next/link";
 
@@ -64,7 +65,6 @@ export default function Login() {
             className={styles.fbButton}
             onClick={() => alert("This is not enabled right now!")}
           >
-            {/* <img src="/images/" alt="fb-logo" /> */}
             Continue with Facebook
           </button>
           <div className={styles.orContainer}>
@@ -91,7 +91,7 @@ export default function Login() {
             onChange={handleInputChange}
             className={styles.loginInput}
           />
-          <div className={styles.passwordContainer}>
+          <div className={styles.forgotPasswordContainer}>
             <a href="#">
               <span className={styles.forgotPassword}>Forgot Password?</span>
             </a>
