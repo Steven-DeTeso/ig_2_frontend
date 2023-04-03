@@ -1,18 +1,17 @@
 import React, { useContext, useState } from "react";
-import axios from "axios";
+import { useRouter } from "next/navigation";
 import AuthContext from "./AuthContext";
-import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const { setToken } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     username: "",
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -29,20 +28,31 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/users/",
-        formData
-      );
-      console.log(response.data);
-      const token = response.data.access;
+      const response = await fetch("http://localhost:8000/users/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (!data) {
+        throw new Error("Invalid entry");
+      }
+
+      const token = data.access;
       setToken(token);
       localStorage.setItem("token", token);
-      navigate("/feed");
+      console.log(`logging token in regsiter.js ${token}`);
+      console.log(data);
+
+      router.push("/feed");
     } catch (error) {
       console.error("Error:", error);
-      setErrorMessage("Invalid email or password.");
+      setErrorMessage(error.message);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
@@ -80,19 +90,19 @@ export default function Register() {
         <label htmlFor="firstName">First Name</label>
         <input
           id="firstName"
-          name="firstName"
+          name="first_name"
           type="text"
           placeholder="First Name"
-          value={formData.firstName}
+          value={formData.first_name}
           onChange={handleInputChange}
         />
         <label htmlFor="lastName">Last Name</label>
         <input
           id="lastName"
-          name="lastName"
+          name="last_name"
           type="text"
           placeholder="Last Name"
-          value={formData.lastName}
+          value={formData.last_name}
           onChange={handleInputChange}
         />
         <button type="submit" disabled={isLoading}>
