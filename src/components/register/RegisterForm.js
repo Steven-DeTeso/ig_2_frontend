@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
-import AuthContext from "./AuthContext";
+import AuthContext from "../AuthContext";
+import styles from "./RegisterForm.module.css";
 
-export default function Register() {
+export default function RegisterForm() {
   const { setToken } = useContext(AuthContext);
   const router = useRouter();
 
@@ -56,11 +57,9 @@ export default function Register() {
   };
 
   return (
-    <div className="register-wrapper">
-      <h1>Register</h1>
+    <div className={styles.registerFormContainer}>
       {errorMessage && <p>{errorMessage}</p>}
-      <form onSubmit={handleSubmit} className="register-form">
-        <label htmlFor="username">Username</label>
+      <form onSubmit={handleSubmit} className={styles.registerForm}>
         <input
           id="username"
           name="username"
@@ -69,7 +68,6 @@ export default function Register() {
           value={formData.username}
           onChange={handleInputChange}
         />
-        <label htmlFor="email">Email</label>
         <input
           id="email"
           name="email"
@@ -78,7 +76,6 @@ export default function Register() {
           value={formData.email}
           onChange={handleInputChange}
         />
-        <label htmlFor="password">Password</label>
         <input
           id="password"
           name="password"
@@ -87,7 +84,6 @@ export default function Register() {
           value={formData.password}
           onChange={handleInputChange}
         />
-        <label htmlFor="firstName">First Name</label>
         <input
           id="firstName"
           name="first_name"
@@ -96,7 +92,6 @@ export default function Register() {
           value={formData.first_name}
           onChange={handleInputChange}
         />
-        <label htmlFor="lastName">Last Name</label>
         <input
           id="lastName"
           name="last_name"

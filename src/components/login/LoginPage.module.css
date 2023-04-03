@@ -1,0 +1,97 @@
+.loginPageContainer {
+    display: flex;
+    flex-direction: column;
+    max-width: fit-content;
+    min-height: 90vh;
+    margin: auto;
+  }
+
+.loginPageTopDiv {
+    position: relative;
+    text-align: center;
+    color: rgb(142, 142, 142);
+}
+
+.loginPageTopDiv > p{
+  margin-top: 16px;
+  margin-bottom: 60px;
+  cursor: pointer;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.loginImageContainer,
+.loginFormContainer {
+  /* two side by side divs */
+  width: 50%;
+  text-align: center;
+  margin: auto;
+}
+
+.loginImageContainer img {
+  width: 400px;
+  height: auto;
+}
+
+.loginFormContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.metaLogo {
+  width: 75px;
+  display: block;
+  margin: 20px auto 50px;
+}
+
+.loginRegFooter {
+  position: relative;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: rgb(142, 142, 142);
+  margin: 30px 20px 50px 20px;
+}
+
+.loginRegFooter > a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: rgb(142, 142, 142);
+  cursor: pointer;
+  padding: 10px 0;
+}
+
+@media only screen and (max-width: 1439px) {
+  /* .loginPagecontainer {
+    max-width: 1024px;
+  } */
+}
+
+@media only screen and (max-width: 1023px) {
+  .loginFormContainer {
+    width: fit-content;
+  }
+  .loginImageContainer {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  /* .loginImageContainer {
+    
+  } */
+}
+
+@media only screen and (max-width: 480px) {
+  /* .loginImageContainer {
+  
+  } */
+}

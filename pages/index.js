@@ -1,8 +1,5 @@
-import Auth from "../src/components/Auth";
-import MainFeed from "../src/components/MainFeed";
+import LoginPage from "../src/components/login/LoginPage";
 
-function App() {
-  return <Auth />;
+export default function App() {
+  return <LoginPage />;
 }
-
-export default App;
