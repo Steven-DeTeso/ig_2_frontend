@@ -29,23 +29,19 @@ export default function Login() {
     setIsLoading(true);
 
     try {
+      //  in a production environment, use HTTPS for API calls, and make sure your fetch calls include the credentials: 'include' option to ensure cookies are sent with the requests:
       const response = await fetch("http://localhost:8000/api/token/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        // credentials: 'include',
         body: JSON.stringify(formData),
       });
       const data = await response.json();
       if (!data.access) {
         throw new Error("Invalid email or password.");
       }
-
-      const token = data.access;
-      setToken(token);
-      localStorage.setItem("token", token);
-      console.log(`logging token in login.js ${token}`);
-      console.log(data);
 
       router.push("/feed");
     } catch (error) {
