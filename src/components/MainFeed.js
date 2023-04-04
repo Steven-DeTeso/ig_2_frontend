@@ -8,8 +8,6 @@ export default function MainFeed() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // const accessToken = Cookies.get('access')
-
         const response = await fetch("http://localhost:8000/posts/", {
           credentials: "include",
         });
