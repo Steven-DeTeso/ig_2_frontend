@@ -1,5 +1,5 @@
-import MainFeed from "../src/components/MainFeed";
+import DashboardFeed from "../src/components/dashboard/DashboardFeed";
 
 export default function Feed() {
-  return <MainFeed />;
+  return <DashboardFeed />;
 }

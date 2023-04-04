@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { refreshAccessToken } from "../utils/auth";
-import Post from "./Post";
+import { refreshAccessToken } from "/src/utils/auth";
+import Post from "../post/Post";
+import styles from "./DashboardFeed.module.css";
 
 export default function MainFeed() {
   const [posts, setPosts] = useState([]);
@@ -9,6 +10,7 @@ export default function MainFeed() {
     const fetchPosts = async () => {
       try {
         const response = await fetch("http://localhost:8000/posts/", {
+          method: "GET",
           credentials: "include",
         });
 
@@ -37,9 +39,13 @@ export default function MainFeed() {
   return (
     <div>
       <h1>Main feed page.</h1>
-      {posts.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      <div className={styles.postContainer}>
+        {posts.map((post) => (
+          <article key={post.id} className={styles.postArticle}>
+            <Post post={post} />
+          </article>
+        ))}
+      </div>
     </div>
   );
-}
+}  

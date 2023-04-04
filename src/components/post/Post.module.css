@@ -1,11 +1,11 @@
-.post-container {
+.postImageContainer {
     margin: auto;
     width: 300px;
     aspect-ratio: 1;
     border: 1px solid black;
 }
 
-.post-image {
+.postImage {
     max-width: 100%;
     height: auto;
     object-fit: cover;
