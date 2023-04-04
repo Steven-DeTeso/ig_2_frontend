@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { refreshAccessToken } from "../utils/auth";
 import Post from "./Post";
 
 export default function MainFeed() {
@@ -8,10 +9,20 @@ export default function MainFeed() {
     const fetchPosts = async () => {
       try {
         const response = await fetch("http://localhost:8000/posts/", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          credentials: "include",
         });
+
+        if (response.status === 401) {
+          // Access token is expired, try to refresh it
+          await refreshAccessToken();
+          // Retry the original request after refreshing the access token
+          return fetchPosts();
+        }
+
+        if (!response.ok) {
+          throw new Error("Error fetching posts.");
+        }
+
         const data = await response.json();
         console.log(data);
         setPosts(data);
