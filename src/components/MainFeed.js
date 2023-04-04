@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { refreshAccessToken } from "../utils/auth";
-import Cookies from "js-cookie";
 import Post from "./Post";
 
 export default function MainFeed() {
@@ -12,9 +11,6 @@ export default function MainFeed() {
         // const accessToken = Cookies.get('access')
 
         const response = await fetch("http://localhost:8000/posts/", {
-          // headers: {
-          //   Authorization: `Bearer ${accessToken}`,
-          // },
           credentials: "include",
         });
 

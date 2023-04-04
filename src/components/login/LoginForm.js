@@ -38,7 +38,7 @@ export default function Login() {
         credentials: 'include',
         body: JSON.stringify(formData),
       });
-      console.log("Response headers:", response.headers);  // Debug print
+      
       const data = await response.json();
       if (!data.access) {
         throw new Error("Invalid email or password.");
