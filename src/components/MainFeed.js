@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { refreshAccessToken } from "../utils/auth";
+import Cookies from "js-cookie";
 import Post from "./Post";
 
 export default function MainFeed() {
@@ -7,11 +9,26 @@ export default function MainFeed() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        // const accessToken = Cookies.get('access')
+
         const response = await fetch("http://localhost:8000/posts/", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          // headers: {
+          //   Authorization: `Bearer ${accessToken}`,
+          // },
+          credentials: "include",
         });
+
+        if (response.status === 401) {
+          // Access token is expired, try to refresh it
+          await refreshAccessToken();
+          // Retry the original request after refreshing the access token
+          return fetchPosts();
+        }
+
+        if (!response.ok) {
+          throw new Error("Error fetching posts.");
+        }
+
         const data = await response.json();
         console.log(data);
         setPosts(data);

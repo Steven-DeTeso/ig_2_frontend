@@ -35,9 +35,10 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        // credentials: 'include',
+        credentials: 'include',
         body: JSON.stringify(formData),
       });
+      console.log("Response headers:", response.headers);  // Debug print
       const data = await response.json();
       if (!data.access) {
         throw new Error("Invalid email or password.");
@@ -58,6 +59,7 @@ export default function Login() {
         <h1 className={style.cloneFont}>Clone-a-gram</h1>
         <form onSubmit={handleSubmit} className={styles.loginForm}>
           <button
+            type="button"
             className={styles.fbButton}
             onClick={() => alert("This is not enabled right now!")}
           >
