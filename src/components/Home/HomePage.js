@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { refreshAccessToken } from "/src/utils/auth";
 import Post from "../post/Post";
-import styles from "./DashboardFeed.module.css";
+import styles from "./HomePage.module.css";
+import Link from "next/link";
 
-export default function MainFeed() {
+export default function HomePage() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -37,15 +38,29 @@ export default function MainFeed() {
   }, []);
 
   return (
-    <div>
-      <h1>Main feed page.</h1>
-      <div className={styles.postContainer}>
+    <>
+    <div className={styles.homePageContainer}>
+      <section className={styles.leftSidebar}>
+        <Link href="/">Home</Link>
+        <Link href="/">Search</Link>
+        <Link href="/">Explore</Link>
+        <Link href="/#">Reels</Link>
+        <Link href="/">Messages</Link>
+        <Link href="/">Notifications</Link>
+        <Link href="/">Create</Link>
+        <Link href="/">Profile</Link>
+      </section>
+      <div className={styles.mainContainer}>
+        <section>post container
         {posts.map((post) => (
           <article key={post.id} className={styles.postArticle}>
             <Post post={post} />
           </article>
         ))}
+        <div>right container</div>
+        </section>
       </div>
     </div>
+    </>
   );
 }  

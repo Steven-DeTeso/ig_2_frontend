@@ -1,5 +1,5 @@
-import DashboardFeed from "../src/components/dashboard/DashboardFeed";
+import HomePage from "../src/components/Home/HomePage";
 
 export default function Feed() {
-  return <DashboardFeed />;
+  return <HomePage />;
 }

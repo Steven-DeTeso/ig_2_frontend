@@ -14,7 +14,7 @@ export default function Post({ post }) {
           src={post.images[0].signed_image_url}
           alt={post.caption}
         />
-        <p>{post.caption}</p>
+        <p>Caption: {post.caption}</p>
         <p>
           Liked by:{" "}
           {post.likes.map((like, index) => (
