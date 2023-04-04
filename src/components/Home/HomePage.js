@@ -51,14 +51,15 @@ export default function HomePage() {
         <Link href="/">Profile</Link>
       </section>
       <div className={styles.mainContainer}>
-        <section>post container
+        <main className={styles.middleMain}>
+          <div>Top Div</div>
         {posts.map((post) => (
           <article key={post.id} className={styles.postArticle}>
             <Post post={post} />
           </article>
         ))}
-        <div>right container</div>
-        </section>
+        </main>
+        <div className={styles.rightContainer}>right container</div>
       </div>
     </div>
     </>

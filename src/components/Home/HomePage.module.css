@@ -13,11 +13,18 @@
 
 .mainContainer {
     display: flex;
-    flex-direction: column;
-    width: 300px;
-    margin: auto;
+    flex-direction: row;
+    width: 100vh;
+}
+
+.middleMain{
+    margin: 0 auto;
 }
 
 .postArticle {
     margin: auto;
+}
+
+.rightContainer {
+    margin-left: auto;
 }
