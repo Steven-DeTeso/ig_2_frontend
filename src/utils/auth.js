@@ -9,7 +9,7 @@ export async function refreshAccessToken() {
     });
 
     const data = await response.json();
-    console.log("Refresh successful:", data); // Add this line
+    console.log("Refresh successful:", data);
 
     if (!response.ok) {
       throw new Error("Error refreshing access token.");
