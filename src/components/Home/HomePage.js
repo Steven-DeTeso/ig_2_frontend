@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { refreshAccessToken } from "/src/utils/auth";
 import Post from "../post/Post";
 import styles from "./HomePage.module.css";
-import Link from "next/link";
+import LeftSidebar from "./LeftSidebar";
 
 export default function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -16,7 +16,7 @@ export default function HomePage() {
         });
 
         if (response.status === 401) {
-          // Access token is expired, try to refresh it
+          // Access token is expired, get a new access token with the function below
           await refreshAccessToken();
           // Retry the original request after refreshing the access token
           return fetchPosts();
@@ -39,29 +39,20 @@ export default function HomePage() {
 
   return (
     <>
-    <div className={styles.homePageContainer}>
-      <section className={styles.leftSidebar}>
-        <Link href="/">Home</Link>
-        <Link href="/">Search</Link>
-        <Link href="/">Explore</Link>
-        <Link href="/#">Reels</Link>
-        <Link href="/">Messages</Link>
-        <Link href="/">Notifications</Link>
-        <Link href="/">Create</Link>
-        <Link href="/">Profile</Link>
-      </section>
-      <div className={styles.mainContainer}>
-        <main className={styles.middleMain}>
-          <div>Top Div</div>
-        {posts.map((post) => (
-          <article key={post.id} className={styles.postArticle}>
-            <Post post={post} />
-          </article>
-        ))}
-        </main>
-        <div className={styles.rightContainer}>right container</div>
+      <div className={styles.homePageContainer}>
+        <div className={styles.mainContainer}>
+          <LeftSidebar />
+          <main className={styles.middleMain}>
+            <div>Top Div</div>
+            {posts.map((post) => (
+              <article key={post.id} className={styles.postArticle}>
+                <Post post={post} />
+              </article>
+            ))}
+          </main>
+          <div className={styles.rightContainer}>right container</div>
+        </div>
       </div>
-    </div>
     </>
   );
-}  
+}
