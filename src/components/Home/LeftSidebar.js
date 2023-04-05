@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import NavButton from "./NavButton";
 import HomeIcon from "@mui/icons-material/Home";
+import Link from "next/link";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -19,7 +20,7 @@ export default function LeftSidebar() {
   const [isSmallScren, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => setIsSmallScreen(window.innerWidth < 1023);
+    const handleResize = () => setIsSmallScreen(window.innerWidth < 1264);
     window.addEventListener("resize", handleResize);
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
@@ -63,9 +64,11 @@ export default function LeftSidebar() {
           />
         ))}
       </div>
-      <div className={styles.moreBurger}>
-        <MenuOutlinedIcon />
-        <p>More</p>
+      <div>
+        <Link href="/settings" className={styles.moreBurger}>
+          <MenuOutlinedIcon />
+          <p>More</p>
+        </Link>
       </div>
     </section>
   );

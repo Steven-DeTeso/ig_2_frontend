@@ -1,0 +1,33 @@
+.rightContainer {
+    position: sticky;
+    width: 319px;
+    height: 100vh;
+    padding-top: 30px;
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+}
+
+
+.rightSidebarFooter > div,
+.rightSidebarFooter > p {
+    font-size: 14px;
+    color: rgb(142, 142, 142);
+    margin: 0px;
+    width: 319px;
+}
+.rightSidebarFooter > p {
+    margin-top: 10px;
+}
+.rightSidebarFooter > div > a {
+    display: inline-block;
+    margin: 0 5px 0 0;
+}
+
+@media screen and (max-width: 1159px) {
+    .rightContainer {
+        display: none;
+    }
+}

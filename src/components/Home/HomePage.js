@@ -3,6 +3,7 @@ import { refreshAccessToken } from "/src/utils/auth";
 import Post from "../post/Post";
 import styles from "./HomePage.module.css";
 import LeftSidebar from "./LeftSidebar";
+import RightSidebar from "./RightSidebar";
 
 export default function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -50,7 +51,7 @@ export default function HomePage() {
               </article>
             ))}
           </main>
-          <div className={styles.rightContainer}>right container</div>
+          <RightSidebar />
         </div>
       </div>
     </>
