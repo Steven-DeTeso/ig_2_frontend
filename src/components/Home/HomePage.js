@@ -4,6 +4,7 @@ import Post from "../post/Post";
 import styles from "./HomePage.module.css";
 import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
+import Stories from "./Stories";
 
 export default function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -44,7 +45,7 @@ export default function HomePage() {
         <div className={styles.mainContainer}>
           <LeftSidebar />
           <main className={styles.middleMain}>
-            <div>Top Div</div>
+            <Stories />
             {posts.map((post) => (
               <article key={post.id} className={styles.postArticle}>
                 <Post post={post} />

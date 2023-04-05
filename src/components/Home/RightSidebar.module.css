@@ -10,6 +10,10 @@
     align-items: center;
 }
 
+.rightSidebarFooter > div {
+    display: flex;
+    justify-content: flex-start;
+}
 
 .rightSidebarFooter > div,
 .rightSidebarFooter > p {
@@ -18,12 +22,15 @@
     margin: 0px;
     width: 319px;
 }
+
 .rightSidebarFooter > p {
     margin-top: 10px;
 }
+
 .rightSidebarFooter > div > a {
     display: inline-block;
     margin: 0 5px 0 0;
+    padding: 0;
 }
 
 @media screen and (max-width: 1159px) {

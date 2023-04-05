@@ -1,0 +1,15 @@
+.storiesContainer {
+    display: flex;
+    flex-direction: column;
+    height: 85px;
+    margin: 16px 16px;
+    padding: 16px;
+}
+
+.storiesContainer > ul{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0;
+    vertical-align: baseline;
+}

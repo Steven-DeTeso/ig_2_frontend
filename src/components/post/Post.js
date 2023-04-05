@@ -8,13 +8,16 @@ export default function Post({ post }) {
   return (
     <>
       <div className={styles.postImageContainer}>
+        <p>profile img</p>
         <h3>{post.author.username}</h3>
         <img
           className={styles.postImage}
           src={post.images[0].signed_image_url}
           alt={post.caption}
         />
-        <p>Caption: {post.caption}</p>
+        <p>
+          {post.author.username}: {post.caption}
+        </p>
         <p>
           Liked by:{" "}
           {post.likes.map((like, index) => (
