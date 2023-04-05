@@ -5,11 +5,6 @@
     min-height: 90vh;
 }
 
-.leftSidebar{
-    display: flex;
-    flex-direction: column;
-}
-
 
 .mainContainer {
     display: flex;
