@@ -10,9 +10,14 @@ const CustomLink = styled(Box)(({ theme }) => ({
   alignItems: "center",
 }));
 
-export default function NavButton({ iconComponent: Icon, label, href }) {
+export default function NavButton({
+  iconComponent: Icon,
+  label,
+  href,
+  onClick,
+}) {
   return (
-    <CustomLink href={href} component="a" aria-label={label}>
+    <CustomLink href={href} component="a" aria-label={label} onClick={onClick}>
       <Icon />
       <p>{label}</p>
     </CustomLink>

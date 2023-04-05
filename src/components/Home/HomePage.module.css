@@ -8,11 +8,15 @@
 .mainContainer {
     display: flex;
     flex-direction: row;
-    width: 100vw;
+    width: 100%;
+    margin: 0 auto;
+    
 }
 
 .middleMain{
     width: 100%;
+    max-width: 630px;
+    margin: 0 64px 0 auto;
 }
 
 .postArticle {
@@ -21,4 +25,10 @@
     flex-direction: column;
     margin: 0 auto 12px;
 
+}
+
+@media screen and (max-width: 1159px) {
+    .middleMain {
+        margin: 0 auto;
+    }
 }

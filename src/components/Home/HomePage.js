@@ -42,8 +42,8 @@ export default function HomePage() {
   return (
     <>
       <div className={styles.homePageContainer}>
-        <div className={styles.mainContainer}>
-          <LeftSidebar />
+        <LeftSidebar />
+        <section className={styles.mainContainer}>
           <main className={styles.middleMain}>
             <Stories />
             {posts.map((post) => (
@@ -53,7 +53,7 @@ export default function HomePage() {
             ))}
           </main>
           <RightSidebar />
-        </div>
+        </section>
       </div>
     </>
   );
