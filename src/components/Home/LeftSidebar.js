@@ -20,7 +20,6 @@ import CreatePostDialog from "./CreatePost";
 
 export default function LeftSidebar({ onPostCreated }) {
   const [isSmallScren, setIsSmallScreen] = useState(false);
-  const [posts, setPosts] = useState([]);
   const [openCreatePost, setOpenCreatePost] = useState(false);
 
   const handleCreatePostClick = () => {
@@ -31,26 +30,9 @@ export default function LeftSidebar({ onPostCreated }) {
     setOpenCreatePost(false);
   };
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/posts/", {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await response.json();
-      setPosts(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const handlePostCreated = () => {
+  const handlePostCreated = (newPost) => {
     if (onPostCreated) {
-      onPostCreated();
+      onPostCreated(newPost);
     }
   };
 
@@ -124,7 +106,7 @@ export default function LeftSidebar({ onPostCreated }) {
             href={button.href}
             iconComponent={button.iconComponent}
             label={button.label}
-            onClick={button.onClick || handleCreatePostClick}
+            onClick={button.onClick}
           />
         ))}
         <CreatePostDialog

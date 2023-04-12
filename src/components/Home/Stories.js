@@ -6,9 +6,15 @@ import { ClassNames } from "@emotion/react";
 
 export default function Stories() {
   const images = [
-    { alt: "Remy Sharp", src: "/static/images/avatar/1.jpg" },
-    { alt: "Travis Howard", src: "/static/images/avatar/2.jpg" },
-    { alt: "Cindy Baker", src: "/static/images/avatar/3.jpg" },
+    { alt: "Remy Sharp", src: "ig_2_frontend/public/images/avatar-lady.jpg" },
+    {
+      alt: "Travis Howard",
+      src: "/public/images/avatar-mustache.jpg",
+    },
+    {
+      alt: "Cindy Baker",
+      src: "/public/images/avatar-yellow.jpg",
+    },
   ];
 
   return (
@@ -17,8 +23,8 @@ export default function Stories() {
         {images.map((image, index) => (
           <Avatar
             key={index}
-            alt={image.alt}
-            src={image.src}
+            // alt={image.alt}
+            // src={image.src}
             sx={{ width: 66, height: 66 }}
           />
         ))}

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import AuthContext from "../AuthContext";
-import { useRouter } from "next/router";
+import { refreshAccessToken } from "../../utils/auth";
 import {
   Dialog,
   DialogTitle,
@@ -10,6 +10,22 @@ import {
   TextField,
   Input,
 } from "@mui/material";
+
+function StyledButton({ hasImage, children, ...props }) {
+  return (
+    <Button
+      {...props}
+      sx={{
+        backgroundColor: hasImage ? "green" : "",
+        "&:hover": {
+          backgroundColor: hasImage ? "darkgreen" : "",
+        },
+      }}
+    >
+      {children}
+    </Button>
+  );
+}
 
 export default function CreatePostDialog({ open, onClose, onPostCreated }) {
   const { setToken } = useContext(AuthContext);
@@ -49,12 +65,28 @@ export default function CreatePostDialog({ open, onClose, onPostCreated }) {
       const postFormData = new FormData();
       postFormData.append("image", formData.image);
       postFormData.append("caption", formData.caption);
+      console.log("form data from create post", formData);
 
       const response = await fetch("http://localhost:8000/posts/", {
         method: "POST",
         credentials: "include",
         body: postFormData,
       });
+      if (response.status === 401) {
+        console.log("Refresh token before refreshing:", refreshToken);
+        const newAccessToken = await refreshAccessToken(refreshToken);
+        setToken(newAccessToken);
+        const retryResponse = await fetch("http://localhost:8000/posts/", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${newAccessToken}`,
+          },
+          credentials: "include",
+          body: postFormData,
+        });
+        const retryData = await retryResponse.json();
+        res.status(retryResponse.status).json(retryData);
+      }
 
       console.log("Response status:", response.status);
 
@@ -66,9 +98,9 @@ export default function CreatePostDialog({ open, onClose, onPostCreated }) {
 
       const data = await response.json();
       onClose();
-      onPostCreated();
+      onPostCreated(data);
     } catch (error) {
-      console.log("Error: ", error);
+      console.log("Error: ", error.message);
     }
   };
 
@@ -86,9 +118,13 @@ export default function CreatePostDialog({ open, onClose, onPostCreated }) {
               onChange={handleImageChange}
             />
             <label htmlFor="post-image">
-              <Button variant="contained" component="span">
-                Upload Image
-              </Button>
+              <StyledButton
+                variant="contained"
+                component="span"
+                hasImage={!!formData.image}
+              >
+                {formData.image ? "Image Ready!" : "Upload Image"}
+              </StyledButton>
             </label>
             <TextField
               autoFocus

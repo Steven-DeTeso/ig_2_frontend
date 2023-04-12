@@ -35,15 +35,14 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify(formData),
       });
-      
+
       const data = await response.json();
       if (!data.access) {
         throw new Error("Invalid email or password.");
       }
-
       router.push("/feed");
     } catch (error) {
       console.log("Error: ", error);
