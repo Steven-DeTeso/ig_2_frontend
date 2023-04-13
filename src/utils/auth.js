@@ -1,14 +1,32 @@
-export async function refreshAccessToken(refreshToken) {
-  try {
-    // console.log("Request body:", JSON.stringify({ refresh: refreshToken }));
+import Cookies from "js-cookie";
 
+export function getAuthData() {
+  const access = Cookies.get("access");
+  const refresh = Cookies.get("refresh");
+  // const userData = Cookies.get("user_data");
+  console.log(`_auth.js access: ${access}`);
+  console.log(`_auth.js refresh: ${refresh}`);
+
+  if (access && refresh) {
+    console.log("all tokens present - auth.js");
+    return {
+      access,
+      refresh,
+    };
+  } else {
+    return null;
+  }
+}
+
+export async function refreshAccessToken(refresh) {
+  try {
     const response = await fetch("http://localhost:8000/api/token/refresh/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: JSON.stringify({ refresh: refreshToken }),
+      body: JSON.stringify({ refresh: refresh }),
     });
 
     if (!response.ok) {

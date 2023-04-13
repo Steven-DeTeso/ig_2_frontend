@@ -1,17 +1,43 @@
 import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
-export default function logout() {
+const refreshAuthToken = async () => {
+  return await fetch("http://localhost:8000/api/token/refresh/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+};
+
+export default function Logout() {
   const router = useRouter();
+
+  useEffect(() => {
+    handleLogout();
+  }, []);
+
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/logout/", {
+      let response = await fetch("http://localhost:8000/api/logout/", {
         method: "POST",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
+
+      if (response.status === 401) {
+        await refreshAuthToken();
+        response = await fetch("http://localhost:8000/api/logout/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+      }
 
       if (!response.ok) {
         throw new Error("Logout failed.");
@@ -23,10 +49,6 @@ export default function logout() {
       // Display an error message or handle the error in another way
     }
   };
-
-  useEffect(() => {
-    handleLogout();
-  }, []);
 
   return (
     <div>

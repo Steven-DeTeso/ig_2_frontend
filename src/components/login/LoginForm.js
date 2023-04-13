@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
-import AuthContext from "../AuthContext";
+import { AuthContext } from "../AuthContext";
 import styles from "./LoginForm.module.css";
 // style is global css
 import style from "/styles.module.css";
@@ -43,11 +43,11 @@ export default function Login() {
       if (!data.access) {
         throw new Error("Invalid email or password.");
       }
-      router.push("/feed");
     } catch (error) {
       console.log("Error: ", error);
       setErrorMessage(error.message);
     } finally {
+      router.push("/feed");
       setIsLoading(false);
     }
   };

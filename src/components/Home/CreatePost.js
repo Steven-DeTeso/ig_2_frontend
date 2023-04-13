@@ -1,6 +1,4 @@
-import React, { useState, useContext } from "react";
-import AuthContext from "../AuthContext";
-import { refreshAccessToken } from "../../utils/auth";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -27,26 +25,29 @@ function StyledButton({ hasImage, children, ...props }) {
   );
 }
 
-export default function CreatePostDialog({ open, onClose, onPostCreated }) {
-  const { setToken } = useContext(AuthContext);
+const createPost = async (postFormData) => {
+  return await fetch("http://localhost:8000/posts/", {
+    method: "POST",
+    credentials: "include",
+    body: postFormData,
+  });
+};
 
+const refreshAuthToken = async () => {
+  return await fetch("http://localhost:8000/api/token/refresh/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+};
+
+export default function CreatePostDialog({ open, onClose, onPostCreated }) {
   const [formData, setFormData] = useState({
     image: null,
     caption: "",
   });
-
-  function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-      reader.onerror = (error) => {
-        reject(error);
-      };
-      reader.readAsDataURL(file);
-    });
-  }
 
   const setCaption = (event) => {
     const caption = event.target.value;
@@ -65,30 +66,13 @@ export default function CreatePostDialog({ open, onClose, onPostCreated }) {
       const postFormData = new FormData();
       postFormData.append("image", formData.image);
       postFormData.append("caption", formData.caption);
-      console.log("form data from create post", formData);
 
-      const response = await fetch("http://localhost:8000/posts/", {
-        method: "POST",
-        credentials: "include",
-        body: postFormData,
-      });
+      let response = await createPost(postFormData);
+
       if (response.status === 401) {
-        console.log("Refresh token before refreshing:", refreshToken);
-        const newAccessToken = await refreshAccessToken(refreshToken);
-        setToken(newAccessToken);
-        const retryResponse = await fetch("http://localhost:8000/posts/", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${newAccessToken}`,
-          },
-          credentials: "include",
-          body: postFormData,
-        });
-        const retryData = await retryResponse.json();
-        res.status(retryResponse.status).json(retryData);
+        await refreshAuthToken();
+        response = await createPost(postFormData);
       }
-
-      console.log("Response status:", response.status);
 
       if (!response.ok) {
         const errorText = await response.text();
