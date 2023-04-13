@@ -1,13 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { AuthContext } from "../AuthContext";
 import styles from "./LoginForm.module.css";
 // style is global css
 import style from "/styles.module.css";
 import Link from "next/link";
 
 export default function Login() {
-  const { setToken } = useContext(AuthContext);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
