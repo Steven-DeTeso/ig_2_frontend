@@ -60,7 +60,7 @@ export default function Post({ post }) {
 
   async function fetchUserData() {
     try {
-      const response = await fetch(`${API_BASE_URL}/me/`, {
+      const response = await fetch(`${API_BASE_URL}/users/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
