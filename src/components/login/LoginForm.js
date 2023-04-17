@@ -1,13 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import AuthContext from "../AuthContext";
 import styles from "./LoginForm.module.css";
 // style is global css
 import style from "/styles.module.css";
 import Link from "next/link";
 
 export default function Login() {
-  const { setToken } = useContext(AuthContext);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -35,20 +33,19 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify(formData),
       });
-      
+
       const data = await response.json();
       if (!data.access) {
         throw new Error("Invalid email or password.");
       }
-
-      router.push("/feed");
     } catch (error) {
       console.log("Error: ", error);
       setErrorMessage(error.message);
     } finally {
+      router.push("/feed");
       setIsLoading(false);
     }
   };

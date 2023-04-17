@@ -1,0 +1,17 @@
+.postContainer {
+    margin: auto;
+    width: fit-content;
+    aspect-ratio: 1;
+    border: 1px solid black;
+}
+
+.postImage {
+    max-width: 468px;
+    height: auto;
+    object-fit: cover;
+}
+
+.postImageContainer {
+    margin: auto;
+    border-bottom: 1px solid rgb(219,219,219);
+}

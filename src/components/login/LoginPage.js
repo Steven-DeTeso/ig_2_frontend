@@ -1,8 +1,36 @@
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import LoginForm from "./LoginForm";
 import Footer from "./Footer";
 import styles from "./LoginPage.module.css";
 
+const API_BASE_URL = "http://localhost:8000";
+
 const LoginPage = () => {
+  const router = useRouter();
+
+  const verifyToken = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/token/verify/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        router.push("/feed");
+      }
+    } catch (error) {
+      console.log("Error verifying token:", error);
+    }
+  };
+
+  useEffect(() => {
+    verifyToken();
+  }, []);
+
   return (
     <>
       <div className={styles.loginPageContainer}>
@@ -17,12 +45,12 @@ const LoginPage = () => {
             <LoginForm />
           </div>
         </div>
-      <img
-        className={styles.metaLogo}
-        src="/images/meta-logo.png"
-        alt="meta logo"
-      />
-      <Footer />
+        <img
+          className={styles.metaLogo}
+          src="/images/meta-logo.png"
+          alt="meta logo"
+        />
+        <Footer />
       </div>
     </>
   );
