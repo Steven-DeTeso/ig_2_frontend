@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../post/Post.module.css";
-import IconButton from "@mui/material/IconButton";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import LikeButton from "./LikeButton";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -14,10 +12,9 @@ async function likePost(postId, currentUsername) {
         "Content-Type": "application/json",
       },
       credentials: "include",
+      body: JSON.stringify({ username: currentUsername }),
     });
     const data = await response.json();
-    data.username = currentUsername;
-    return data;
   } catch (error) {
     console.error("Error liking post:", error);
   }
@@ -31,28 +28,23 @@ async function unlikePost(postId, currentUsername) {
         "Content-Type": "application/json",
       },
       credentials: "include",
+      body: JSON.stringify({ username: currentUsername }),
     });
     const data = await response.json();
-    data.username = currentUsername;
-    return data;
   } catch (error) {
     console.error("Error unliking post:", error);
   }
 }
 
-export default function Post({ post }) {
+export default function Post({ post, updatePost }) {
   if (!post.images || !post.images[0] || !post.images[0].signed_image_url) {
     return null;
   }
 
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
   const [currentUsername, setCurrentUsername] = useState("");
   const [likedUsers, setLikedUsers] = useState(post.likes);
-
-  useEffect(() => {
-    setIsLiked(post.is_liked_by_user);
-  }, [post]);
 
   useEffect(() => {
     fetchUserData();
@@ -68,7 +60,18 @@ export default function Post({ post }) {
         credentials: "include",
       });
       const data = await response.json();
-      setCurrentUsername(data.username);
+      console.log("data:", data);
+      let currentUserData;
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].is_current) {
+          currentUserData = data[i];
+          break;
+        }
+      }
+      console.log("currentUserData:", currentUserData);
+      if (currentUserData) {
+        setCurrentUsername(currentUserData.username);
+      }
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -76,20 +79,28 @@ export default function Post({ post }) {
 
   const handleLike = async () => {
     if (isLiked) {
-      const result = await unlikePost(post.id, currentUsername);
-      if (result) {
-        setIsLiked(false);
-        setTotalLikes(totalLikes - 1);
-        setLikedUsers(likedUsers.filter((user) => user.id !== result.id));
-      }
+      await unlikePost(post.id, currentUsername);
+      setIsLiked(false);
+      setTotalLikes(totalLikes - 1);
+      setLikedUsers(
+        likedUsers.filter((user) => user.username !== currentUsername)
+      );
     } else {
-      const result = await likePost(post.id, currentUsername);
-      if (result) {
-        setIsLiked(true);
-        setTotalLikes(totalLikes + 1);
-        setLikedUsers([...likedUsers, result]);
+      await likePost(post.id, currentUsername);
+      setIsLiked(true);
+      setTotalLikes(totalLikes + 1);
+      if (!likedUsers.some((user) => user.username === currentUsername)) {
+        setLikedUsers([...likedUsers, { username: currentUsername }]);
       }
     }
+  };
+
+  const likedUsersString = () => {
+    return likedUsers
+      .map((user, index) => {
+        return user.username + (index !== likedUsers.length - 1 ? ", " : "");
+      })
+      .join("");
   };
 
   return (
@@ -102,25 +113,24 @@ export default function Post({ post }) {
           src={post.images[0].signed_image_url}
           alt={post.caption}
         />
+        <br />
+        <LikeButton isLiked={isLiked} handleLike={handleLike} />
+        <div>
+          {totalLikes ? (
+            <>
+              <strong>
+                {totalLikes} like{totalLikes !== 1 && "s"}
+              </strong>{" "}
+              {totalLikes < 8 ? likedUsersString() : null}
+              {totalLikes >= 8 && <span>by </span>}
+            </>
+          ) : (
+            " "
+          )}
+        </div>
         <p>
           {post.author.username}: {post.caption}
         </p>
-        <IconButton onClick={handleLike}>
-          {isLiked ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
-        </IconButton>
-        {totalLikes ? (
-          <p>
-            Likes {totalLikes} by:{" "}
-            {likedUsers.map((user, index) => (
-              <React.Fragment key={user.id}>
-                {user.username}
-                {index !== likedUsers.length - 1 && ", "}
-              </React.Fragment>
-            ))}
-          </p>
-        ) : (
-          " "
-        )}
       </div>
     </>
   );

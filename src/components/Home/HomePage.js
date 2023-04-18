@@ -12,6 +12,13 @@ export default function HomePage({ initialPosts }) {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
   };
 
+  const handleUpdatePost = (updatedPost) => {
+    const newPosts = posts.map((post) =>
+      post.id === updatedPost.id ? updatedPost : post
+    );
+    setPosts(newPosts);
+  };
+
   return (
     <>
       <div className={styles.homePageContainer}>
@@ -23,7 +30,11 @@ export default function HomePage({ initialPosts }) {
               posts.map((post) => {
                 return (
                   <article key={post.id} className={styles.postArticle}>
-                    <Post post={post} />
+                    <Post
+                      key={post.id}
+                      post={post}
+                      updatePost={handleUpdatePost}
+                    />
                   </article>
                 );
               })}
