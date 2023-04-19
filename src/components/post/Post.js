@@ -8,6 +8,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ButtonBase from "@mui/material/ButtonBase";
+import { useRouter } from "next/router";
 import { deletePost } from "../../api";
 
 const API_BASE_URL = "http://localhost:8000";
@@ -36,6 +37,7 @@ export default function Post({ post, updatePost }) {
   if (!post.images || !post.images[0] || !post.images[0].signed_image_url) {
     return null;
   }
+  const router = useRouter();
 
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
@@ -152,10 +154,10 @@ export default function Post({ post, updatePost }) {
                 <ListItem>
                   <ButtonBase
                     onClick={() => {
-                      /* Go to specific post page */
+                      router.push(`/users/${post.author.id}`);
                     }}
                   >
-                    <ListItemText primary="Go to post" />
+                    <ListItemText primary="Go to Profile" />
                   </ButtonBase>
                 </ListItem>
                 <ListItem>
