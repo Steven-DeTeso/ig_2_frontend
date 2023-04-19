@@ -38,6 +38,15 @@ export async function getServerSideProps(context) {
     initialPosts = await response.json();
   }
 
+  if (!initialPosts) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
   // Return the fetched data as props to HomePage component
   return {
     props: { initialPosts },

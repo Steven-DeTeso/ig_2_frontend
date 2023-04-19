@@ -3,6 +3,12 @@ import styles from "../post/Post.module.css";
 import LikeButton from "./LikeButton";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Popover from "@mui/material/Popover";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ButtonBase from "@mui/material/ButtonBase";
+import { deletePost } from "../../api";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -35,6 +41,27 @@ export default function Post({ post, updatePost }) {
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
   const [currentUsername, setCurrentUsername] = useState("");
   const [likedUsers, setLikedUsers] = useState(post.likes);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleDeletePost = async () => {
+    const isDeleted = await deletePost(post.id);
+    if (isDeleted) {
+      handleClose();
+      updatePost({ ...post, isDeleted: true });
+    } else {
+      // Handle the error case
+    }
+  };
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   useEffect(() => {
     fetchUserData();
@@ -104,9 +131,51 @@ export default function Post({ post, updatePost }) {
             <h3>{post.author.username}</h3>
           </div>
           <div className={styles.optionsButton}>
-            <IconButton>
+            <IconButton onClick={handleClick}>
               <MoreHorizIcon />
             </IconButton>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <List component="nav">
+                <ListItem>
+                  <ButtonBase
+                    onClick={() => {
+                      /* Go to specific post page */
+                    }}
+                  >
+                    <ListItemText primary="Go to post" />
+                  </ButtonBase>
+                </ListItem>
+                <ListItem>
+                  <ButtonBase
+                    onClick={() => {
+                      /* Unfollow user */
+                    }}
+                  >
+                    <ListItemText primary="Unfollow user" />
+                  </ButtonBase>
+                </ListItem>
+                {post.author.username === currentUsername && (
+                  <ListItem>
+                    <ButtonBase onClick={handleDeletePost}>
+                      <ListItemText primary="Delete post" />
+                    </ButtonBase>
+                  </ListItem>
+                )}
+              </List>
+            </Popover>
           </div>
         </div>
         <img
