@@ -1,10 +1,8 @@
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
-import AuthContext from "../AuthContext";
 import styles from "./RegisterForm.module.css";
 
 export default function RegisterForm() {
-  const { setToken } = useContext(AuthContext);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -40,12 +38,6 @@ export default function RegisterForm() {
       if (!data) {
         throw new Error("Invalid entry");
       }
-
-      const token = data.access;
-      setToken(token);
-      localStorage.setItem("token", token);
-      console.log(`logging token in regsiter.js ${token}`);
-      console.log(data);
 
       router.push("/feed");
     } catch (error) {
