@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "../post/Post.module.css";
 import LikeButton from "./LikeButton";
+import IconButton from "@mui/material/IconButton";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -96,8 +98,17 @@ export default function Post({ post, updatePost }) {
   return (
     <>
       <div className={styles.postImageContainer}>
-        <p>profile img</p>
-        <h3>{post.author.username}</h3>
+        <div className={styles.topPost}>
+          <div className={styles.profileWrapper}>
+            <p>profile img</p>
+            <h3>{post.author.username}</h3>
+          </div>
+          <div className={styles.optionsButton}>
+            <IconButton>
+              <MoreHorizIcon />
+            </IconButton>
+          </div>
+        </div>
         <img
           className={styles.postImage}
           src={post.images[0].signed_image_url}
