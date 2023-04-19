@@ -13,6 +13,7 @@ export default function HomePage({ initialPosts }) {
   };
 
   const handleUpdatePost = (updatedPost) => {
+    // When called, takes the updated post object and maps over the current list of posts. For each post in the list, it checks if the post ID matches the ID of the updated post. If it does, it replaces the current post object with the updated post object. If it doesn't, it keeps the current post object. Sets the state of the Posts with new array.
     const newPosts = posts.map((post) =>
       post.id === updatedPost.id ? updatedPost : post
     );
