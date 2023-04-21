@@ -9,7 +9,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ButtonBase from "@mui/material/ButtonBase";
 import { useRouter } from "next/router";
-import { deletePost, unfollowUser } from "../../api";
+import { deletePost, followOrUnfollowUser } from "../../api";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -45,6 +45,7 @@ export default function Post({ post, updatePost }) {
   const [currentUserId, setCurrentUserId] = useState(0);
   const [likedUsers, setLikedUsers] = useState(post.likes);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const handleDeletePost = async () => {
     const isDeleted = await deletePost(post.id);
@@ -59,15 +60,25 @@ export default function Post({ post, updatePost }) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleUnfollowUser = async () => {
-    const isUnfollowed = await unfollowUser(
-      post.author.id, //Pass the author's ID here
-      currentUserId //Pass the current user's ID here
-    );
-    if (isUnfollowed) {
-      // Handle the success case, e.g., update the UI, show a notification, etc.
+  const handleFollowOrUnfollowUser = async () => {
+    const authorId = post.author.id;
+
+    if (!isFollowing) {
+      const isFollowed = await followOrUnfollowUser(authorId, "follow");
+      if (isFollowed) {
+        setIsFollowing(true);
+        // Handle the success case, e.g., update the UI, show a notification, etc.
+      } else {
+        // Handle the error case
+      }
     } else {
-      // Handle the error case
+      const isUnfollowed = await followOrUnfollowUser(authorId, "unfollow");
+      if (isUnfollowed) {
+        setIsFollowing(false);
+        // Handle the success case, e.g., update the UI, show a notification, etc.
+      } else {
+        // Handle the error case
+      }
     }
   };
 
@@ -102,6 +113,11 @@ export default function Post({ post, updatePost }) {
       if (currentUserData) {
         setCurrentUsername(currentUserData.username);
         setCurrentUserId(currentUserData.id);
+        setIsFollowing(
+          post.author.followers.some(
+            (follower) => follower.id === currentUserData.id
+          )
+        );
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -174,11 +190,21 @@ export default function Post({ post, updatePost }) {
                     <ListItemText primary="Go to Profile" />
                   </ButtonBase>
                 </ListItem>
-                <ListItem>
-                  <ButtonBase onClick={handleUnfollowUser}>
-                    <ListItemText primary="Unfollow user" />
-                  </ButtonBase>
-                </ListItem>
+
+                {post.author.id !== currentUserId && (
+                  <ListItem>
+                    <ButtonBase onClick={handleFollowOrUnfollowUser}>
+                      <ListItemText
+                        primary={
+                          isFollowing
+                            ? `Unfollow ${post.author.username}`
+                            : `Follow ${post.author.username}`
+                        }
+                      />
+                    </ButtonBase>
+                  </ListItem>
+                )}
+
                 {post.author.username === currentUsername && (
                   <ListItem>
                     <ButtonBase onClick={handleDeletePost}>

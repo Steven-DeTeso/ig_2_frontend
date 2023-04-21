@@ -30,9 +30,10 @@ export async function deletePost(postId) {
   }
 }
 
-export async function unfollowUser(userId) {
+export async function followOrUnfollowUser(userId, action) {
   try {
-    const response = await apiCall(`/followers/${userId}/unfollow/`, {
+    const endpoint = action === "follow" ? "follow" : "unfollow";
+    const response = await apiCall(`/followers/${userId}/${endpoint}/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,11 +44,11 @@ export async function unfollowUser(userId) {
     if (response.ok) {
       return true;
     } else {
-      console.error("Error unfollowing user");
+      console.error(`Error ${action}ing user`);
       return false;
     }
   } catch (error) {
-    console.error("Error unfollowing user:", error);
+    console.error(`Error ${action}ing user:`, error);
     return false;
   }
 }
