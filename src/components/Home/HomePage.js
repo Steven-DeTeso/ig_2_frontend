@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import styles from "./HomePage.module.css";
 import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
@@ -24,6 +24,8 @@ export default function HomePage({ initialPosts }) {
     }
   };
 
+  const MemoizedPostArray = memo(Post);
+
   return (
     <>
       <div className={styles.homePageContainer}>
@@ -35,8 +37,7 @@ export default function HomePage({ initialPosts }) {
               posts.map((post) => {
                 return (
                   <article key={post.id} className={styles.postArticle}>
-                    <Post
-                      key={post.id}
+                    <MemoizedPostArray
                       post={post}
                       updatePost={handleUpdatePost}
                     />

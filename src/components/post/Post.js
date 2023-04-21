@@ -9,7 +9,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ButtonBase from "@mui/material/ButtonBase";
 import { useRouter } from "next/router";
-import { deletePost } from "../../api";
+import { deletePost, unfollowUser } from "../../api";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -42,6 +42,7 @@ export default function Post({ post, updatePost }) {
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
   const [currentUsername, setCurrentUsername] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(0);
   const [likedUsers, setLikedUsers] = useState(post.likes);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -56,6 +57,18 @@ export default function Post({ post, updatePost }) {
   };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleUnfollowUser = async () => {
+    const isUnfollowed = await unfollowUser(
+      post.author.id, //Pass the author's ID here
+      currentUserId //Pass the current user's ID here
+    );
+    if (isUnfollowed) {
+      // Handle the success case, e.g., update the UI, show a notification, etc.
+    } else {
+      // Handle the error case
+    }
   };
 
   const handleClose = () => {
@@ -88,6 +101,7 @@ export default function Post({ post, updatePost }) {
       }
       if (currentUserData) {
         setCurrentUsername(currentUserData.username);
+        setCurrentUserId(currentUserData.id);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -161,11 +175,7 @@ export default function Post({ post, updatePost }) {
                   </ButtonBase>
                 </ListItem>
                 <ListItem>
-                  <ButtonBase
-                    onClick={() => {
-                      /* Unfollow user */
-                    }}
-                  >
+                  <ButtonBase onClick={handleUnfollowUser}>
                     <ListItemText primary="Unfollow user" />
                   </ButtonBase>
                 </ListItem>
