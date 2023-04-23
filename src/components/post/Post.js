@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "../post/Post.module.css";
 import LikeButton from "./LikeButton";
+import Comment from "./Comment";
+import CommentForm from "./CommentForm";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Popover from "@mui/material/Popover";
@@ -46,6 +48,7 @@ export default function Post({ post, updatePost }) {
   const [likedUsers, setLikedUsers] = useState(post.likes);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [comments, setComments] = useState([]);
 
   const handleDeletePost = async () => {
     const isDeleted = await deletePost(post.id);
@@ -80,6 +83,19 @@ export default function Post({ post, updatePost }) {
         // Handle the error case
       }
     }
+  };
+
+  const handleCommentSubmit = async (postId, commentText) => {
+    const response = await fetch(`${API_BASE_URL}/${postId}/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text: commentText,
+        // Add other required fields, like user information, if necessary
+      }),
+    });
   };
 
   const handleClose = () => {
@@ -118,6 +134,7 @@ export default function Post({ post, updatePost }) {
             (follower) => follower.id === currentUserData.id
           )
         );
+        setComments(post.comments);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -239,6 +256,16 @@ export default function Post({ post, updatePost }) {
         <p>
           {post.author.username}: {post.caption}
         </p>
+        <div>
+          {comments.map((comment) => (
+            <Comment
+              key={comment.id}
+              username={comment.author.username}
+              commentText={comment.text}
+            />
+          ))}
+          <CommentForm postId={post.id} onCommentSubmit={handleCommentSubmit} />
+        </div>
       </div>
     </>
   );
