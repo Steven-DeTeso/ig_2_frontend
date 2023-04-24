@@ -1,5 +1,15 @@
 const API_BASE_URL = "http://localhost:8000";
 
+export const refreshAuthToken = async () => {
+  return await fetch(`${API_BASE_URL}/api/token/refresh/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+};
+
 async function apiCall(endpoint, options = {}) {
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, options);

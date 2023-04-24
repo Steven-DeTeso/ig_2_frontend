@@ -1,9 +1,5 @@
-// components/CommentForm.js
-
 import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import { refreshAuthToken } from "../../api";
 
 const CommentForm = ({ postId, onCommentSubmit }) => {
   const [commentText, setCommentText] = useState("");
@@ -12,8 +8,12 @@ const CommentForm = ({ postId, onCommentSubmit }) => {
     event.preventDefault();
 
     // Call the onCommentSubmit function to handle the form submission
-    await onCommentSubmit(postId, commentText);
-
+    const response = await onCommentSubmit(postId, commentText);
+    console.log(response);
+    if (!response || response.status !== "success") {
+      await refreshAuthToken();
+      const newResponse = await onCommentSubmit(postId, commentText);
+    }
     // Clear the input field after submitting the comment
     setCommentText("");
   };
@@ -21,7 +21,7 @@ const CommentForm = ({ postId, onCommentSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="new-comment"></label>
-      <textarea
+      <input
         id="new-comment"
         rows={1}
         placeholder="Add a comment..."

@@ -59,7 +59,7 @@ export default function Post({ post, updatePost }) {
       // Handle the error case
     }
   };
-  const handleClick = (event) => {
+  const handleOptionsClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -86,16 +86,27 @@ export default function Post({ post, updatePost }) {
   };
 
   const handleCommentSubmit = async (postId, commentText) => {
-    const response = await fetch(`${API_BASE_URL}/${postId}/comments`, {
+    const response = await fetch(`${API_BASE_URL}/comments/${postId}/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         text: commentText,
-        // Add other required fields, like user information, if necessary
+        post: postId,
+        author: currentUserId,
       }),
     });
+
+    if (response.ok) {
+      const newComment = await response.json();
+      setComments((prevComments) => [...prevComments, newComment]);
+      return { status: "success" };
+    } else {
+      // Handle error, display a message or update error state
+      return response;
+    }
   };
 
   const handleClose = () => {
@@ -180,7 +191,7 @@ export default function Post({ post, updatePost }) {
             <h3>{post.author.username}</h3>
           </div>
           <div className={styles.optionsButton}>
-            <IconButton onClick={handleClick}>
+            <IconButton onClick={handleOptionsClick}>
               <MoreHorizIcon />
             </IconButton>
             <Popover
