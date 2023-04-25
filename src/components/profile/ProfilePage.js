@@ -1,12 +1,16 @@
 // components/ProfilePage.js
 import React, { useState, useEffect } from "react";
 import Post from "../post/Post";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const API_BASE_URL = "http://localhost:8000";
 
 const ProfilePage = ({ userId }) => {
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (userId) {
@@ -57,6 +61,11 @@ const ProfilePage = ({ userId }) => {
   return (
     <div>
       <h1>{userData.username}'s Profile</h1>
+      <h2>
+        <Link href={{ pathname: "/editprofile", query: { userId } }}>
+          Edit Profile
+        </Link>
+      </h2>
       <div>
         {userPosts.map((post) => (
           <article key={post.id}>

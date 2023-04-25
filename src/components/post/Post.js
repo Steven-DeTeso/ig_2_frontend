@@ -187,7 +187,7 @@ export default function Post({ post, updatePost }) {
       <div className={styles.postImageContainer}>
         <div className={styles.topPost}>
           <div className={styles.profileWrapper}>
-            <p>profile img</p>
+            <img src={post.author.profile_picture} />
             <h3>{post.author.username}</h3>
           </div>
           <div className={styles.optionsButton}>
