@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
 import styles from "../post/Post.module.css";
 import LikeButton from "./LikeButton";
+import Comment from "./Comment";
+import CommentForm from "./CommentForm";
+import IconButton from "@mui/material/IconButton";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Popover from "@mui/material/Popover";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ButtonBase from "@mui/material/ButtonBase";
+import { useRouter } from "next/router";
+import { deletePost, followOrUnfollowUser } from "../../api";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -28,11 +39,82 @@ export default function Post({ post, updatePost }) {
   if (!post.images || !post.images[0] || !post.images[0].signed_image_url) {
     return null;
   }
+  const router = useRouter();
 
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
   const [currentUsername, setCurrentUsername] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(0);
   const [likedUsers, setLikedUsers] = useState(post.likes);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [comments, setComments] = useState([]);
+
+  const handleDeletePost = async () => {
+    const isDeleted = await deletePost(post.id);
+    if (isDeleted) {
+      handleClose();
+      updatePost({ ...post, isDeleted: true });
+    } else {
+      // Handle the error case
+    }
+  };
+  const handleOptionsClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleFollowOrUnfollowUser = async () => {
+    const authorId = post.author.id;
+
+    if (!isFollowing) {
+      const isFollowed = await followOrUnfollowUser(authorId, "follow");
+      if (isFollowed) {
+        setIsFollowing(true);
+        // Handle the success case, e.g., update the UI, show a notification, etc.
+      } else {
+        // Handle the error case
+      }
+    } else {
+      const isUnfollowed = await followOrUnfollowUser(authorId, "unfollow");
+      if (isUnfollowed) {
+        setIsFollowing(false);
+        // Handle the success case, e.g., update the UI, show a notification, etc.
+      } else {
+        // Handle the error case
+      }
+    }
+  };
+
+  const handleCommentSubmit = async (postId, commentText) => {
+    const response = await fetch(`${API_BASE_URL}/comments/${postId}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        text: commentText,
+        post: postId,
+        author: currentUserId,
+      }),
+    });
+
+    if (response.ok) {
+      const newComment = await response.json();
+      setComments((prevComments) => [...prevComments, newComment]);
+      return { status: "success" };
+    } else {
+      // Handle error, display a message or update error state
+      return response;
+    }
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   useEffect(() => {
     fetchUserData();
@@ -57,6 +139,13 @@ export default function Post({ post, updatePost }) {
       }
       if (currentUserData) {
         setCurrentUsername(currentUserData.username);
+        setCurrentUserId(currentUserData.id);
+        setIsFollowing(
+          post.author.followers.some(
+            (follower) => follower.id === currentUserData.id
+          )
+        );
+        setComments(post.comments);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -96,8 +185,65 @@ export default function Post({ post, updatePost }) {
   return (
     <>
       <div className={styles.postImageContainer}>
-        <p>profile img</p>
-        <h3>{post.author.username}</h3>
+        <div className={styles.topPost}>
+          <div className={styles.profileWrapper}>
+            <img src={post.author.profile_picture} />
+            <h3>{post.author.username}</h3>
+          </div>
+          <div className={styles.optionsButton}>
+            <IconButton onClick={handleOptionsClick}>
+              <MoreHorizIcon />
+            </IconButton>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <List component="nav">
+                <ListItem>
+                  <ButtonBase
+                    onClick={() => {
+                      router.push(`/users/${post.author.id}`);
+                    }}
+                  >
+                    <ListItemText primary="Go to Profile" />
+                  </ButtonBase>
+                </ListItem>
+
+                {post.author.id !== currentUserId && (
+                  <ListItem>
+                    <ButtonBase onClick={handleFollowOrUnfollowUser}>
+                      <ListItemText
+                        primary={
+                          isFollowing
+                            ? `Unfollow ${post.author.username}`
+                            : `Follow ${post.author.username}`
+                        }
+                      />
+                    </ButtonBase>
+                  </ListItem>
+                )}
+
+                {post.author.username === currentUsername && (
+                  <ListItem>
+                    <ButtonBase onClick={handleDeletePost}>
+                      <ListItemText primary="Delete post" />
+                    </ButtonBase>
+                  </ListItem>
+                )}
+              </List>
+            </Popover>
+          </div>
+        </div>
         <img
           className={styles.postImage}
           src={post.images[0].signed_image_url}
@@ -121,6 +267,16 @@ export default function Post({ post, updatePost }) {
         <p>
           {post.author.username}: {post.caption}
         </p>
+        <div>
+          {comments.map((comment) => (
+            <Comment
+              key={comment.id}
+              username={comment.author.username}
+              commentText={comment.text}
+            />
+          ))}
+          <CommentForm postId={post.id} onCommentSubmit={handleCommentSubmit} />
+        </div>
       </div>
     </>
   );

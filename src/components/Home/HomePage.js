@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import styles from "./HomePage.module.css";
 import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
@@ -13,12 +13,18 @@ export default function HomePage({ initialPosts }) {
   };
 
   const handleUpdatePost = (updatedPost) => {
-    // When called, takes the updated post object and maps over the current list of posts. For each post in the list, it checks if the post ID matches the ID of the updated post. If it does, it replaces the current post object with the updated post object. If it doesn't, it keeps the current post object. Sets the state of the Posts with new array.
-    const newPosts = posts.map((post) =>
-      post.id === updatedPost.id ? updatedPost : post
-    );
-    setPosts(newPosts);
+    if (updatedPost.isDeleted) {
+      setPosts(posts.filter((post) => post.id !== updatedPost.id));
+    } else {
+      // When called, takes the updated post object and maps over the current list of posts. For each post in the list, it checks if the post ID matches the ID of the updated post. If it does, it replaces the current post object with the updated post object. If it doesn't, it keeps the current post object. Sets the state of the Posts with new array.
+      const newPosts = posts.map((post) =>
+        post.id === updatedPost.id ? updatedPost : post
+      );
+      setPosts(newPosts);
+    }
   };
+
+  const MemoizedPostArray = memo(Post);
 
   return (
     <>
@@ -31,8 +37,7 @@ export default function HomePage({ initialPosts }) {
               posts.map((post) => {
                 return (
                   <article key={post.id} className={styles.postArticle}>
-                    <Post
-                      key={post.id}
+                    <MemoizedPostArray
                       post={post}
                       updatePost={handleUpdatePost}
                     />

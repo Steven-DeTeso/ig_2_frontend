@@ -15,3 +15,12 @@
     margin: auto;
     border-bottom: 1px solid rgb(219,219,219);
 }
+
+.topPost {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.optionsButton {
+    justify-self: flex-end;
+}
