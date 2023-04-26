@@ -12,6 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ButtonBase from "@mui/material/ButtonBase";
 import { useRouter } from "next/router";
 import { deletePost, followOrUnfollowUser } from "../../api";
+import { width } from "@mui/system";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -187,7 +188,10 @@ export default function Post({ post, updatePost }) {
       <div className={styles.postImageContainer}>
         <div className={styles.topPost}>
           <div className={styles.profileWrapper}>
-            <img src={post.author.profile_picture} />
+            <img
+              src={post.author.profile_pic.signed_image_url}
+              style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+            />
             <h3>{post.author.username}</h3>
           </div>
           <div className={styles.optionsButton}>

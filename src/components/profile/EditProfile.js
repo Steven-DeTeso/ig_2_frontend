@@ -1,19 +1,21 @@
 import React, { useState } from "react";
+import { Input } from "@mui/material";
 
 const EditProfile = ({ userData }) => {
   const API_BASE_URL = "http://localhost:8000";
 
   const [formData, setFormData] = useState({
+    user: userData.id,
     first_name: userData.first_name,
     last_name: userData.last_name,
     username: userData.username,
     email: userData.email,
-    profile_picture: userData.profile_picture,
+    image: userData.profile_pic,
   });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    if (name === "profile_picture") {
+    if (name === "image") {
       setFormData({ ...formData, [name]: event.target.files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -22,19 +24,26 @@ const EditProfile = ({ userData }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    console.log(formData);
     const form = new FormData();
     for (const key in formData) {
-      form.append(key, formData[key]);
+      if (formData[key] !== null) {
+        form.append(key, formData[key]);
+      }
+    }
+    for (const [key, value] of form.entries()) {
+      console.log(`${key}:`, value);
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/users/${userData.id}/`, {
-        method: "PATCH",
-        headers: {},
-        credentials: "include",
-        body: form,
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/users/${userData.id}/update_profile_picture/`,
+        {
+          method: "PATCH",
+          credentials: "include",
+          body: form,
+        }
+      );
 
       const data = await response.json();
 
@@ -89,12 +98,12 @@ const EditProfile = ({ userData }) => {
           onChange={handleChange}
         />
 
-        <label htmlFor="profile_picture">Profile Picture</label>
-        <input
+        <Input
           type="file"
-          name="profile_picture"
-          onChange={handleChange}
+          name="image"
           accept="image/*"
+          // style={{ display: "none" }}
+          onChange={handleChange}
         />
 
         <button type="submit">Save Changes</button>
