@@ -55,6 +55,18 @@ const ProfilePage = ({ userId }) => {
     }
   }
 
+  const handleUpdatePost = (updatedPost) => {
+    if (updatedPost.isDeleted) {
+      setUserPosts(userPosts.filter((post) => post.id !== updatedPost.id));
+    } else {
+      // When called, takes the updated post object and maps over the current list of posts. For each post in the list, it checks if the post ID matches the ID of the updated post. If it does, it replaces the current post object with the updated post object. If it doesn't, it keeps the current post object. Sets the state of the Posts with new array.
+      const newPosts = userPosts.map((post) =>
+        post.id === updatedPost.id ? updatedPost : post
+      );
+      setUserPosts(newPosts);
+    }
+  };
+
   if (!userData) {
     return <div>Loading...</div>;
   }
@@ -62,15 +74,19 @@ const ProfilePage = ({ userId }) => {
   return (
     <div>
       <h1>{userData.username}'s Profile</h1>
-      <h2>
-        <Link href={{ pathname: "/editprofile", query: { userId } }}>
-          Edit Profile
-        </Link>
-      </h2>
+      {userData.is_current ? (
+        <h2>
+          <Link href={{ pathname: "/editprofile", query: { userId } }}>
+            Edit Profile
+          </Link>
+        </h2>
+      ) : (
+        ""
+      )}
       <div>
         {userPosts.map((post) => (
           <article key={post.id}>
-            <Post key={post.id} post={post} />
+            <Post key={post.id} post={post} updatePost={handleUpdatePost} />
           </article>
         ))}
       </div>
