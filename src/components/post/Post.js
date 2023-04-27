@@ -188,10 +188,15 @@ export default function Post({ post, updatePost }) {
       <div className={styles.postImageContainer}>
         <div className={styles.topPost}>
           <div className={styles.profileWrapper}>
-            <img
-              src={post.author.profile_pic.signed_image_url}
-              style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            />
+            {post.author.profile_pic !== null ? (
+              <img
+                src={post.author.profile_pic.signed_image_url}
+                style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+              />
+            ) : (
+              <p>upload a profile image</p>
+            )}
+
             <h3>{post.author.username}</h3>
           </div>
           <div className={styles.optionsButton}>

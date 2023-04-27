@@ -34,6 +34,7 @@ const ProfilePage = ({ userId }) => {
       console.error("Error fetching user data:", error);
     }
   }
+  console.log(userData);
 
   async function fetchUserPosts() {
     try {
