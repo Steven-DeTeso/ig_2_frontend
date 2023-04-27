@@ -3,16 +3,9 @@ import styles from "../post/Post.module.css";
 import LikeButton from "./LikeButton";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
-import IconButton from "@mui/material/IconButton";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import Popover from "@mui/material/Popover";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ButtonBase from "@mui/material/ButtonBase";
-import { useRouter } from "next/router";
-import { deletePost, followOrUnfollowUser } from "../../api";
-import { width } from "@mui/system";
+import PostHeader from "./PostHeader";
+import LikesInfo from "./LikesInfo";
+import useFetch from "../../hooks/useFetch";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -37,54 +30,27 @@ async function toggleLike(postId, currentUsername, like = true) {
 }
 
 export default function Post({ post, updatePost }) {
-  if (!post.images || !post.images[0] || !post.images[0].signed_image_url) {
+  if (!post.images || !post.images[0].signed_image_url) {
     return null;
   }
-  const router = useRouter();
-
+  const [currentUserId, setCurrentUserId] = useState(0);
+  const [currentUsername, setCurrentUsername] = useState("");
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
-  const [currentUsername, setCurrentUsername] = useState("");
-  const [currentUserId, setCurrentUserId] = useState(0);
   const [likedUsers, setLikedUsers] = useState(post.likes);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [comments, setComments] = useState([]);
 
-  const handleDeletePost = async () => {
-    const isDeleted = await deletePost(post.id);
-    if (isDeleted) {
-      handleClose();
-      updatePost({ ...post, isDeleted: true });
-    } else {
-      // Handle the error case
+  const [comments, setComments] = useState(post.comments || []);
+
+  const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
+  const loggedInUser = userData?.find((user) => user.is_current);
+  const loggedInUserID = loggedInUser?.id;
+
+  useEffect(() => {
+    if (loggedInUser) {
+      setCurrentUserId(loggedInUser.id);
+      setCurrentUsername(loggedInUser.username);
     }
-  };
-  const handleOptionsClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleFollowOrUnfollowUser = async () => {
-    const authorId = post.author.id;
-
-    if (!isFollowing) {
-      const isFollowed = await followOrUnfollowUser(authorId, "follow");
-      if (isFollowed) {
-        setIsFollowing(true);
-        // Handle the success case, e.g., update the UI, show a notification, etc.
-      } else {
-        // Handle the error case
-      }
-    } else {
-      const isUnfollowed = await followOrUnfollowUser(authorId, "unfollow");
-      if (isUnfollowed) {
-        setIsFollowing(false);
-        // Handle the success case, e.g., update the UI, show a notification, etc.
-      } else {
-        // Handle the error case
-      }
-    }
-  };
+  }, [loggedInUserID]);
 
   const handleCommentSubmit = async (postId, commentText) => {
     const response = await fetch(`${API_BASE_URL}/comments/${postId}/`, {
@@ -110,49 +76,6 @@ export default function Post({ post, updatePost }) {
     }
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  async function fetchUserData() {
-    try {
-      const response = await fetch(`${API_BASE_URL}/users/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const data = await response.json();
-      let currentUserData;
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].is_current) {
-          currentUserData = data[i];
-          break;
-        }
-      }
-      if (currentUserData) {
-        setCurrentUsername(currentUserData.username);
-        setCurrentUserId(currentUserData.id);
-        setIsFollowing(
-          post.author.followers.some(
-            (follower) => follower.id === currentUserData.id
-          )
-        );
-        setComments(post.comments);
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  }
-
   const handleLike = async () => {
     let updatedPost = { ...post };
     if (isLiked) {
@@ -176,83 +99,14 @@ export default function Post({ post, updatePost }) {
     setLikedUsers(updatedPost.likes);
   };
 
-  const likedUsersString = () => {
-    return likedUsers.reduce((accumulator, user, index) => {
-      const separator = index !== likedUsers.length - 1 ? ", " : "";
-      return accumulator + user.username + separator;
-    }, "");
-  };
-
   return (
     <>
       <div className={styles.postImageContainer}>
-        <div className={styles.topPost}>
-          <div className={styles.profileWrapper}>
-            {post.author.profile_pic !== null ? (
-              <img
-                src={post.author.profile_pic.signed_image_url}
-                style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-              />
-            ) : (
-              <p>upload a profile image</p>
-            )}
-
-            <h3>{post.author.username}</h3>
-          </div>
-          <div className={styles.optionsButton}>
-            <IconButton onClick={handleOptionsClick}>
-              <MoreHorizIcon />
-            </IconButton>
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-            >
-              <List component="nav">
-                <ListItem>
-                  <ButtonBase
-                    onClick={() => {
-                      router.push(`/users/${post.author.id}`);
-                    }}
-                  >
-                    <ListItemText primary="Go to Profile" />
-                  </ButtonBase>
-                </ListItem>
-
-                {post.author.id !== currentUserId && (
-                  <ListItem>
-                    <ButtonBase onClick={handleFollowOrUnfollowUser}>
-                      <ListItemText
-                        primary={
-                          isFollowing
-                            ? `Unfollow ${post.author.username}`
-                            : `Follow ${post.author.username}`
-                        }
-                      />
-                    </ButtonBase>
-                  </ListItem>
-                )}
-
-                {post.author.username === currentUsername && (
-                  <ListItem>
-                    <ButtonBase onClick={handleDeletePost}>
-                      <ListItemText primary="Delete post" />
-                    </ButtonBase>
-                  </ListItem>
-                )}
-              </List>
-            </Popover>
-          </div>
-        </div>
+        <PostHeader
+          post={post}
+          currentUserId={currentUserId}
+          updatePost={updatePost}
+        />
         <img
           className={styles.postImage}
           src={post.images[0].signed_image_url}
@@ -260,19 +114,7 @@ export default function Post({ post, updatePost }) {
         />
         <br />
         <LikeButton isLiked={isLiked} handleLike={handleLike} />
-        <div>
-          {totalLikes ? (
-            <>
-              <strong>
-                {totalLikes} like{totalLikes !== 1 && "s"}
-              </strong>{" "}
-              {totalLikes >= 2 && <span>by </span>}
-              {totalLikes < 8 ? likedUsersString() : null}
-            </>
-          ) : (
-            " "
-          )}
-        </div>
+        <LikesInfo totalLikes={totalLikes} likedUsers={likedUsers} />
         <p>
           {post.author.username}: {post.caption}
         </p>
