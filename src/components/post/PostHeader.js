@@ -14,13 +14,17 @@ import { deletePost, followOrUnfollowUser } from "../../api";
 export default function PostHeader({ post, currentUserId, updatePost }) {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowing, setIsFollowing] = useState();
   const [currentUsername, setCurrentUsername] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
     setImageUrl(post.author.profile_pic.signed_image_url);
-  }, [post]);
+    // extract follower id numbers and store in new array under followerIds
+    const followerIds = post.author.followers.map((follower) => follower.id);
+    // checking to see if currentUserid is in new array, if so, isFollowing set to true
+    setIsFollowing(followerIds.includes(currentUserId));
+  }, [post, currentUserId]);
 
   const handleOptionsClick = (event) => {
     setAnchorEl(event.currentTarget);
