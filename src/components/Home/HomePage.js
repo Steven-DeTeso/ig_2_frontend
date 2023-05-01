@@ -5,6 +5,7 @@ import RightSidebar from "./RightSidebar";
 import Stories from "./Stories";
 import Post from "../post/Post";
 import useFetch from "../../hooks/useFetch";
+import SuggestedProfile from "../profile/SuggestedProfile";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -13,6 +14,7 @@ export default function HomePage({ initialPosts }) {
   const [currentUserProfilePicture, setCurrentUserProfilePicture] =
     useState("");
   const [currentUsername, setCurrentUsername] = useState("");
+  const [suggestedProfiles, setSuggestedProfiles] = useState([]);
 
   const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
   const loggedInUser = userData?.find((user) => user.is_current);
@@ -24,6 +26,21 @@ export default function HomePage({ initialPosts }) {
       setCurrentUsername(loggedInUser.username);
     }
   }, [loggedInUser]);
+
+  useEffect(() => {
+    if (userData) {
+      const profiles = userData
+        .filter((user) => !user.is_current) // Exclude the current user
+        .map((user) => (
+          <SuggestedProfile
+            key={user.id}
+            profilePicture={user.profile_pic.signed_image_url}
+            username={user.username}
+          />
+        ));
+      setSuggestedProfiles(profiles);
+    }
+  }, [userData]);
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
@@ -46,10 +63,13 @@ export default function HomePage({ initialPosts }) {
   return (
     <>
       <div className={styles.homePageContainer}>
-        <LeftSidebar onPostCreated={handlePostCreated} />
+        <LeftSidebar
+          onPostCreated={handlePostCreated}
+          loggedInUser={loggedInUser}
+        />
         <section className={styles.mainContainer}>
           <main className={styles.middleMain}>
-            <Stories />
+            <Stories suggestedProfiles={suggestedProfiles} />
             {posts &&
               posts.map((post) => {
                 return (
@@ -65,6 +85,7 @@ export default function HomePage({ initialPosts }) {
           <RightSidebar
             currentUsername={currentUsername}
             loggedInUserProfilePic={loggedInUserProfilePic}
+            suggestedProfiles={suggestedProfiles}
           />
         </section>
       </div>

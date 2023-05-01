@@ -3,10 +3,12 @@ import styles from "./RightSidebar.module.css";
 import Link from "next/link";
 import Footer from "../login/Footer";
 import ProfileImage from "../post/ProfileImage";
+import SuggestedProfile from "../profile/SuggestedProfile";
 
 export default function RightSidebar({
   currentUsername,
   loggedInUserProfilePic,
+  suggestedProfiles,
 }) {
   return (
     <div className={styles.rightContainer}>
@@ -19,13 +21,7 @@ export default function RightSidebar({
         <div>
           <p>suggestions for you</p>
         </div>
-        <div>
-          <p>component suggestios</p>
-          <p>component suggestios</p>
-          <p>component suggestios</p>
-          <p>component suggestios</p>
-          <p>component suggestios</p>
-        </div>
+        <div>{suggestedProfiles}</div>
       </div>
       <div className={styles.rightSidebarFooter}>
         <Footer />

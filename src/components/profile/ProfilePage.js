@@ -3,9 +3,10 @@ import React, { useState, useEffect } from "react";
 import PostPhoto from "../post/PostPhoto";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import LeftSideBar from "../Home/LeftSidebar";
+import LeftSidebar from "../Home/LeftSidebar";
 import styles from "./ProfilePage.module.css";
 import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
+import useFetch from "../../hooks/useFetch";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -76,7 +77,8 @@ const ProfilePage = ({ userId }) => {
 
   return (
     <div className={styles.pageWrapper}>
-      <LeftSideBar />
+      <LeftSidebar />
+      {/* need to pass in props for /profile link to work */}
       <div className={styles.mainSection}>
         <header className={styles.headerSection}>
           <div className={styles.profilePictureContainer}>
