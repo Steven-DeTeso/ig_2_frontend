@@ -1,8 +1,11 @@
 // components/ProfilePage.js
 import React, { useState, useEffect } from "react";
-import Post from "../post/Post";
+import PostPhoto from "../post/PostPhoto";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import LeftSideBar from "../Home/LeftSidebar";
+import styles from "./ProfilePage.module.css";
+import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -72,23 +75,55 @@ const ProfilePage = ({ userId }) => {
   }
 
   return (
-    <div>
-      <h1>{userData.username}'s Profile</h1>
-      {userData.is_current ? (
-        <h2>
-          <Link href={{ pathname: "/editprofile", query: { userId } }}>
-            Edit Profile
-          </Link>
-        </h2>
-      ) : (
-        ""
-      )}
-      <div>
-        {userPosts.map((post) => (
-          <article key={post.id}>
-            <Post key={post.id} post={post} updatePost={handleUpdatePost} />
-          </article>
-        ))}
+    <div className={styles.pageWrapper}>
+      <LeftSideBar />
+      <div className={styles.mainSection}>
+        <header className={styles.headerSection}>
+          <div className={styles.profilePictureContainer}>
+            <img
+              className={styles.profilePicture}
+              src={userData.profile_pic.signed_image_url}
+            />
+          </div>
+          <div className={styles.profileInfoContainer}>
+            <div className={styles.profileInfoTop}>
+              <h2>{userData.username}</h2>
+              {userData.is_current ? (
+                <button>
+                  <Link href={{ pathname: "/editprofile", query: { userId } }}>
+                    Edit Profile
+                  </Link>
+                </button>
+              ) : (
+                ""
+              )}
+              <SettingsTwoToneIcon />
+            </div>
+            <div className={styles.profileInfoMiddle}>
+              <p>{userPosts.length}posts</p>
+              <p>{userData.followers.length}followers</p>
+              <p>following</p>
+            </div>
+            <div className={styles.profileInfoBottom}>
+              <p>
+                {userData.first_name} {userData.last_name}
+              </p>
+              <p>Bio text placeholder</p>
+            </div>
+          </div>
+        </header>
+        <div className={styles.photoDisplay}>
+          {userPosts.map((post) => (
+            <article key={post.id}>
+              <PostPhoto
+                id={styles.postId}
+                key={post.id}
+                post={post}
+                updatePost={handleUpdatePost}
+              />
+            </article>
+          ))}
+        </div>
       </div>
     </div>
   );

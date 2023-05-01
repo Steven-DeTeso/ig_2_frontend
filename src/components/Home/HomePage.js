@@ -1,12 +1,29 @@
-import React, { useState, memo } from "react";
+import React, { useState, useEffect, memo } from "react";
 import styles from "./HomePage.module.css";
 import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
 import Stories from "./Stories";
 import Post from "../post/Post";
+import useFetch from "../../hooks/useFetch";
+
+const API_BASE_URL = "http://localhost:8000";
 
 export default function HomePage({ initialPosts }) {
   const [posts, setPosts] = useState(initialPosts || []);
+  const [currentUserProfilePicture, setCurrentUserProfilePicture] =
+    useState("");
+  const [currentUsername, setCurrentUsername] = useState("");
+
+  const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
+  const loggedInUser = userData?.find((user) => user.is_current);
+  const loggedInUserProfilePic = currentUserProfilePicture;
+
+  useEffect(() => {
+    if (loggedInUser) {
+      setCurrentUserProfilePicture(loggedInUser.profile_pic.signed_image_url);
+      setCurrentUsername(loggedInUser.username);
+    }
+  }, [loggedInUser]);
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
@@ -45,7 +62,10 @@ export default function HomePage({ initialPosts }) {
                 );
               })}
           </main>
-          <RightSidebar />
+          <RightSidebar
+            currentUsername={currentUsername}
+            loggedInUserProfilePic={loggedInUserProfilePic}
+          />
         </section>
       </div>
     </>

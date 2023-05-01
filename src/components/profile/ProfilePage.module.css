@@ -1,0 +1,61 @@
+.pageWrapper {
+    display: flex;
+}
+
+.mainSection {
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.profilePicture {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+}
+
+.profilePictureContainer {
+    width: 291px;
+    display: flex;
+    justify-content: center;
+    margin-right: 30px;
+}
+
+.headerSection {
+    display: flex;
+    width: 935px;
+    margin-bottom: 44px;
+}
+
+.profileInfoContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.profileInfoTop {
+    display: flex;
+}
+
+.profileInfoMiddle {
+    display: flex;
+}
+
+.profileInfoMiddle > p {
+    margin: 0 10px;
+}
+
+.photoDisplay {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 1000px;
+}
+
+#postId > img {
+    object-fit: fill;
+}
+
+.photoDisplay > article {
+    padding: 2.5px;
+}
+
+

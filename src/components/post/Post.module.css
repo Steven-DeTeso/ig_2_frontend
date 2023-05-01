@@ -11,6 +11,12 @@
     object-fit: cover;
 }
 
+.postImgSmall {
+    max-width: 309px;
+    height: auto;
+    object-fit: fill;
+}
+
 .postImageContainer {
     margin: auto;
     border-bottom: 1px solid rgb(219,219,219);
