@@ -1,20 +1,35 @@
 // components/ProfilePage.js
 import React, { useState, useEffect } from "react";
 import PostPhoto from "../post/PostPhoto";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import LeftSidebar from "../Home/LeftSidebar";
 import styles from "./ProfilePage.module.css";
 import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
-import useFetch from "../../hooks/useFetch";
+import UserListDialog from "./UserListDialog";
 
 const API_BASE_URL = "http://localhost:8000";
 
 const ProfilePage = ({ userId }) => {
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
+  const [followingDialogOpen, setFollowingDialogOpen] = useState(false);
+  const [followersDialogOpen, setFollowersDialogOpen] = useState(false);
 
-  const router = useRouter();
+  const handleFollowingDialogOpen = () => {
+    setFollowingDialogOpen(true);
+  };
+
+  const handleFollowingDialogClose = () => {
+    setFollowingDialogOpen(false);
+  };
+
+  const handleFollowersDialogOpen = () => {
+    setFollowersDialogOpen(true);
+  };
+
+  const handleFollowersDialogClose = () => {
+    setFollowersDialogOpen(false);
+  };
 
   useEffect(() => {
     if (userId) {
@@ -80,6 +95,7 @@ const ProfilePage = ({ userId }) => {
       <LeftSidebar />
       {/* need to pass in props for /profile link to work */}
       <div className={styles.mainSection}>
+        {/* Modal pop up for following */}
         <header className={styles.headerSection}>
           <div className={styles.profilePictureContainer}>
             <img
@@ -103,8 +119,24 @@ const ProfilePage = ({ userId }) => {
             </div>
             <div className={styles.profileInfoMiddle}>
               <p>{userPosts.length}posts</p>
-              <p>{userData.followers.length}followers</p>
-              <p>following</p>
+              <p onClick={handleFollowingDialogOpen}>
+                {userData.following.length} following
+              </p>
+              <p onClick={handleFollowersDialogOpen}>
+                {userData.followers.length} followers
+              </p>
+              <UserListDialog
+                open={followingDialogOpen}
+                handleClose={handleFollowingDialogClose}
+                userList={userData.following}
+                title="Following"
+              />
+              <UserListDialog
+                open={followersDialogOpen}
+                handleClose={handleFollowersDialogClose}
+                userList={userData.followers}
+                title="Followers"
+              />
             </div>
             <div className={styles.profileInfoBottom}>
               <p>

@@ -1,0 +1,9 @@
+.profileLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image, .username {
+    margin: 5px;
+}
