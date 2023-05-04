@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./RegisterForm.module.css";
+import Link from "next/link";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -53,28 +54,13 @@ export default function RegisterForm() {
       {errorMessage && <p>{errorMessage}</p>}
       <form onSubmit={handleSubmit} className={styles.registerForm}>
         <input
-          id="username"
-          name="username"
-          type="text"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleInputChange}
-        />
-        <input
           id="email"
           name="email"
           type="email"
           placeholder="Email"
           value={formData.email}
           onChange={handleInputChange}
-        />
-        <input
-          id="password"
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleInputChange}
+          className={styles.RegisterInput}
         />
         <input
           id="firstName"
@@ -83,6 +69,7 @@ export default function RegisterForm() {
           placeholder="First Name"
           value={formData.first_name}
           onChange={handleInputChange}
+          className={styles.RegisterInput}
         />
         <input
           id="lastName"
@@ -91,9 +78,39 @@ export default function RegisterForm() {
           placeholder="Last Name"
           value={formData.last_name}
           onChange={handleInputChange}
+          className={styles.RegisterInput}
         />
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Loading..." : "Register"}
+        <input
+          id="username"
+          name="username"
+          type="text"
+          placeholder="Username"
+          value={formData.username}
+          onChange={handleInputChange}
+          className={styles.RegisterInput}
+        />
+
+        <input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleInputChange}
+          className={styles.RegisterInput}
+        />
+        <div className={styles.bottomTxt}>
+          <p className={styles.learnMoreTxt}>
+            People who use our service may have uploaded your contact
+            information to Instagram. <Link href="#">Learn More</Link>
+          </p>
+          <p className={styles.learnMoreTxt}>
+            By signing up, you agree to our <a href="#">Terms</a> ,{" "}
+            <a href="#">Privacy Policy</a> and <a href="#">Cookies Policy</a> .
+          </p>
+        </div>
+        <button className={styles.submitBtn} type="submit" disabled={isLoading}>
+          {isLoading ? "Loading..." : "Sign up"}
         </button>
       </form>
     </div>
