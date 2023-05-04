@@ -3,6 +3,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import FollowProfileLink from "./FollowProfileLink";
 
+//modal for list of users in the follower/following link
 function UserListDialog({ open, handleClose, userList, title }) {
   return (
     <Dialog onClose={handleClose} open={open}>
