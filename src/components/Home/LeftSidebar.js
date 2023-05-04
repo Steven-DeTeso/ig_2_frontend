@@ -18,9 +18,16 @@ import styles from "./LeftSidebar.module.css";
 import style from "/styles.module.css";
 import CreatePostDialog from "./CreatePost";
 
-export default function LeftSidebar({ onPostCreated }) {
+export default function LeftSidebar({ onPostCreated, loggedInUser }) {
+  const [profileHref, setProfileHref] = useState("/profile");
   const [isSmallScren, setIsSmallScreen] = useState(false);
   const [openCreatePost, setOpenCreatePost] = useState(false);
+
+  useEffect(() => {
+    if (loggedInUser) {
+      setProfileHref(`/users/${loggedInUser.id}`);
+    }
+  }, [loggedInUser]);
 
   const handleCreatePostClick = () => {
     setOpenCreatePost(true);
@@ -84,7 +91,7 @@ export default function LeftSidebar({ onPostCreated }) {
       onClick: handleCreatePostClick,
     },
     {
-      href: "/profile",
+      href: profileHref,
       iconComponent: AccountCircleIcon,
       label: "Profile",
     },

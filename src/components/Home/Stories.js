@@ -1,32 +1,19 @@
 import React from "react";
-import { Avatar } from "@mui/material";
 import { Stack } from "@mui/material";
 import styles from "./Stories.module.css";
-import { ClassNames } from "@emotion/react";
 
-export default function Stories() {
-  const images = [
-    { alt: "Remy Sharp", src: "ig_2_frontend/public/images/avatar-lady.jpg" },
-    {
-      alt: "Travis Howard",
-      src: "/public/images/avatar-mustache.jpg",
-    },
-    {
-      alt: "Cindy Baker",
-      src: "/public/images/avatar-yellow.jpg",
-    },
-  ];
-
+export default function Stories({ suggestedProfiles }) {
   return (
     <div className={styles.storiesContainer}>
       <Stack direction="row" spacing={2}>
-        {images.map((image, index) => (
-          <Avatar
-            key={index}
-            // alt={image.alt}
-            // src={image.src}
-            sx={{ width: 66, height: 66 }}
-          />
+        {suggestedProfiles.map((suggestedProfile, index) => (
+          <div className={styles.story} key={index}>
+            <img
+              src={suggestedProfile.props.profilePicture}
+              alt={`${suggestedProfile.props.username}'s story`}
+              style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+            />
+          </div>
         ))}
       </Stack>
     </div>
