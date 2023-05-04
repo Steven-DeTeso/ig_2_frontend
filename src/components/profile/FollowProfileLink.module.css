@@ -4,6 +4,10 @@
     align-items: center;
 }
 
+.suggestedProfile {
+    display: flex;
+}
+
 .image, .username {
     margin: 5px;
 }
