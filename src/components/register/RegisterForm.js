@@ -108,10 +108,14 @@ export default function RegisterForm() {
             By signing up, you agree to our <a href="#">Terms</a> ,{" "}
             <a href="#">Privacy Policy</a> and <a href="#">Cookies Policy</a> .
           </p>
+          <button
+            className={styles.submitBtn}
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : "Sign up"}
+          </button>
         </div>
-        <button className={styles.submitBtn} type="submit" disabled={isLoading}>
-          {isLoading ? "Loading..." : "Sign up"}
-        </button>
       </form>
     </div>
   );
