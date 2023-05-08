@@ -1,7 +1,78 @@
 .registerPageWrapper {
     display: flex;
     flex-direction: column;
-    max-width: fit-content;
-    min-height: 90vh;
     margin: auto;
+}
+
+.registerTopLvl {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    padding: 0 0 40px 0;
+    width: 350px;
+    height: 623px;
+    border: 1px solid rgb(219 220 221);
+}
+
+.regTopTxt {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 20px;
+    margin: 0 40px 10px;
+    text-align: center;
+    color: #737373;
+}
+
+.orContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.or {
+    margin: 18px 4px;
+    text-align: center;
+    color: rgb(142, 142, 142);
+}
+
+.orLine {
+    height: 0;
+    width: 80px;
+    border: 0.5px solid rgb(142, 142, 142);
+    margin: 0 10px;
+}
+
+.fbButton {
+    background-color: rgb(0, 149, 246);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 7px 16px;
+    width: 222px;
+    justify-content: center;
+    margin: auto;
+}
+.fbButton:hover {
+    background-color: rgb(24, 119, 242);
+}
+
+.registerBottomDiv {
+    display: flex;
+    justify-content: center; /* Updated property */
+    align-items: center;
+    width: 350px;
+    border: 1px solid rgb(219 220 221);
+    margin: 10px auto 10px;
+    padding: 10px 0;
+}
+
+.registerBottomDiv p {
+    margin-right: 10px;
+}
+
+.registerBottomDiv a {
+    text-decoration: underline;
 }

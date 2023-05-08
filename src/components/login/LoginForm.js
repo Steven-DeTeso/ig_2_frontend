@@ -4,6 +4,7 @@ import styles from "./LoginForm.module.css";
 // style is global css
 import style from "/styles.module.css";
 import Link from "next/link";
+import FacebookBtn from "./FacebookBtn";
 
 export default function Login() {
   const router = useRouter();
@@ -55,13 +56,7 @@ export default function Login() {
       <div className={styles.loginFormWrapper}>
         <h1 className={style.cloneFont}>Clone-a-gram</h1>
         <form onSubmit={handleSubmit} className={styles.loginForm}>
-          <button
-            type="button"
-            className={styles.fbButton}
-            onClick={() => alert("This is not enabled right now!")}
-          >
-            Continue with Facebook
-          </button>
+          <FacebookBtn />
           <div className={styles.orContainer}>
             <div className={styles.orLine}></div>
             <p className={styles.or}>OR</p>
