@@ -76,6 +76,20 @@ export default function Post({ post, updatePost }) {
     }
   };
 
+  const handleCommentEdit = (commentId, updatedText) => {
+    setComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment.id === commentId ? { ...comment, text: updatedText } : comment
+      )
+    );
+  };
+
+  const handleCommentDelete = (commentId) => {
+    setComments((prevComments) =>
+      prevComments.filter((comment) => comment.id !== commentId)
+    );
+  };
+
   const handleLike = async () => {
     let updatedPost = { ...post };
     if (isLiked) {
@@ -122,8 +136,13 @@ export default function Post({ post, updatePost }) {
           {comments.map((comment) => (
             <Comment
               key={comment.id}
+              commentId={comment.id}
               username={comment.author.username}
               commentText={comment.text}
+              authorId={comment.author.id}
+              currentUserId={currentUserId}
+              onDelete={handleCommentDelete}
+              onEdit={handleCommentEdit}
             />
           ))}
           <CommentForm postId={post.id} onCommentSubmit={handleCommentSubmit} />
