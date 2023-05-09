@@ -8,6 +8,6 @@
     display: flex;
 }
 
-.image, .username {
-    margin: 5px;
+.suggestedProfile > div {
+    margin-left: 5px;
 }

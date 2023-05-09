@@ -3,7 +3,6 @@ import styles from "./RightSidebar.module.css";
 import Link from "next/link";
 import Footer from "../login/Footer";
 import ProfileImage from "../post/ProfileImage";
-import SuggestedProfile from "../profile/SuggestedProfile";
 
 export default function RightSidebar({
   currentUsername,

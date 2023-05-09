@@ -15,7 +15,6 @@ export default function PostHeader({ post, currentUserId, updatePost }) {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const [isFollowing, setIsFollowing] = useState();
-  const [currentUsername, setCurrentUsername] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
