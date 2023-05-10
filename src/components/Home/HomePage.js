@@ -36,6 +36,7 @@ export default function HomePage({ initialPosts }) {
             key={user.id}
             profilePicture={user.profile_pic.signed_image_url}
             username={user.username}
+            userId={user.id}
           />
         ));
       setSuggestedProfiles(profiles);
