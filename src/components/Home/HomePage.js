@@ -15,6 +15,7 @@ export default function HomePage({ initialPosts }) {
     useState("");
   const [currentUsername, setCurrentUsername] = useState("");
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
+  const [showPostModal, setShowPostModal] = useState(false);
 
   const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
   const loggedInUser = userData?.find((user) => user.is_current);
@@ -44,6 +45,10 @@ export default function HomePage({ initialPosts }) {
       setSuggestedProfiles(profiles);
     }
   }, [userData]);
+
+  const handleCloseModal = () => {
+    setShowPostModal(false);
+  };
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);

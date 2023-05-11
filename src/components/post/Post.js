@@ -30,7 +30,12 @@ async function toggleLike(postId, currentUsername, like = true) {
   }
 }
 
-export default function Post({ post, updatePost, showPostModal }) {
+export default function Post({
+  post,
+  updatePost,
+  showPostModal,
+  setSelectedPost,
+}) {
   if (!post.images || !post.images[0].signed_image_url) {
     return null;
   }
@@ -56,7 +61,7 @@ export default function Post({ post, updatePost, showPostModal }) {
   }, [loggedInUserID]);
 
   const handleImageClick = () => {
-    setShowModal(true);
+    if (setSelectedPost) setSelectedPost(post);
   };
 
   const handleCloseModal = () => {

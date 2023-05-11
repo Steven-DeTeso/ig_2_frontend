@@ -1,6 +1,7 @@
 // components/ProfilePage.js
 import React, { useState, useEffect } from "react";
 import PostPhoto from "../post/PostPhoto";
+import PostModal from "../Home/PostModal";
 import Link from "next/link";
 import LeftSidebar from "../Home/LeftSidebar";
 import styles from "./ProfilePage.module.css";
@@ -14,6 +15,16 @@ const ProfilePage = ({ userId }) => {
   const [userPosts, setUserPosts] = useState([]);
   const [followingDialogOpen, setFollowingDialogOpen] = useState(false);
   const [followersDialogOpen, setFollowersDialogOpen] = useState(false);
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  const showModal = () => {
+    setShowPostModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowPostModal(false);
+  };
 
   const handleFollowingDialogOpen = () => {
     setFollowingDialogOpen(true);
@@ -155,10 +166,20 @@ const ProfilePage = ({ userId }) => {
                 key={post.id}
                 post={post}
                 updatePost={handleUpdatePost}
-                showPostModal={true}
+                showModal={() => {
+                  setSelectedPost(post);
+                  showModal();
+                }}
               />
             </article>
           ))}
+          {selectedPost && (
+            <PostModal
+              post={selectedPost}
+              show={!!selectedPost}
+              onClose={() => setSelectedPost(null)}
+            />
+          )}
         </div>
       </div>
     </div>
