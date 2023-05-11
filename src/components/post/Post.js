@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "../post/Post.module.css";
 import LikeButton from "./LikeButton";
-import Comment from "./Comment";
-import CommentForm from "./CommentForm";
 import PostHeader from "./PostHeader";
 import PostModal from "../Home/PostModal";
 import LikesInfo from "./LikesInfo";
+import CommentSection from "./CommentSection";
 import useFetch from "../../hooks/useFetch";
 
 const API_BASE_URL = "http://localhost:8000";
@@ -132,7 +131,15 @@ export default function Post({
   return (
     <>
       {showPostModal && (
-        <PostModal post={post} show={showModal} onClose={handleCloseModal} />
+        <PostModal
+          post={post}
+          show={showModal}
+          onClose={handleCloseModal}
+          currentUserId={currentUserId}
+          handleCommentSubmit={handleCommentSubmit}
+          handleCommentEdit={handleCommentEdit}
+          handleCommentDelete={handleCommentDelete}
+        />
       )}
       <div className={styles.postImageContainer}>
         <PostHeader
@@ -152,21 +159,14 @@ export default function Post({
         <p>
           {post.author.username}: {post.caption}
         </p>
-        <div>
-          {comments.map((comment) => (
-            <Comment
-              key={comment.id}
-              commentId={comment.id}
-              username={comment.author.username}
-              commentText={comment.text}
-              authorId={comment.author.id}
-              currentUserId={currentUserId}
-              onDelete={handleCommentDelete}
-              onEdit={handleCommentEdit}
-            />
-          ))}
-          <CommentForm postId={post.id} onCommentSubmit={handleCommentSubmit} />
-        </div>
+        <CommentSection
+          comments={comments}
+          currentUserId={currentUserId}
+          postId={post.id}
+          handleCommentSubmit={handleCommentSubmit}
+          handleCommentEdit={handleCommentEdit}
+          handleCommentDelete={handleCommentDelete}
+        />
       </div>
     </>
   );

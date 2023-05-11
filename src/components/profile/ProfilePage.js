@@ -7,10 +7,13 @@ import LeftSidebar from "../Home/LeftSidebar";
 import styles from "./ProfilePage.module.css";
 import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
 import UserListDialog from "./UserListDialog";
+import useCommentFunctions from "../../hooks/useCommentFunctions";
 
 const API_BASE_URL = "http://localhost:8000";
 
 const ProfilePage = ({ userId }) => {
+  const { handleCommentSubmit, handleCommentEdit, handleCommentDelete } =
+    useCommentFunctions();
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const [followingDialogOpen, setFollowingDialogOpen] = useState(false);
@@ -178,6 +181,10 @@ const ProfilePage = ({ userId }) => {
               post={selectedPost}
               show={!!selectedPost}
               onClose={() => setSelectedPost(null)}
+              currentUserId={userId}
+              handleCommentSubmit={handleCommentSubmit}
+              handleCommentEdit={handleCommentEdit}
+              handleCommentDelete={handleCommentDelete}
             />
           )}
         </div>

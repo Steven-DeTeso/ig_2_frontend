@@ -1,15 +1,34 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./PostModal.module.css";
-import Comment from "../post/Comment";
-import CommentForm from "../post/CommentForm";
+import CommentSection from "../post/CommentSection";
+import API_BASE_URL from "../../api";
 
-const PostModal = ({ post, show, onClose }) => {
+const PostModal = ({
+  post,
+  show,
+  onClose,
+  currentUserId,
+  handleCommentSubmit,
+  handleCommentEdit,
+  handleCommentDelete,
+}) => {
   if (!show) {
     return null;
   }
   const modalContentRef = useRef();
-  const { images, author, caption, comments, id } = post;
+  const { images, author, caption, id } = post;
   const imageUrl = images && images[0] && images[0].signed_image_url;
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    async function fetchComments() {
+      const response = await fetch(`${API_BASE_URL}/comments/${post.id}`);
+      const data = await response.json();
+      setComments(data);
+    }
+
+    fetchComments();
+  }, [post.id]);
 
   const handleOutsideClick = (event) => {
     if (
@@ -34,21 +53,14 @@ const PostModal = ({ post, show, onClose }) => {
         <p>
           {author.username}: {caption}
         </p>
-        <div>
-          {comments.map((comment) => (
-            <Comment
-              key={comment.id}
-              commentId={comment.id}
-              username={comment.author.username}
-              commentText={comment.text}
-              authorId={comment.author.id}
-              // You will need to implement onDelete and onEdit functionality for comments within the modal
-              onDelete={() => {}}
-              onEdit={() => {}}
-            />
-          ))}
-          <CommentForm postId={id} onCommentSubmit={() => {}} />
-        </div>
+        <CommentSection
+          comments={comments}
+          currentUserId={currentUserId}
+          postId={post.id}
+          handleCommentSubmit={handleCommentSubmit}
+          handleCommentEdit={handleCommentEdit}
+          handleCommentDelete={handleCommentDelete}
+        />
       </div>
     </div>
   );
