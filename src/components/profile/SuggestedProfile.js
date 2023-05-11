@@ -1,21 +1,23 @@
 import React from "react";
 import styles from "./FollowProfileLink.module.css";
+import Link from "next/link";
 
-export default function SuggestedProfile({ profilePicture, username }) {
+// recieving its props from Homepage component
+export default function SuggestedProfile({ profilePicture, username, userId }) {
   return (
-    <div className={styles.suggestedProfile}>
-      <div>
-        <img
-          src={profilePicture}
-          alt={`${username}'s profile`}
-          style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-        />
-      </div>
-      <div>
-        <p>
-          <strong>{username}</strong>
-        </p>
-      </div>
-    </div>
+    <>
+      <Link href={`/users/${userId}/`} className={styles.noDecoration}>
+        <div className={styles.suggestedProfile}>
+          <img
+            src={profilePicture}
+            alt={`${username}'s profile`}
+            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+          />
+          <p>
+            <strong>{username}</strong>
+          </p>
+        </div>
+      </Link>
+    </>
   );
 }

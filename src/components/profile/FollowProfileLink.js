@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import styles from "./FollowProfileLink.module.css";
+import ProfileImage from "../post/ProfileImage";
 
 export default function FollowProfileLink({
   profilePicture,
@@ -22,10 +23,9 @@ export default function FollowProfileLink({
     >
       <div className={styles.profileLink}>
         <div className={styles.image}>
-          <img
-            src={profilePicture}
+          <ProfileImage
+            imageUrl={profilePicture}
             alt={`${username}'s profile`}
-            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
           />
         </div>
         <div className={styles.username}>

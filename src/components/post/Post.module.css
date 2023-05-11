@@ -26,7 +26,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 8px;
 }
 .optionsButton {
     justify-self: flex-end;
+}
+
+.profileWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.profileWrapper > h3 {
+    margin-left: 10px;
 }

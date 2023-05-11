@@ -6,8 +6,14 @@
 
 .suggestedProfile {
     display: flex;
+    flex-direction: row;
 }
 
-.image, .username {
-    margin: 5px;
+.suggestedProfile > p {
+    margin-left: 5px;
+}
+
+.noDecoration {
+    text-decoration: none;
+    color: inherit;
 }
