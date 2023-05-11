@@ -53,6 +53,7 @@ const ProfilePage = ({ userId }) => {
       console.error("Error fetching user data:", error);
     }
   }
+  // remove log for production
   console.log(userData);
 
   async function fetchUserPosts() {
@@ -150,10 +151,11 @@ const ProfilePage = ({ userId }) => {
           {userPosts.map((post) => (
             <article key={post.id}>
               <PostPhoto
-                id={styles.postId}
+                id={post.postId}
                 key={post.id}
                 post={post}
                 updatePost={handleUpdatePost}
+                showPostModal={true}
               />
             </article>
           ))}

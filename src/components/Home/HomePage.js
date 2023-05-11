@@ -30,7 +30,9 @@ export default function HomePage({ initialPosts }) {
   useEffect(() => {
     if (userData) {
       const profiles = userData
-        .filter((user) => !user.is_current) // Exclude the current user
+        .filter(
+          (user) => !user.is_current && user.profile_pic?.signed_image_url
+        ) // Exclude the current user and check if signed image url exists
         .map((user) => (
           <SuggestedProfile
             key={user.id}
@@ -59,7 +61,7 @@ export default function HomePage({ initialPosts }) {
     }
   };
 
-  const MemoizedPostArray = memo(Post);
+  const MemoizedPost = memo(Post);
 
   return (
     <>
@@ -75,9 +77,10 @@ export default function HomePage({ initialPosts }) {
               posts.map((post) => {
                 return (
                   <article key={post.id} className={styles.postArticle}>
-                    <MemoizedPostArray
+                    <MemoizedPost
                       post={post}
                       updatePost={handleUpdatePost}
+                      showPostModal={false}
                     />
                   </article>
                 );

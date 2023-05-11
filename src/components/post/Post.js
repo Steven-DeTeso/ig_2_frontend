@@ -4,6 +4,7 @@ import LikeButton from "./LikeButton";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 import PostHeader from "./PostHeader";
+import PostModal from "../Home/PostModal";
 import LikesInfo from "./LikesInfo";
 import useFetch from "../../hooks/useFetch";
 
@@ -29,10 +30,12 @@ async function toggleLike(postId, currentUsername, like = true) {
   }
 }
 
-export default function Post({ post, updatePost }) {
+export default function Post({ post, updatePost, showPostModal }) {
   if (!post.images || !post.images[0].signed_image_url) {
     return null;
   }
+
+  const [showModal, setShowModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(0);
   const [currentUsername, setCurrentUsername] = useState("");
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
@@ -51,6 +54,14 @@ export default function Post({ post, updatePost }) {
       setCurrentUsername(loggedInUser.username);
     }
   }, [loggedInUserID]);
+
+  const handleImageClick = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   const handleCommentSubmit = async (postId, commentText) => {
     const response = await fetch(`${API_BASE_URL}/comments/${postId}/`, {
@@ -115,6 +126,9 @@ export default function Post({ post, updatePost }) {
 
   return (
     <>
+      {showPostModal && (
+        <PostModal post={post} show={showModal} onClose={handleCloseModal} />
+      )}
       <div className={styles.postImageContainer}>
         <PostHeader
           post={post}
@@ -125,6 +139,7 @@ export default function Post({ post, updatePost }) {
           className={styles.postImage}
           src={post.images[0].signed_image_url}
           alt={post.caption}
+          onClick={handleImageClick}
         />
         <br />
         <LikeButton isLiked={isLiked} handleLike={handleLike} />
