@@ -11,8 +11,12 @@ import useCommentFunctions from "../../hooks/useCommentFunctions";
 const API_BASE_URL = "http://localhost:8000";
 
 export default function HomePage({ initialPosts }) {
-  const { handleCommentSubmit, handleCommentEdit, handleCommentDelete } =
-    useCommentFunctions();
+  const {
+    comments,
+    handleCommentSubmit,
+    handleCommentEdit,
+    handleCommentDelete,
+  } = useCommentFunctions();
   const [posts, setPosts] = useState(initialPosts || []);
   const [currentUserProfilePicture, setCurrentUserProfilePicture] =
     useState("");
@@ -23,15 +27,6 @@ export default function HomePage({ initialPosts }) {
   const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
   const loggedInUser = userData?.find((user) => user.is_current);
   const loggedInUserProfilePic = currentUserProfilePicture;
-
-  useEffect(() => {
-    async function fetchComments() {
-      const response = await fetch(`${API_BASE_URL}/comments`);
-      const data = await response.json();
-    }
-
-    fetchComments();
-  }, [handleCommentSubmit, handleCommentEdit, handleCommentDelete]);
 
   useEffect(() => {
     if (loggedInUser) {
@@ -97,6 +92,7 @@ export default function HomePage({ initialPosts }) {
                     <MemoizedPost
                       post={post}
                       updatePost={handleUpdatePost}
+                      comments={comments}
                       handleCommentSubmit={handleCommentSubmit}
                       handleCommentEdit={handleCommentEdit}
                       handleCommentDelete={handleCommentDelete}

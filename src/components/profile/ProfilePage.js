@@ -12,8 +12,12 @@ import useCommentFunctions from "../../hooks/useCommentFunctions";
 const API_BASE_URL = "http://localhost:8000";
 
 const ProfilePage = ({ userId }) => {
-  const { handleCommentSubmit, handleCommentEdit, handleCommentDelete } =
-    useCommentFunctions();
+  const {
+    comments,
+    handleCommentSubmit,
+    handleCommentEdit,
+    handleCommentDelete,
+  } = useCommentFunctions();
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const [followingDialogOpen, setFollowingDialogOpen] = useState(false);
@@ -185,6 +189,7 @@ const ProfilePage = ({ userId }) => {
               handleCommentSubmit={handleCommentSubmit}
               handleCommentEdit={handleCommentEdit}
               handleCommentDelete={handleCommentDelete}
+              comments={comments}
             />
           )}
         </div>

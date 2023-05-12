@@ -11,6 +11,7 @@ const PostModal = ({
   handleCommentSubmit,
   handleCommentEdit,
   handleCommentDelete,
+  comments,
 }) => {
   if (!show) {
     return null;
@@ -18,17 +19,6 @@ const PostModal = ({
   const modalContentRef = useRef();
   const { images, author, caption, id } = post;
   const imageUrl = images && images[0] && images[0].signed_image_url;
-  const [comments, setComments] = useState([]);
-
-  useEffect(() => {
-    async function fetchComments() {
-      const response = await fetch(`${API_BASE_URL}/comments/${post.id}`);
-      const data = await response.json();
-      setComments(data);
-    }
-
-    fetchComments();
-  }, [post.id]);
 
   const handleOutsideClick = (event) => {
     if (

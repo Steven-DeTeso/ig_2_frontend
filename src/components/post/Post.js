@@ -32,6 +32,10 @@ async function toggleLike(postId, currentUsername, like = true) {
 export default function Post({
   post,
   updatePost,
+  comments,
+  handleCommentSubmit,
+  handleCommentEdit,
+  handleCommentDelete,
   showPostModal,
   setSelectedPost,
 }) {
@@ -45,8 +49,6 @@ export default function Post({
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
   const [likedUsers, setLikedUsers] = useState(post.likes);
-
-  const [comments, setComments] = useState(post.comments || []);
 
   const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
   const loggedInUser = userData?.find((user) => user.is_current);
@@ -65,44 +67,6 @@ export default function Post({
 
   const handleCloseModal = () => {
     setShowModal(false);
-  };
-
-  const handleCommentSubmit = async (postId, commentText) => {
-    const response = await fetch(`${API_BASE_URL}/comments/${postId}/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        text: commentText,
-        post: postId,
-        author: currentUserId,
-      }),
-    });
-
-    if (response.ok) {
-      const newComment = await response.json();
-      setComments((prevComments) => [...prevComments, newComment]);
-      return { status: "success" };
-    } else {
-      // Handle error, display a message or update error state
-      return response;
-    }
-  };
-
-  const handleCommentEdit = (commentId, updatedText) => {
-    setComments((prevComments) =>
-      prevComments.map((comment) =>
-        comment.id === commentId ? { ...comment, text: updatedText } : comment
-      )
-    );
-  };
-
-  const handleCommentDelete = (commentId) => {
-    setComments((prevComments) =>
-      prevComments.filter((comment) => comment.id !== commentId)
-    );
   };
 
   const handleLike = async () => {

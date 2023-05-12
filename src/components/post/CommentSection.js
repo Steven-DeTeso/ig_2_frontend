@@ -2,15 +2,16 @@
 import React from "react";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
+import useCommentFunctions from "../../hooks/useCommentFunctions";
 
-function CommentsSection({
-  comments,
-  currentUserId,
-  postId,
-  handleCommentSubmit,
-  handleCommentEdit,
-  handleCommentDelete,
-}) {
+function CommentsSection({ currentUserId, postId }) {
+  const {
+    comments,
+    handleCommentSubmit,
+    handleCommentEdit,
+    handleCommentDelete,
+  } = useCommentFunctions(postId);
+
   return (
     <div>
       {comments.map((comment) => (
@@ -21,11 +22,11 @@ function CommentsSection({
           commentText={comment.text}
           authorId={comment.author.id}
           currentUserId={currentUserId}
-          onDelete={handleCommentDelete}
-          onEdit={handleCommentEdit}
+          handleCommentDelete={handleCommentDelete}
+          handleCommentEdit={handleCommentEdit}
         />
       ))}
-      <CommentForm postId={postId} onCommentSubmit={handleCommentSubmit} />
+      <CommentForm postId={postId} handleCommentSubmit={handleCommentSubmit} />
     </div>
   );
 }
