@@ -1,16 +1,28 @@
 import React, { useState, useEffect, memo } from "react";
+import useFetch from "../../hooks/useFetch";
 import styles from "./HomePage.module.css";
 import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
 import Stories from "./Stories";
 import Post from "../post/Post";
-import useFetch from "../../hooks/useFetch";
 import SuggestedProfile from "../profile/SuggestedProfile";
 import useCommentFunctions from "../../hooks/useCommentFunctions";
+import { useUser } from "../../context/userContext";
 
 const API_BASE_URL = "http://localhost:8000";
 
 export default function HomePage({ initialPosts }) {
+  const { currentUserId, currentUsername, currentUserProfilePicture } =
+    useUser();
+
+  const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
+
+  const loggedInUser = {
+    id: currentUserId,
+    username: currentUsername,
+    profile_pic: { signed_image_url: currentUserProfilePicture },
+  };
+
   const {
     comments,
     handleCommentSubmit,
@@ -18,29 +30,16 @@ export default function HomePage({ initialPosts }) {
     handleCommentDelete,
   } = useCommentFunctions();
   const [posts, setPosts] = useState(initialPosts || []);
-  const [currentUserProfilePicture, setCurrentUserProfilePicture] =
-    useState("");
-  const [currentUsername, setCurrentUsername] = useState("");
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
   const [showPostModal, setShowPostModal] = useState(false);
 
-  const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
-  const loggedInUser = userData?.find((user) => user.is_current);
-  const loggedInUserProfilePic = currentUserProfilePicture;
-
   useEffect(() => {
-    if (loggedInUser) {
-      setCurrentUserProfilePicture(loggedInUser.profile_pic.signed_image_url);
-      setCurrentUsername(loggedInUser.username);
-    }
-  }, [loggedInUser]);
-
-  useEffect(() => {
-    if (userData) {
+    if (userData && currentUserId) {
       const profiles = userData
         .filter(
-          (user) => !user.is_current && user.profile_pic?.signed_image_url
-        ) // Exclude the current user and check if signed image url exists
+          (user) =>
+            user.id !== currentUserId && user.profile_pic?.signed_image_url
+        ) // Exclude the current user based on id and check if signed image url exists
         .map((user) => (
           <SuggestedProfile
             key={user.id}
@@ -51,7 +50,7 @@ export default function HomePage({ initialPosts }) {
         ));
       setSuggestedProfiles(profiles);
     }
-  }, [userData]);
+  }, [userData, currentUserId]);
 
   const handleCloseModal = () => {
     setShowPostModal(false);
@@ -104,7 +103,7 @@ export default function HomePage({ initialPosts }) {
           </main>
           <RightSidebar
             currentUsername={currentUsername}
-            loggedInUserProfilePic={loggedInUserProfilePic}
+            loggedInUserProfilePic={currentUserProfilePicture}
             suggestedProfiles={suggestedProfiles}
           />
         </section>
