@@ -8,8 +8,7 @@ import Post from "../post/Post";
 import SuggestedProfile from "../profile/SuggestedProfile";
 import useCommentFunctions from "../../hooks/useCommentFunctions";
 import { useUser } from "../../context/userContext";
-
-const API_BASE_URL = "http://localhost:8000";
+import API_BASE_URL from "../../api";
 
 export default function HomePage({ initialPosts }) {
   const { currentUserId, currentUsername, currentUserProfilePicture } =
@@ -31,7 +30,6 @@ export default function HomePage({ initialPosts }) {
   } = useCommentFunctions();
   const [posts, setPosts] = useState(initialPosts || []);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  const [showPostModal, setShowPostModal] = useState(false);
 
   useEffect(() => {
     if (userData && currentUserId) {

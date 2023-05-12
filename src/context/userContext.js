@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import useFetch from "../hooks/useFetch";
-
-const API_BASE_URL = "http://localhost:8000";
+import API_BASE_URL from "../api";
 
 // Create a context
 export const UserContext = createContext();
@@ -13,6 +12,7 @@ export function UserProvider({ children }) {
   const [currentUserProfilePicture, setCurrentUserProfilePicture] =
     useState("");
   const { data: loggedInUser } = useFetch(`${API_BASE_URL}/users/current/`);
+  console.log(loggedInUser);
 
   useEffect(() => {
     if (loggedInUser) {
