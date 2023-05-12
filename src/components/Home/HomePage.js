@@ -52,10 +52,6 @@ export default function HomePage({ initialPosts }) {
     }
   }, [userData, currentUserId]);
 
-  const handleCloseModal = () => {
-    setShowPostModal(false);
-  };
-
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
   };

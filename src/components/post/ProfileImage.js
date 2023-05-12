@@ -11,7 +11,7 @@ export default function ProfileImage({ imageUrl }) {
           alt="Profile photo"
         />
       ) : (
-        <p>upload a profile image</p>
+        <p>Upload Photo</p>
       )}
     </>
   );

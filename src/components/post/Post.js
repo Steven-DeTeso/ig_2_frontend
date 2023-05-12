@@ -43,7 +43,7 @@ export default function Post({
     return null;
   }
   const { currentUserId, currentUsername } = useUser();
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(showPostModal);
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
   const [likedUsers, setLikedUsers] = useState(post.likes);

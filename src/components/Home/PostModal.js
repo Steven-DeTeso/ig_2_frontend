@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import styles from "./PostModal.module.css";
 import CommentSection from "../post/CommentSection";
-import API_BASE_URL from "../../api";
 
 const PostModal = ({
   post,
@@ -20,7 +19,7 @@ const PostModal = ({
   const { images, author, caption, id } = post;
   const imageUrl = images && images[0] && images[0].signed_image_url;
 
-  const handleOutsideClick = (event) => {
+  const handleOutsideModalClick = (event) => {
     if (
       modalContentRef.current &&
       !modalContentRef.current.contains(event.target)
@@ -30,7 +29,7 @@ const PostModal = ({
   };
 
   return (
-    <div className={styles.modal} onClick={handleOutsideClick}>
+    <div className={styles.modal} onClick={handleOutsideModalClick}>
       <div ref={modalContentRef} className={styles.modalContent}>
         {imageUrl && (
           <img
@@ -44,6 +43,7 @@ const PostModal = ({
           {author.username}: {caption}
         </p>
         <CommentSection
+          key={id}
           comments={comments}
           currentUserId={currentUserId}
           postId={post.id}

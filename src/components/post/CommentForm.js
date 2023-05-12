@@ -7,14 +7,11 @@ const CommentForm = ({ postId, handleCommentSubmit }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Call the onCommentSubmit function to handle the form submission
     const response = await handleCommentSubmit(postId, commentText);
-    console.log(response);
     if (!response || response.status !== "success") {
       await refreshAuthToken();
       const newResponse = await handleCommentSubmit(postId, commentText);
     }
-    // Clear the input field after submitting the comment
     setCommentText("");
   };
 

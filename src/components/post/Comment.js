@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import EditIcon from "@mui/icons-material/Edit";
 import ListItemText from "@mui/material/ListItemText";
 
 const Comment = ({
@@ -63,7 +61,7 @@ const Comment = ({
             onChange={(e) => setEditedComment(e.target.value)}
           />
           <button onClick={() => handleUpdateComment(editedComment)}>
-            Save
+            Post
           </button>
         </>
       ) : (
@@ -83,9 +81,6 @@ const Comment = ({
                 handleClose();
               }}
             >
-              <ListItemIcon>
-                <EditIcon fontSize="small" />
-              </ListItemIcon>
               <ListItemText>Edit</ListItemText>
             </MenuItem>
             <MenuItem onClick={(event) => handleDelete(event)}>Delete</MenuItem>

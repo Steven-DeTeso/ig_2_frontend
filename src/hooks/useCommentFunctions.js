@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
+import API_BASE_URL from "../api";
 
 function useCommentFunctions(postId) {
-  const API_BASE_URL = "http://localhost:8000";
   const [comments, setComments] = useState([]);
 
   useEffect(() => {

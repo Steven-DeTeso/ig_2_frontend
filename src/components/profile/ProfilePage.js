@@ -1,4 +1,3 @@
-// components/ProfilePage.js
 import React, { useState, useEffect } from "react";
 import PostPhoto from "../post/PostPhoto";
 import PostModal from "../Home/PostModal";
@@ -9,8 +8,7 @@ import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
 import UserListDialog from "./UserListDialog";
 import useCommentFunctions from "../../hooks/useCommentFunctions";
 import { useUser } from "../../context/userContext";
-
-const API_BASE_URL = "http://localhost:8000";
+import API_BASE_URL from "../../api";
 
 const ProfilePage = ({ userId }) => {
   const {
@@ -31,9 +29,9 @@ const ProfilePage = ({ userId }) => {
     setShowPostModal(true);
   };
 
-  const handleCloseModal = () => {
-    setShowPostModal(false);
-  };
+  // const handleCloseModal = () => {
+  //   setShowPostModal(false);
+  // };
 
   const handleFollowingDialogOpen = () => {
     setFollowingDialogOpen(true);
@@ -108,7 +106,7 @@ const ProfilePage = ({ userId }) => {
   };
 
   if (!userData) {
-    return <div>Loading...</div>;
+    return <div>Downloading...</div>;
   }
 
   return (
