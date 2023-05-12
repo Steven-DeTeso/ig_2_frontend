@@ -6,18 +6,33 @@ function useCommentFunctions(postId) {
 
   useEffect(() => {
     const fetchComments = async () => {
-      const response = await fetch(
-        `${API_BASE_URL}/posts/${postId}/post_comments/`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/posts/${postId}/post_comments/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      );
-      const data = await response.json();
-      setComments(data);
+
+        const data = await response.json();
+        setComments(data);
+      } catch (error) {
+        if (error.message.includes("404")) {
+          // If the error was a 404 (Not Found), ignore it
+          console.log(`No comments found for this post: ${postId}`);
+        } else {
+          // For any other errors, re-throw them
+          throw error;
+        }
+      }
     };
 
     fetchComments();

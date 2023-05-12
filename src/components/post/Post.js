@@ -5,7 +5,7 @@ import PostHeader from "./PostHeader";
 import PostModal from "../Home/PostModal";
 import LikesInfo from "./LikesInfo";
 import CommentSection from "./CommentSection";
-import useFetch from "../../hooks/useFetch";
+import { useUser } from "../../context/userContext";
 
 const API_BASE_URL = "http://localhost:8000";
 
@@ -42,24 +42,11 @@ export default function Post({
   if (!post.images || !post.images[0].signed_image_url) {
     return null;
   }
-
+  const { currentUserId, currentUsername } = useUser();
   const [showModal, setShowModal] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState(0);
-  const [currentUsername, setCurrentUsername] = useState("");
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
   const [likedUsers, setLikedUsers] = useState(post.likes);
-
-  const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
-  const loggedInUser = userData?.find((user) => user.is_current);
-  const loggedInUserID = loggedInUser?.id;
-
-  useEffect(() => {
-    if (loggedInUser) {
-      setCurrentUserId(loggedInUser.id);
-      setCurrentUsername(loggedInUser.username);
-    }
-  }, [loggedInUserID]);
 
   const handleImageClick = () => {
     if (setSelectedPost) setSelectedPost(post);
