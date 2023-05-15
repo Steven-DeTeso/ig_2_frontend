@@ -44,11 +44,11 @@ function useCommentFunctions(postId) {
     }
   };
 
-  if (postId != undefined) {
-    useEffect(() => {
+  useEffect(() => {
+    if (postId !== undefined) {
       fetchComments();
-    }, [postId]);
-  }
+    }
+  }, [postId]);
 
   const handleCommentSubmit = async (postId, commentText, currentUserId) => {
     const response = await fetch(`${API_BASE_URL}/comments/${postId}/`, {

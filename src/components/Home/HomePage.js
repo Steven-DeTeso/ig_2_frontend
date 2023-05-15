@@ -11,16 +11,13 @@ import { useUser } from "../../context/userContext";
 import API_BASE_URL from "../../api";
 
 export default function HomePage({ initialPosts }) {
-  const {
-    currentUserId,
-    currentUsername,
-    currentUserProfilePicture,
-    isLoggedIn,
-  } = useUser();
+  const { currentUserId, currentUsername, currentUserProfilePicture } =
+    useUser();
 
+  const [posts, setPosts] = useState(initialPosts || []);
+  const [suggestedProfiles, setSuggestedProfiles] = useState([]);
   const { data: userData, doFetch } = useFetch(`${API_BASE_URL}/users/`);
   const [currentUserData, setCurrentUserData] = useState(null); // Store current user data
-
   const loggedInUser = {
     id: currentUserId,
     username: currentUsername,
@@ -33,8 +30,6 @@ export default function HomePage({ initialPosts }) {
     handleCommentEdit,
     handleCommentDelete,
   } = useCommentFunctions();
-  const [posts, setPosts] = useState(initialPosts || []);
-  const [suggestedProfiles, setSuggestedProfiles] = useState([]);
 
   useEffect(() => {
     console.log("Current User ID:", currentUserId);
