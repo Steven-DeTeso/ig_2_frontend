@@ -4,10 +4,13 @@ import API_BASE_URL from "../api";
 function useCommentFunctions(postId) {
   console.log(`Running useCommentFunctions for postId: ${postId}`);
   const [comments, setComments] = useState([]);
+  const [commentsCache, setCommentsCache] = useState({});
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      try {
+  const fetchComments = async () => {
+    try {
+      if (commentsCache[postId]) {
+        setComments(commentsCache[postId]);
+      } else {
         const response = await fetch(
           `${API_BASE_URL}/posts/${postId}/post_comments/`,
           {
@@ -25,19 +28,27 @@ function useCommentFunctions(postId) {
 
         const data = await response.json();
         setComments(data);
-      } catch (error) {
-        if (error.message.includes("404")) {
-          // If the error was a 404 (Not Found), ignore it
-          console.log(`No comments found for this post: ${postId}`);
-        } else {
-          // For any other errors, re-throw them
-          throw error;
-        }
+        setCommentsCache((prevCache) => ({
+          ...prevCache,
+          [postId]: data,
+        }));
       }
-    };
+    } catch (error) {
+      if (error.message.includes("404")) {
+        // If the error was a 404 (Not Found), ignore it
+        console.log(`No comments found for this post: ${postId}`);
+      } else {
+        // For any other errors, re-throw them
+        throw error;
+      }
+    }
+  };
 
-    fetchComments();
-  }, [postId]);
+  if (postId != undefined) {
+    useEffect(() => {
+      fetchComments();
+    }, [postId]);
+  }
 
   const handleCommentSubmit = async (postId, commentText, currentUserId) => {
     const response = await fetch(`${API_BASE_URL}/comments/${postId}/`, {

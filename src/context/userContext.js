@@ -2,10 +2,8 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 import useFetch from "../hooks/useFetch";
 import API_BASE_URL from "../api";
 
-// Create a context. Can be used to provide and consume user-related data throughout the component tree.
 export const UserContext = createContext();
 
-// Create a context provider
 export function UserProvider({ children }) {
   const [currentUserId, setCurrentUserId] = useState(0);
   const [currentUsername, setCurrentUsername] = useState("");
@@ -13,6 +11,18 @@ export function UserProvider({ children }) {
     useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { data: loggedInUser, doFetch } = useFetch();
+
+  useEffect(() => {
+    // This code will only run on the client side, after the component is mounted
+    if (typeof window !== "undefined") {
+      setCurrentUserId(sessionStorage.getItem("userId") || 0);
+      setCurrentUsername(sessionStorage.getItem("username") || "");
+      setCurrentUserProfilePicture(
+        sessionStorage.getItem("userProfilePicture") || ""
+      );
+      setIsLoggedIn(sessionStorage.getItem("isLoggedIn") === "true" || false);
+    }
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -33,6 +43,15 @@ export function UserProvider({ children }) {
     }
   }, [loggedInUser]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("userId", currentUserId);
+      sessionStorage.setItem("username", currentUsername);
+      sessionStorage.setItem("userProfilePicture", currentUserProfilePicture);
+      sessionStorage.setItem("isLoggedIn", isLoggedIn);
+    }
+  }, [currentUserId, currentUsername, currentUserProfilePicture, isLoggedIn]);
+
   return (
     <UserContext.Provider
       value={{
@@ -48,7 +67,6 @@ export function UserProvider({ children }) {
   );
 }
 
-// Create a custom hook to use this context
 export function useUser() {
   return useContext(UserContext);
 }

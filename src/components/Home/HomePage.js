@@ -11,10 +11,15 @@ import { useUser } from "../../context/userContext";
 import API_BASE_URL from "../../api";
 
 export default function HomePage({ initialPosts }) {
-  const { currentUserId, currentUsername, currentUserProfilePicture } =
-    useUser();
+  const {
+    currentUserId,
+    currentUsername,
+    currentUserProfilePicture,
+    isLoggedIn,
+  } = useUser();
 
-  const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
+  const { data: userData, doFetch } = useFetch(`${API_BASE_URL}/users/`);
+  const [currentUserData, setCurrentUserData] = useState(null); // Store current user data
 
   const loggedInUser = {
     id: currentUserId,
@@ -32,7 +37,16 @@ export default function HomePage({ initialPosts }) {
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
 
   useEffect(() => {
+    console.log("Current User ID:", currentUserId);
+    if (currentUserId) {
+      doFetch(`${API_BASE_URL}/users/`);
+    }
+  }, [currentUserId, doFetch]);
+
+  useEffect(() => {
+    console.log("User Data:", userData);
     if (userData && currentUserId) {
+      setCurrentUserData(userData.find((user) => user.id === currentUserId)); // Find and store the current user data
       const profiles = userData
         .filter(
           (user) =>
@@ -48,7 +62,8 @@ export default function HomePage({ initialPosts }) {
         ));
       setSuggestedProfiles(profiles);
     }
-  }, [userData, currentUserId]);
+    console.log("Current User Data:", currentUserData); // Add this line for logging
+  }, [userData, currentUserId, currentUserData]); // Add currentUserData as a dependency
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
