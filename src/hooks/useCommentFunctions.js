@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import API_BASE_URL from "../api";
 
 function useCommentFunctions(postId) {
+  console.log(`Running useCommentFunctions for postId: ${postId}`);
   const [comments, setComments] = useState([]);
 
   useEffect(() => {

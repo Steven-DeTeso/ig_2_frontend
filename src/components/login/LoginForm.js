@@ -5,8 +5,10 @@ import styles from "./LoginForm.module.css";
 import style from "/styles.module.css";
 import Link from "next/link";
 import FacebookBtn from "./FacebookBtn";
+import { useUser } from "../../context/userContext";
 
 export default function Login() {
+  const { setIsLoggedIn } = useUser();
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -24,9 +26,7 @@ export default function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     setIsLoading(true);
-
     try {
       //  in a production environment, use HTTPS for API calls, and make sure your fetch calls include the credentials: 'include' option to ensure cookies are sent with the requests:
       const response = await fetch("http://localhost:8000/api/token/", {
@@ -47,6 +47,7 @@ export default function Login() {
       setErrorMessage(error.message);
     } finally {
       router.push("/feed");
+      setIsLoggedIn(true);
       setIsLoading(false);
     }
   };

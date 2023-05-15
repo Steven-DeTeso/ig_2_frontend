@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
+import { useUser } from "../src/context/userContext";
 
 const refreshAuthToken = async () => {
   return await fetch("http://localhost:8000/api/token/refresh/", {
@@ -12,6 +13,7 @@ const refreshAuthToken = async () => {
 };
 
 export default function Logout() {
+  const { setIsLoggedIn } = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -42,8 +44,8 @@ export default function Logout() {
       if (!response.ok) {
         throw new Error("Logout failed.");
       }
-
       router.push("/");
+      setIsLoggedIn(false);
     } catch (error) {
       console.log("Error: ", error);
       // Display an error message or handle the error in another way

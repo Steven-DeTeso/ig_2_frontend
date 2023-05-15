@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 
 export default function useFetch(url) {
   const [data, setData] = useState([]);
@@ -13,8 +13,9 @@ export default function useFetch(url) {
     credentials: "include",
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = useCallback(
+    async (url) => {
+      setLoading(true);
       try {
         const response = await fetch(url, options);
         if (response.ok) {
@@ -28,9 +29,9 @@ export default function useFetch(url) {
       } finally {
         setLoading(false);
       }
-    };
-    fetchData();
-  }, [url]);
+    },
+    [url]
+  );
 
-  return { data, loading, error };
+  return { data, loading, error, doFetch: fetchData };
 }
