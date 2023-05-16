@@ -1,36 +1,46 @@
 import React, { useState, useEffect, memo } from "react";
+import useFetch from "../../hooks/useFetch";
 import styles from "./HomePage.module.css";
 import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
 import Stories from "./Stories";
 import Post from "../post/Post";
-import useFetch from "../../hooks/useFetch";
 import SuggestedProfile from "../profile/SuggestedProfile";
-
-const API_BASE_URL = "http://localhost:8000";
+import { useUser } from "../../context/userContext";
+import API_BASE_URL from "../../api";
 
 export default function HomePage({ initialPosts }) {
+  const { currentUserId, currentUsername, currentUserProfilePicture } =
+    useUser();
+
   const [posts, setPosts] = useState(initialPosts || []);
-  const [currentUserProfilePicture, setCurrentUserProfilePicture] =
-    useState("");
-  const [currentUsername, setCurrentUsername] = useState("");
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
+  const [currentUserData, setCurrentUserData] = useState(null); // Store current user data
 
-  const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
-  const loggedInUser = userData?.find((user) => user.is_current);
-  const loggedInUserProfilePic = currentUserProfilePicture;
+  const { data: userData, doFetch } = useFetch(`${API_BASE_URL}/users/`);
+
+  const loggedInUser = {
+    id: currentUserId,
+    username: currentUsername,
+    profile_pic: { signed_image_url: currentUserProfilePicture },
+  };
 
   useEffect(() => {
-    if (loggedInUser) {
-      setCurrentUserProfilePicture(loggedInUser.profile_pic.signed_image_url);
-      setCurrentUsername(loggedInUser.username);
+    console.log("Current User ID:", currentUserId);
+    if (currentUserId) {
+      doFetch(`${API_BASE_URL}/users/`);
     }
-  }, [loggedInUser]);
+  }, [currentUserId, doFetch]);
 
   useEffect(() => {
-    if (userData) {
+    console.log("User Data:", userData);
+    if (userData && currentUserId) {
+      setCurrentUserData(userData.find((user) => user.id === currentUserId)); // Find and store the current user data
       const profiles = userData
-        .filter((user) => !user.is_current) // Exclude the current user
+        .filter(
+          (user) =>
+            user.id !== currentUserId && user.profile_pic?.signed_image_url
+        ) // Exclude the current user based on id and check if signed image url exists
         .map((user) => (
           <SuggestedProfile
             key={user.id}
@@ -41,7 +51,8 @@ export default function HomePage({ initialPosts }) {
         ));
       setSuggestedProfiles(profiles);
     }
-  }, [userData]);
+    console.log("Current User Data:", currentUserData);
+  }, [userData, currentUserId, currentUserData]);
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
@@ -59,7 +70,7 @@ export default function HomePage({ initialPosts }) {
     }
   };
 
-  const MemoizedPostArray = memo(Post);
+  const MemoizedPost = memo(Post);
 
   return (
     <>
@@ -75,9 +86,10 @@ export default function HomePage({ initialPosts }) {
               posts.map((post) => {
                 return (
                   <article key={post.id} className={styles.postArticle}>
-                    <MemoizedPostArray
+                    <MemoizedPost
                       post={post}
                       updatePost={handleUpdatePost}
+                      showPostModal={false}
                     />
                   </article>
                 );
@@ -85,7 +97,7 @@ export default function HomePage({ initialPosts }) {
           </main>
           <RightSidebar
             currentUsername={currentUsername}
-            loggedInUserProfilePic={loggedInUserProfilePic}
+            loggedInUserProfilePic={currentUserProfilePicture}
             suggestedProfiles={suggestedProfiles}
           />
         </section>

@@ -3,8 +3,7 @@ import { useRouter } from "next/navigation";
 import LoginForm from "./LoginForm";
 import Footer from "./Footer";
 import styles from "./LoginPage.module.css";
-
-const API_BASE_URL = "http://localhost:8000";
+import API_BASE_URL from "../../api";
 
 const LoginPage = () => {
   const router = useRouter();

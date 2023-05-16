@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styles from "../post/Post.module.css";
 import LikeButton from "./LikeButton";
-import Comment from "./Comment";
-import CommentForm from "./CommentForm";
 import PostHeader from "./PostHeader";
+import PostModal from "../Home/PostModal";
 import LikesInfo from "./LikesInfo";
-import useFetch from "../../hooks/useFetch";
-
-const API_BASE_URL = "http://localhost:8000";
+import CommentSection from "./CommentSection";
+import useCommentFunctions from "../../hooks/useCommentFunctions";
+import { useUser } from "../../context/userContext";
+import API_BASE_URL from "../../api";
 
 async function toggleLike(postId, currentUsername, like = true) {
   try {
@@ -29,65 +29,34 @@ async function toggleLike(postId, currentUsername, like = true) {
   }
 }
 
-export default function Post({ post, updatePost }) {
+export default function Post({
+  post,
+  updatePost,
+  showPostModal,
+  setSelectedPost,
+}) {
   if (!post.images || !post.images[0].signed_image_url) {
     return null;
   }
-  const [currentUserId, setCurrentUserId] = useState(0);
-  const [currentUsername, setCurrentUsername] = useState("");
+  const { currentUserId, currentUsername } = useUser();
+  const [showModal, setShowModal] = useState(showPostModal);
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
   const [likedUsers, setLikedUsers] = useState(post.likes);
 
-  const [comments, setComments] = useState(post.comments || []);
+  const {
+    comments,
+    handleCommentSubmit,
+    handleCommentEdit,
+    handleCommentDelete,
+  } = useCommentFunctions(post.id);
 
-  const { data: userData } = useFetch(`${API_BASE_URL}/users/`);
-  const loggedInUser = userData?.find((user) => user.is_current);
-  const loggedInUserID = loggedInUser?.id;
-
-  useEffect(() => {
-    if (loggedInUser) {
-      setCurrentUserId(loggedInUser.id);
-      setCurrentUsername(loggedInUser.username);
-    }
-  }, [loggedInUserID]);
-
-  const handleCommentSubmit = async (postId, commentText) => {
-    const response = await fetch(`${API_BASE_URL}/comments/${postId}/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        text: commentText,
-        post: postId,
-        author: currentUserId,
-      }),
-    });
-
-    if (response.ok) {
-      const newComment = await response.json();
-      setComments((prevComments) => [...prevComments, newComment]);
-      return { status: "success" };
-    } else {
-      // Handle error, display a message or update error state
-      return response;
-    }
+  const handleImageClick = () => {
+    if (setSelectedPost) setSelectedPost(post);
   };
 
-  const handleCommentEdit = (commentId, updatedText) => {
-    setComments((prevComments) =>
-      prevComments.map((comment) =>
-        comment.id === commentId ? { ...comment, text: updatedText } : comment
-      )
-    );
-  };
-
-  const handleCommentDelete = (commentId) => {
-    setComments((prevComments) =>
-      prevComments.filter((comment) => comment.id !== commentId)
-    );
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   const handleLike = async () => {
@@ -115,6 +84,17 @@ export default function Post({ post, updatePost }) {
 
   return (
     <>
+      {showPostModal && (
+        <PostModal
+          post={post}
+          show={showModal}
+          onClose={handleCloseModal}
+          currentUserId={currentUserId}
+          handleCommentSubmit={handleCommentSubmit}
+          handleCommentEdit={handleCommentEdit}
+          handleCommentDelete={handleCommentDelete}
+        />
+      )}
       <div className={styles.postImageContainer}>
         <PostHeader
           post={post}
@@ -125,6 +105,7 @@ export default function Post({ post, updatePost }) {
           className={styles.postImage}
           src={post.images[0].signed_image_url}
           alt={post.caption}
+          onClick={handleImageClick}
         />
         <br />
         <LikeButton isLiked={isLiked} handleLike={handleLike} />
@@ -132,21 +113,14 @@ export default function Post({ post, updatePost }) {
         <p>
           {post.author.username}: {post.caption}
         </p>
-        <div>
-          {comments.map((comment) => (
-            <Comment
-              key={comment.id}
-              commentId={comment.id}
-              username={comment.author.username}
-              commentText={comment.text}
-              authorId={comment.author.id}
-              currentUserId={currentUserId}
-              onDelete={handleCommentDelete}
-              onEdit={handleCommentEdit}
-            />
-          ))}
-          <CommentForm postId={post.id} onCommentSubmit={handleCommentSubmit} />
-        </div>
+        <CommentSection
+          comments={comments}
+          currentUserId={currentUserId}
+          postId={post.id}
+          handleCommentSubmit={handleCommentSubmit}
+          handleCommentEdit={handleCommentEdit}
+          handleCommentDelete={handleCommentDelete}
+        />
       </div>
     </>
   );

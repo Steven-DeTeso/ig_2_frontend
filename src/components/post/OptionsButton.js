@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Popover from "@mui/material/Popover";
@@ -15,7 +15,7 @@ const OptionsButton = ({
   handleDeletePost,
   router,
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

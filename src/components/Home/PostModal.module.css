@@ -1,0 +1,25 @@
+.postImage {
+    width: 600px;
+    height: auto;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw; /* Viewport width */
+    height: 100vh; /* Viewport height */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* High z-index to appear above other content */
+}
+
+.modalContent {
+    background-color: white;
+    padding: 20px;
+    max-width: 90%; /* Adjust as needed */
+    max-height: 90%; /* Adjust as needed */
+    overflow: auto; /* Allows scrolling within the modal if the content is too large */
+}

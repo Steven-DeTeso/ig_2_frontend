@@ -4,9 +4,9 @@ import styles from "./FollowProfileLink.module.css";
 import ProfileImage from "../post/ProfileImage";
 
 export default function FollowProfileLink({
-  profilePicture,
-  username,
   userId,
+  username,
+  profilePicture,
   handleClose,
 }) {
   const onLinkClick = () => {

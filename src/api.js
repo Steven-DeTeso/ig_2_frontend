@@ -1,4 +1,5 @@
 const API_BASE_URL = "http://localhost:8000";
+export default API_BASE_URL;
 
 export const refreshAuthToken = async () => {
   return await fetch(`${API_BASE_URL}/api/token/refresh/`, {

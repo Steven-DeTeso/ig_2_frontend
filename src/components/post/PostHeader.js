@@ -7,7 +7,6 @@ import { deletePost, followOrUnfollowUser } from "../../api";
 
 export default function PostHeader({ post, currentUserId, updatePost }) {
   const router = useRouter();
-  const [anchorEl, setAnchorEl] = useState(null);
   const [isFollowing, setIsFollowing] = useState();
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -18,14 +17,6 @@ export default function PostHeader({ post, currentUserId, updatePost }) {
     // checking to see if currentUserid is in new array, if so, isFollowing set to true
     setIsFollowing(followerIds.includes(currentUserId));
   }, [post, currentUserId]);
-
-  // const handleOptionsClick = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
 
   const handleDeletePost = async () => {
     const isDeleted = await deletePost(post.id);
@@ -58,9 +49,6 @@ export default function PostHeader({ post, currentUserId, updatePost }) {
       }
     }
   };
-
-  // const open = Boolean(anchorEl);
-  // const id = open ? "simple-popover" : undefined;
 
   return (
     <div className={styles.topPost}>

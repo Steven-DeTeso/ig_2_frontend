@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { refreshAuthToken } from "../../api";
 
-const CommentForm = ({ postId, onCommentSubmit }) => {
+const CommentForm = ({ postId, handleCommentSubmit }) => {
   const [commentText, setCommentText] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Call the onCommentSubmit function to handle the form submission
-    const response = await onCommentSubmit(postId, commentText);
-    console.log(response);
+    const response = await handleCommentSubmit(postId, commentText);
     if (!response || response.status !== "success") {
       await refreshAuthToken();
-      const newResponse = await onCommentSubmit(postId, commentText);
+      const newResponse = await handleCommentSubmit(postId, commentText);
     }
-    // Clear the input field after submitting the comment
     setCommentText("");
   };
 

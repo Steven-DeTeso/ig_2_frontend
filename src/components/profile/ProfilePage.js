@@ -1,19 +1,37 @@
-// components/ProfilePage.js
 import React, { useState, useEffect } from "react";
 import PostPhoto from "../post/PostPhoto";
+import PostModal from "../Home/PostModal";
 import Link from "next/link";
 import LeftSidebar from "../Home/LeftSidebar";
 import styles from "./ProfilePage.module.css";
 import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
 import UserListDialog from "./UserListDialog";
-
-const API_BASE_URL = "http://localhost:8000";
+import useCommentFunctions from "../../hooks/useCommentFunctions";
+import { useUser } from "../../context/userContext";
+import API_BASE_URL from "../../api";
 
 const ProfilePage = ({ userId }) => {
+  const {
+    comments,
+    handleCommentSubmit,
+    handleCommentEdit,
+    handleCommentDelete,
+  } = useCommentFunctions();
+  const { currentUserId, currentUsername } = useUser();
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const [followingDialogOpen, setFollowingDialogOpen] = useState(false);
   const [followersDialogOpen, setFollowersDialogOpen] = useState(false);
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+
+  const showModal = () => {
+    setShowPostModal(true);
+  };
+
+  // const handleCloseModal = () => {
+  //   setShowPostModal(false);
+  // };
 
   const handleFollowingDialogOpen = () => {
     setFollowingDialogOpen(true);
@@ -53,6 +71,7 @@ const ProfilePage = ({ userId }) => {
       console.error("Error fetching user data:", error);
     }
   }
+  // remove log for production
   console.log(userData);
 
   async function fetchUserPosts() {
@@ -87,7 +106,7 @@ const ProfilePage = ({ userId }) => {
   };
 
   if (!userData) {
-    return <div>Loading...</div>;
+    return <div>Downloading...</div>;
   }
 
   return (
@@ -150,13 +169,29 @@ const ProfilePage = ({ userId }) => {
           {userPosts.map((post) => (
             <article key={post.id}>
               <PostPhoto
-                id={styles.postId}
+                id={post.postId}
                 key={post.id}
                 post={post}
                 updatePost={handleUpdatePost}
+                showModal={() => {
+                  setSelectedPost(post);
+                  showModal();
+                }}
               />
             </article>
           ))}
+          {selectedPost && (
+            <PostModal
+              post={selectedPost}
+              show={!!selectedPost}
+              onClose={() => setSelectedPost(null)}
+              currentUserId={currentUserId}
+              handleCommentSubmit={handleCommentSubmit}
+              handleCommentEdit={handleCommentEdit}
+              handleCommentDelete={handleCommentDelete}
+              comments={comments}
+            />
+          )}
         </div>
       </div>
     </div>
