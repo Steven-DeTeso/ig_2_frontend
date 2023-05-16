@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "../post/Post.module.css";
 import LikeButton from "./LikeButton";
 import PostHeader from "./PostHeader";

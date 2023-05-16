@@ -1,4 +1,3 @@
-// CommentsSection.js
 import React from "react";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
