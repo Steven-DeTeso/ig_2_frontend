@@ -35,6 +35,9 @@ export default function Post({
   updatePost,
   showPostModal,
   setSelectedPost,
+  handleCommentSubmit,
+  handleCommentEdit,
+  handleCommentDelete,
 }) {
   if (!post.images || !post.images[0].signed_image_url) {
     return null;
@@ -44,9 +47,6 @@ export default function Post({
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
   const [likedUsers, setLikedUsers] = useState(post.likes);
-
-  const { handleCommentSubmit, handleCommentEdit, handleCommentDelete } =
-    useCommentFunctions(post.id, comments);
 
   const handleImageClick = () => {
     if (setSelectedPost) setSelectedPost(post);
