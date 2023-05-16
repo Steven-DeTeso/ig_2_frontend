@@ -7,6 +7,11 @@ function useCommentFunctions(postId) {
   const [commentsCache, setCommentsCache] = useState({});
 
   const fetchComments = async () => {
+    if (!postId) {
+      console.error("No postId provided to fetch comments");
+      return;
+    }
+
     try {
       if (commentsCache[postId]) {
         setComments(commentsCache[postId]);
@@ -45,7 +50,7 @@ function useCommentFunctions(postId) {
   };
 
   useEffect(() => {
-    if (postId !== undefined) {
+    if (postId !== null && postId !== undefined) {
       fetchComments();
     }
   }, [postId]);
@@ -66,7 +71,14 @@ function useCommentFunctions(postId) {
 
     if (response.ok) {
       const newComment = await response.json();
-      setComments((prevComments) => [...prevComments, newComment]);
+      setComments((prevComments) => {
+        const updatedComments = [...prevComments, newComment];
+        setCommentsCache((prevCache) => ({
+          ...prevCache,
+          [postId]: updatedComments,
+        }));
+        return updatedComments;
+      });
       return { status: "success" };
     } else {
       const errorData = await response.json();
@@ -91,11 +103,16 @@ function useCommentFunctions(postId) {
 
     if (response.ok) {
       const updatedComment = await response.json();
-      setComments((prevComments) =>
-        prevComments.map((comment) =>
+      setComments((prevComments) => {
+        const updatedComments = prevComments.map((comment) =>
           comment.id === commentId ? { ...comment, text: updatedText } : comment
-        )
-      );
+        );
+        setCommentsCache((prevCache) => ({
+          ...prevCache,
+          [postId]: updatedComments,
+        }));
+        return updatedComments;
+      });
     } else {
       // Handle error, display a message or update error state
       return response;
@@ -115,9 +132,16 @@ function useCommentFunctions(postId) {
     );
 
     if (response.ok) {
-      setComments((prevComments) =>
-        prevComments.filter((comment) => comment.id !== commentId)
-      );
+      setComments((prevComments) => {
+        const updatedComments = prevComments.filter(
+          (comment) => comment.id !== commentId
+        );
+        setCommentsCache((prevCache) => ({
+          ...prevCache,
+          [postId]: updatedComments,
+        }));
+        return updatedComments;
+      });
     } else {
       const errorData = await response.json();
       throw new Error(`Request failed: ${errorData.detail}`);

@@ -11,12 +11,6 @@ import { useUser } from "../../context/userContext";
 import API_BASE_URL from "../../api";
 
 const ProfilePage = ({ userId }) => {
-  const {
-    comments,
-    handleCommentSubmit,
-    handleCommentEdit,
-    handleCommentDelete,
-  } = useCommentFunctions();
   const { currentUserId, currentUsername } = useUser();
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
@@ -25,13 +19,16 @@ const ProfilePage = ({ userId }) => {
   const [showPostModal, setShowPostModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
 
+  const {
+    comments,
+    handleCommentSubmit,
+    handleCommentEdit,
+    handleCommentDelete,
+  } = useCommentFunctions(selectedPost ? selectedPost.id : null);
+
   const showModal = () => {
     setShowPostModal(true);
   };
-
-  // const handleCloseModal = () => {
-  //   setShowPostModal(false);
-  // };
 
   const handleFollowingDialogOpen = () => {
     setFollowingDialogOpen(true);
