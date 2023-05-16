@@ -31,6 +31,7 @@ async function toggleLike(postId, currentUsername, like = true) {
 
 export default function Post({
   post,
+  comments,
   updatePost,
   showPostModal,
   setSelectedPost,
@@ -44,12 +45,8 @@ export default function Post({
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
   const [likedUsers, setLikedUsers] = useState(post.likes);
 
-  const {
-    comments,
-    handleCommentSubmit,
-    handleCommentEdit,
-    handleCommentDelete,
-  } = useCommentFunctions(post.id);
+  const { handleCommentSubmit, handleCommentEdit, handleCommentDelete } =
+    useCommentFunctions(post.id, comments);
 
   const handleImageClick = () => {
     if (setSelectedPost) setSelectedPost(post);
