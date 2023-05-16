@@ -13,6 +13,21 @@ export function UserProvider({ children }) {
   const { data: loggedInUser, doFetch } = useFetch();
 
   useEffect(() => {
+    if (isLoggedIn) {
+      doFetch(`${API_BASE_URL}/users/current/`);
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("userId", currentUserId);
+      sessionStorage.setItem("username", currentUsername);
+      sessionStorage.setItem("userProfilePicture", currentUserProfilePicture);
+      sessionStorage.setItem("isLoggedIn", isLoggedIn);
+    }
+  }, [currentUserId, currentUsername, currentUserProfilePicture, isLoggedIn]);
+
+  useEffect(() => {
     // This code will only run on the client side, after the component is mounted
     if (typeof window !== "undefined") {
       setCurrentUserId(sessionStorage.getItem("userId") || 0);
@@ -23,12 +38,6 @@ export function UserProvider({ children }) {
       setIsLoggedIn(sessionStorage.getItem("isLoggedIn") === "true" || false);
     }
   }, []);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      doFetch(`${API_BASE_URL}/users/current/`);
-    }
-  }, [isLoggedIn]);
 
   useEffect(() => {
     if (loggedInUser && "id" in loggedInUser) {
@@ -42,15 +51,6 @@ export function UserProvider({ children }) {
       setIsLoggedIn(true);
     }
   }, [loggedInUser]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("userId", currentUserId);
-      sessionStorage.setItem("username", currentUsername);
-      sessionStorage.setItem("userProfilePicture", currentUserProfilePicture);
-      sessionStorage.setItem("isLoggedIn", isLoggedIn);
-    }
-  }, [currentUserId, currentUsername, currentUserProfilePicture, isLoggedIn]);
 
   return (
     <UserContext.Provider
