@@ -5,9 +5,9 @@ import PostHeader from "./PostHeader";
 import PostModal from "../Home/PostModal";
 import LikesInfo from "./LikesInfo";
 import CommentSection from "./CommentSection";
+import useCommentFunctions from "../../hooks/useCommentFunctions";
 import { useUser } from "../../context/userContext";
-
-const API_BASE_URL = "http://localhost:8000";
+import API_BASE_URL from "../../api";
 
 async function toggleLike(postId, currentUsername, like = true) {
   try {
@@ -32,10 +32,6 @@ async function toggleLike(postId, currentUsername, like = true) {
 export default function Post({
   post,
   updatePost,
-  comments,
-  handleCommentSubmit,
-  handleCommentEdit,
-  handleCommentDelete,
   showPostModal,
   setSelectedPost,
 }) {
@@ -47,6 +43,13 @@ export default function Post({
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
   const [likedUsers, setLikedUsers] = useState(post.likes);
+
+  const {
+    comments,
+    handleCommentSubmit,
+    handleCommentEdit,
+    handleCommentDelete,
+  } = useCommentFunctions(post.id);
 
   const handleImageClick = () => {
     if (setSelectedPost) setSelectedPost(post);

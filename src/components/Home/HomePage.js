@@ -6,7 +6,6 @@ import RightSidebar from "./RightSidebar";
 import Stories from "./Stories";
 import Post from "../post/Post";
 import SuggestedProfile from "../profile/SuggestedProfile";
-import useCommentFunctions from "../../hooks/useCommentFunctions";
 import { useUser } from "../../context/userContext";
 import API_BASE_URL from "../../api";
 
@@ -16,20 +15,15 @@ export default function HomePage({ initialPosts }) {
 
   const [posts, setPosts] = useState(initialPosts || []);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  const { data: userData, doFetch } = useFetch(`${API_BASE_URL}/users/`);
   const [currentUserData, setCurrentUserData] = useState(null); // Store current user data
+
+  const { data: userData, doFetch } = useFetch(`${API_BASE_URL}/users/`);
+
   const loggedInUser = {
     id: currentUserId,
     username: currentUsername,
     profile_pic: { signed_image_url: currentUserProfilePicture },
   };
-
-  const {
-    comments,
-    handleCommentSubmit,
-    handleCommentEdit,
-    handleCommentDelete,
-  } = useCommentFunctions();
 
   useEffect(() => {
     console.log("Current User ID:", currentUserId);
@@ -57,8 +51,8 @@ export default function HomePage({ initialPosts }) {
         ));
       setSuggestedProfiles(profiles);
     }
-    console.log("Current User Data:", currentUserData); // Add this line for logging
-  }, [userData, currentUserId, currentUserData]); // Add currentUserData as a dependency
+    console.log("Current User Data:", currentUserData);
+  }, [userData, currentUserId, currentUserData]);
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
@@ -95,10 +89,6 @@ export default function HomePage({ initialPosts }) {
                     <MemoizedPost
                       post={post}
                       updatePost={handleUpdatePost}
-                      comments={comments}
-                      handleCommentSubmit={handleCommentSubmit}
-                      handleCommentEdit={handleCommentEdit}
-                      handleCommentDelete={handleCommentDelete}
                       showPostModal={false}
                     />
                   </article>

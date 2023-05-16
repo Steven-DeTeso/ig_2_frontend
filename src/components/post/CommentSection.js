@@ -2,16 +2,15 @@
 import React from "react";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
-import useCommentFunctions from "../../hooks/useCommentFunctions";
 
-function CommentsSection({ currentUserId, postId }) {
-  const {
-    comments,
-    handleCommentSubmit,
-    handleCommentEdit,
-    handleCommentDelete,
-  } = useCommentFunctions(postId);
-
+function CommentsSection({
+  comments,
+  currentUserId,
+  postId,
+  handleCommentSubmit,
+  handleCommentEdit,
+  handleCommentDelete,
+}) {
   return (
     <div>
       {comments.map((comment) => (
