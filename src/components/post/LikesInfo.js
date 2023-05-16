@@ -1,6 +1,6 @@
-import React from "react";
+import React, { memo } from "react";
 
-export default function LikesInfo({ totalLikes, likedUsers }) {
+const LikesInfo = memo(function LikesInfo({ totalLikes, likedUsers }) {
   const likedUsersString = () => {
     return likedUsers.reduce((accumulator, user, index) => {
       const separator = index !== likedUsers.length - 1 ? ", " : "";
@@ -23,4 +23,6 @@ export default function LikesInfo({ totalLikes, likedUsers }) {
       )}
     </div>
   );
-}
+});
+
+export default LikesInfo;

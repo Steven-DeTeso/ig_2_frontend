@@ -16,7 +16,7 @@ export default function HomePage({ initialPosts }) {
   const [posts, setPosts] = useState(initialPosts || []);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
   const [currentUserData, setCurrentUserData] = useState(null); // Store current user data
-
+  const [comments, setComments] = useState({});
   const { data: userData, doFetch } = useFetch(`${API_BASE_URL}/users/`);
 
   const loggedInUser = {
@@ -54,6 +54,26 @@ export default function HomePage({ initialPosts }) {
     console.log("Current User Data:", currentUserData);
   }, [userData, currentUserId, currentUserData]);
 
+  useEffect(() => {
+    const fetchCommentsForPosts = async () => {
+      const comments = {};
+      for (let post of posts) {
+        const response = await fetch(`${API_BASE_URL}/posts/${post.id}/post_comments/`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          comments[post.id] = data;
+        }
+      }
+      setComments(comments);
+    };
+
+    fetchCommentsForPosts();
+  }, [posts]);
+
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
   };
@@ -88,6 +108,7 @@ export default function HomePage({ initialPosts }) {
                   <article key={post.id} className={styles.postArticle}>
                     <MemoizedPost
                       post={post}
+                      comments={comments[post.id] || []}
                       updatePost={handleUpdatePost}
                       showPostModal={false}
                     />

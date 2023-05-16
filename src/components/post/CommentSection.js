@@ -1,9 +1,8 @@
-// CommentsSection.js
-import React from "react";
+import React, { memo } from "react";
 import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 
-function CommentsSection({
+const CommentsSection = memo(function CommentsSection({
   comments,
   currentUserId,
   postId,
@@ -28,6 +27,6 @@ function CommentsSection({
       <CommentForm postId={postId} handleCommentSubmit={handleCommentSubmit} />
     </div>
   );
-}
+});
 
 export default CommentsSection;
