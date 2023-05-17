@@ -1,9 +1,10 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 
-export default function useFetch(url) {
+export default function useFetch(initialUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [url, setUrl] = useState(initialUrl);
 
   const options = {
     method: "GET",
@@ -13,25 +14,32 @@ export default function useFetch(url) {
     credentials: "include",
   };
 
-  const fetchData = useCallback(async (url) => {
-    setLoading(true);
-    console.log(`Fetching data from: ${url}`); // Add console log to print the URL
-    try {
-      const response = await fetch(url, options);
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Response:", data);
-        setData(data);
-      } else {
-        throw new Error(`Error fetching data from ${url}`);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!url) {
+        return;
       }
-    } catch (error) {
-      console.error("Fetch error:", error);
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+      setLoading(true);
+      console.log(`Fetching data from: ${url}`); // Add console log to print the URL
+      try {
+        const response = await fetch(url, options);
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Response:", data);
+          setData(data);
+        } else {
+          throw new Error(`Error fetching data from ${url}`);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  return { data, loading, error, doFetch: fetchData };
+    fetchData();
+  }, [url]);
+
+  return { data, loading, error, setUrl };
 }

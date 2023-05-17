@@ -5,7 +5,6 @@ import PostHeader from "./PostHeader";
 import PostModal from "../Home/PostModal";
 import LikesInfo from "./LikesInfo";
 import CommentSection from "./CommentSection";
-import useCommentFunctions from "../../hooks/useCommentFunctions";
 import { useUser } from "../../context/userContext";
 import API_BASE_URL from "../../api";
 

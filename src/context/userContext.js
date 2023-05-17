@@ -10,11 +10,11 @@ export function UserProvider({ children }) {
   const [currentUserProfilePicture, setCurrentUserProfilePicture] =
     useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { data: loggedInUser, doFetch } = useFetch();
+  const { data: loggedInUser, setUrl } = useFetch();
 
   useEffect(() => {
-    if (isLoggedIn == false) {
-      doFetch(`${API_BASE_URL}/users/current/`);
+    if (isLoggedIn !== undefined) {
+      setUrl(`${API_BASE_URL}/users/current/`);
     }
   }, [isLoggedIn]);
 

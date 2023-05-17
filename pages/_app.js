@@ -3,7 +3,7 @@ import { UserProvider } from "../src/context/userContext";
 function MyApp({ Component, pageProps }) {
   return (
     <UserProvider>
-      <Component {...pageProps} />
+        <Component {...pageProps} />
     </UserProvider>
   );
 }

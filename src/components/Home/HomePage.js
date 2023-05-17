@@ -8,6 +8,7 @@ import SuggestedProfile from "../profile/SuggestedProfile";
 import { useUser } from "../../context/userContext";
 import API_BASE_URL from "../../api";
 import Feed from "./Feed";
+import { CommentsProvider } from "../../context/commentsContext";
 
 export default function HomePage({ initialPosts }) {
   const { currentUserId, currentUsername, currentUserProfilePicture } =
@@ -16,7 +17,7 @@ export default function HomePage({ initialPosts }) {
   const [posts, setPosts] = useState(initialPosts || []);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
   const [currentUserData, setCurrentUserData] = useState(null); // Store current user data
-  const { data: userData, doFetch } = useFetch(`${API_BASE_URL}/users/`);
+  const { data: userData, setUrl } = useFetch();
 
   const loggedInUser = {
     id: currentUserId,
@@ -27,9 +28,9 @@ export default function HomePage({ initialPosts }) {
   useEffect(() => {
     console.log("Current User ID:", currentUserId);
     if (currentUserId) {
-      doFetch(`${API_BASE_URL}/users/`);
+      setUrl(`${API_BASE_URL}/users/`);
     }
-  }, [currentUserId, doFetch]);
+  }, [currentUserId, setUrl]);
 
   useEffect(() => {
     console.log("User Data:", userData);
@@ -51,7 +52,7 @@ export default function HomePage({ initialPosts }) {
       setSuggestedProfiles(profiles);
     }
     console.log("Current User Data:", currentUserData);
-  }, [userData, currentUserId, currentUserData]);
+  }, [userData, currentUserId]);
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
@@ -79,7 +80,9 @@ export default function HomePage({ initialPosts }) {
         <section className={styles.mainContainer}>
           <main className={styles.middleMain}>
             <Stories suggestedProfiles={suggestedProfiles} />
-            <Feed posts={posts} updatePost={handleUpdatePost} />
+            <CommentsProvider posts={posts}>
+              <Feed posts={posts} updatePost={handleUpdatePost} />
+            </CommentsProvider>
           </main>
           <RightSidebar
             currentUsername={currentUsername}
