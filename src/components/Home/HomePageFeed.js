@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Post from "../post/Post";
 import { useComments } from "../../context/commentsContext";
-// import useCommentFunctions from "../../hooks/useCommentFunctions";
-// import API_BASE_URL from "../../api";
 
-export default function Feed({ posts, updatePost }) {
+export default function HomePageFeed({ posts, updatePost }) {
   const {
     comments,
     handleCommentSubmit,

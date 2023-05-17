@@ -5,9 +5,9 @@ import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
 import Stories from "./Stories";
 import SuggestedProfile from "../profile/SuggestedProfile";
-import { useUser } from "../../context/userContext";
+import HomePageFeed from "./HomePageFeed";
 import API_BASE_URL from "../../api";
-import Feed from "./Feed";
+import { useUser } from "../../context/userContext";
 import { CommentsProvider } from "../../context/commentsContext";
 
 export default function HomePage({ initialPosts }) {
@@ -81,7 +81,7 @@ export default function HomePage({ initialPosts }) {
           <main className={styles.middleMain}>
             <Stories suggestedProfiles={suggestedProfiles} />
             <CommentsProvider posts={posts}>
-              <Feed posts={posts} updatePost={handleUpdatePost} />
+              <HomePageFeed posts={posts} updatePost={handleUpdatePost} />
             </CommentsProvider>
           </main>
           <RightSidebar

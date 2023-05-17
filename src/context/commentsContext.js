@@ -1,4 +1,3 @@
-// commentsContext.js
 import React, {
   createContext,
   useState,
