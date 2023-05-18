@@ -35,24 +35,37 @@ export default function HomePage({ initialPosts }) {
   useEffect(() => {
     console.log("User Data:", userData);
     if (userData && currentUserId) {
-      setCurrentUserData(userData.find((user) => user.id === currentUserId)); // Find and store the current user data
+      const currentUser = userData.find((user) => user.id === currentUserId);
+      setCurrentUserData(currentUser);
+    }
+  }, [userData, currentUserId]);
+
+  useEffect(() => {
+    console.log("Current User Data:", currentUserData);
+    if (userData && currentUserData) {
       const profiles = userData
         .filter(
           (user) =>
             user.id !== currentUserId && user.profile_pic?.signed_image_url
-        ) // Exclude the current user based on id and check if signed image url exists
-        .map((user) => (
-          <SuggestedProfile
-            key={user.id}
-            profilePicture={user.profile_pic.signed_image_url}
-            username={user.username}
-            userId={user.id}
-          />
-        ));
+        )
+        .map((user) => {
+          const isFollowing = currentUserData.following.some(
+            (followingUser) => followingUser.id === user.id
+          );
+          return (
+            <SuggestedProfile
+              key={user.id}
+              profilePicture={user.profile_pic.signed_image_url}
+              username={user.username}
+              userId={user.id}
+              currentUserId={currentUserId}
+              isFollowing={isFollowing}
+            />
+          );
+        });
       setSuggestedProfiles(profiles);
     }
-    console.log("Current User Data:", currentUserData);
-  }, [userData, currentUserId]);
+  }, [userData, currentUserId, currentUserData]);
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);

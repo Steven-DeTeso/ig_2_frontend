@@ -1,9 +1,16 @@
 import React from "react";
 import styles from "./FollowProfileLink.module.css";
 import Link from "next/link";
+import FollowUnfollowButton from "../Home/FollowUnfollowButton";
 
 // recieving its props from Homepage component
-export default function SuggestedProfile({ profilePicture, username, userId }) {
+export default function SuggestedProfile({
+  profilePicture,
+  username,
+  userId,
+  currentUserId,
+  isFollowing,
+}) {
   return (
     <>
       <Link href={`/users/${userId}/`} className={styles.noDecoration}>
@@ -18,6 +25,11 @@ export default function SuggestedProfile({ profilePicture, username, userId }) {
           </p>
         </div>
       </Link>
+      <FollowUnfollowButton
+        currentUserId={currentUserId}
+        profileUserId={userId}
+        initialFollowStatus={isFollowing}
+      />
     </>
   );
 }

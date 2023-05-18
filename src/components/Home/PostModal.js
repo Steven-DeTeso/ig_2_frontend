@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import styles from "./PostModal.module.css";
 import CommentSection from "../post/CommentSection";
 
+// TODO: reorder styling so comments appear on left side.
 const PostModal = ({
   post,
   show,
