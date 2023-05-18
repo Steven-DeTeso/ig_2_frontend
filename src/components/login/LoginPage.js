@@ -4,9 +4,11 @@ import LoginForm from "./LoginForm";
 import Footer from "./Footer";
 import styles from "./LoginPage.module.css";
 import API_BASE_URL from "../../api";
+import { useUser } from "../../context/userContext";
 
 const LoginPage = () => {
   const router = useRouter();
+  const { setIsLoggedIn } = useUser();
 
   const verifyToken = async () => {
     try {
@@ -19,6 +21,7 @@ const LoginPage = () => {
       });
 
       if (response.ok) {
+        setIsLoggedIn(true);
         router.push("/feed");
       }
     } catch (error) {
