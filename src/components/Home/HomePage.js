@@ -37,19 +37,14 @@ export default function HomePage({ initialPosts }) {
     if (userData && currentUserId) {
       const currentUser = userData.find((user) => user.id === currentUserId);
       setCurrentUserData(currentUser);
-    }
-  }, [userData, currentUserId]);
 
-  useEffect(() => {
-    console.log("Current User Data:", currentUserData);
-    if (userData && currentUserData) {
       const profiles = userData
         .filter(
           (user) =>
             user.id !== currentUserId && user.profile_pic?.signed_image_url
         )
         .map((user) => {
-          const isFollowing = currentUserData.following.some(
+          const isFollowing = currentUser.following.some(
             (followingUser) => followingUser.id === user.id
           );
           return (
@@ -65,7 +60,7 @@ export default function HomePage({ initialPosts }) {
         });
       setSuggestedProfiles(profiles);
     }
-  }, [userData, currentUserId, currentUserData]);
+  }, [userData, currentUserId]);
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
