@@ -14,7 +14,7 @@ export const useComments = () => {
 };
 
 export const CommentsProvider = ({ children, posts }) => {
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState({});
 
   useEffect(() => {
     const fetchCommentsForPosts = async () => {
@@ -158,6 +158,7 @@ export const CommentsProvider = ({ children, posts }) => {
     handleCommentEdit,
     handleCommentDelete,
   };
+  console.log(value);
 
   return (
     <CommentsContext.Provider value={value}>

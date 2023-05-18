@@ -13,7 +13,7 @@ export function UserProvider({ children }) {
   const { data: loggedInUser, setUrl } = useFetch();
 
   useEffect(() => {
-    if (isLoggedIn !== undefined) {
+    if (isLoggedIn) {
       setUrl(`${API_BASE_URL}/users/current/`);
     }
   }, [isLoggedIn]);
