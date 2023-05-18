@@ -92,7 +92,6 @@ const ProfilePage = ({ userId }) => {
     if (updatedPost.isDeleted) {
       setUserPosts(userPosts.filter((post) => post.id !== updatedPost.id));
     } else {
-      // When called, takes the updated post object and maps over the current list of posts. For each post in the list, it checks if the post ID matches the ID of the updated post. If it does, it replaces the current post object with the updated post object. If it doesn't, it keeps the current post object. Sets the state of the Posts with new array.
       const newPosts = userPosts.map((post) =>
         post.id === updatedPost.id ? updatedPost : post
       );

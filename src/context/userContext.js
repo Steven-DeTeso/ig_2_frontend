@@ -30,7 +30,6 @@ export function UserProvider({ children }) {
   useEffect(() => {
     if (isLoggedIn) {
       setUrl(`${API_BASE_URL}/users/current/`);
-      console.log(isLoggedIn);
     }
   }, [isLoggedIn]);
 
