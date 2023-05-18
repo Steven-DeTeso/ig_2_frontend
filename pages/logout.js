@@ -44,6 +44,10 @@ export default function Logout() {
       if (!response.ok) {
         throw new Error("Logout failed.");
       }
+      if (typeof window !== "undefined") {
+        sessionStorage.clear();
+        console.log("Cleared sessionStroage data");
+      }
       router.push("/");
       setIsLoggedIn(false);
     } catch (error) {

@@ -1,13 +1,14 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect } from "react";
 import useFetch from "../../hooks/useFetch";
 import styles from "./HomePage.module.css";
 import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
 import Stories from "./Stories";
-import Post from "../post/Post";
 import SuggestedProfile from "../profile/SuggestedProfile";
-import { useUser } from "../../context/userContext";
+import HomePageFeed from "./HomePageFeed";
 import API_BASE_URL from "../../api";
+import { useUser } from "../../context/userContext";
+import { CommentsProvider } from "../../context/commentsContext";
 
 export default function HomePage({ initialPosts }) {
   const { currentUserId, currentUsername, currentUserProfilePicture } =
@@ -16,8 +17,7 @@ export default function HomePage({ initialPosts }) {
   const [posts, setPosts] = useState(initialPosts || []);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
   const [currentUserData, setCurrentUserData] = useState(null); // Store current user data
-  const [comments, setComments] = useState({});
-  const { data: userData, doFetch } = useFetch(`${API_BASE_URL}/users/`);
+  const { data: userData, setUrl } = useFetch();
 
   const loggedInUser = {
     id: currentUserId,
@@ -28,9 +28,9 @@ export default function HomePage({ initialPosts }) {
   useEffect(() => {
     console.log("Current User ID:", currentUserId);
     if (currentUserId) {
-      doFetch(`${API_BASE_URL}/users/`);
+      setUrl(`${API_BASE_URL}/users/`);
     }
-  }, [currentUserId, doFetch]);
+  }, [currentUserId, setUrl]);
 
   useEffect(() => {
     console.log("User Data:", userData);
@@ -52,27 +52,7 @@ export default function HomePage({ initialPosts }) {
       setSuggestedProfiles(profiles);
     }
     console.log("Current User Data:", currentUserData);
-  }, [userData, currentUserId, currentUserData]);
-
-  useEffect(() => {
-    const fetchCommentsForPosts = async () => {
-      const comments = {};
-      for (let post of posts) {
-        const response = await fetch(`${API_BASE_URL}/posts/${post.id}/post_comments/`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-        });
-        if (response.ok) {
-          const data = await response.json();
-          comments[post.id] = data;
-        }
-      }
-      setComments(comments);
-    };
-
-    fetchCommentsForPosts();
-  }, [posts]);
+  }, [userData, currentUserId]);
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
@@ -90,8 +70,6 @@ export default function HomePage({ initialPosts }) {
     }
   };
 
-  const MemoizedPost = memo(Post);
-
   return (
     <>
       <div className={styles.homePageContainer}>
@@ -102,19 +80,9 @@ export default function HomePage({ initialPosts }) {
         <section className={styles.mainContainer}>
           <main className={styles.middleMain}>
             <Stories suggestedProfiles={suggestedProfiles} />
-            {posts &&
-              posts.map((post) => {
-                return (
-                  <article key={post.id} className={styles.postArticle}>
-                    <MemoizedPost
-                      post={post}
-                      comments={comments[post.id] || []}
-                      updatePost={handleUpdatePost}
-                      showPostModal={false}
-                    />
-                  </article>
-                );
-              })}
+            <CommentsProvider posts={posts}>
+              <HomePageFeed posts={posts} updatePost={handleUpdatePost} />
+            </CommentsProvider>
           </main>
           <RightSidebar
             currentUsername={currentUsername}

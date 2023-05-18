@@ -15,6 +15,7 @@ const CommentsSection = memo(function CommentsSection({
       {comments.map((comment) => (
         <Comment
           key={comment.id}
+          postId={postId}
           commentId={comment.id}
           username={comment.author.username}
           commentText={comment.text}

@@ -10,22 +10,7 @@ export function UserProvider({ children }) {
   const [currentUserProfilePicture, setCurrentUserProfilePicture] =
     useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { data: loggedInUser, doFetch } = useFetch();
-
-  useEffect(() => {
-    if (isLoggedIn == false) {
-      doFetch(`${API_BASE_URL}/users/current/`);
-    }
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("userId", currentUserId);
-      sessionStorage.setItem("username", currentUsername);
-      sessionStorage.setItem("userProfilePicture", currentUserProfilePicture);
-      sessionStorage.setItem("isLoggedIn", isLoggedIn);
-    }
-  }, [currentUserId, currentUsername, currentUserProfilePicture, isLoggedIn]);
+  const { data: loggedInUser, setUrl } = useFetch();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -34,7 +19,6 @@ export function UserProvider({ children }) {
       const storedUserProfilePicture =
         sessionStorage.getItem("userProfilePicture");
       const storedIsLoggedIn = sessionStorage.getItem("isLoggedIn");
-
       if (storedUserId) setCurrentUserId(parseInt(storedUserId));
       if (storedUsername) setCurrentUsername(storedUsername);
       if (storedUserProfilePicture)
@@ -42,6 +26,12 @@ export function UserProvider({ children }) {
       if (storedIsLoggedIn) setIsLoggedIn(storedIsLoggedIn === "true");
     }
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setUrl(`${API_BASE_URL}/users/current/`);
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (loggedInUser && "id" in loggedInUser) {
@@ -55,6 +45,15 @@ export function UserProvider({ children }) {
       setIsLoggedIn(true);
     }
   }, [loggedInUser]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("userId", currentUserId);
+      sessionStorage.setItem("username", currentUsername);
+      sessionStorage.setItem("userProfilePicture", currentUserProfilePicture);
+      sessionStorage.setItem("isLoggedIn", isLoggedIn);
+    }
+  }, [currentUserId, currentUsername, currentUserProfilePicture, isLoggedIn]);
 
   return (
     <UserContext.Provider

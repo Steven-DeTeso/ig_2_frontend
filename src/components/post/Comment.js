@@ -7,6 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 const Comment = ({
   username,
   commentText,
+  postId,
   authorId,
   currentUserId,
   commentId,
@@ -25,19 +26,18 @@ const Comment = ({
     setAnchorEl(null);
   };
 
-  const handleUpdateComment = async (updatedText) => {
+  const handleUpdateComment = async (postId, commentId, updatedText) => {
     try {
-      await handleCommentEdit(commentId, updatedText);
+      await handleCommentEdit(postId, commentId, updatedText);
       setIsEditing(false);
     } catch (error) {
       console.error("Failed to update comment");
     }
   };
 
-  const handleDelete = async (event) => {
-    event.stopPropagation();
+  const handleDelete = async (commentId, postId) => {
     try {
-      await handleCommentDelete(commentId);
+      await handleCommentDelete(commentId, postId);
     } catch (error) {
       console.error("Failed to delete comment");
     }
@@ -60,7 +60,11 @@ const Comment = ({
             value={editedComment}
             onChange={(e) => setEditedComment(e.target.value)}
           />
-          <button onClick={() => handleUpdateComment(editedComment)}>
+          <button
+            onClick={() =>
+              handleUpdateComment(commentId, postId, editedComment)
+            }
+          >
             Post
           </button>
         </>
@@ -83,7 +87,9 @@ const Comment = ({
             >
               <ListItemText>Edit</ListItemText>
             </MenuItem>
-            <MenuItem onClick={(event) => handleDelete(event)}>Delete</MenuItem>
+            <MenuItem onClick={() => handleDelete(commentId, postId)}>
+              Delete
+            </MenuItem>
           </Menu>
         </>
       )}
