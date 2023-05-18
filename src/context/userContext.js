@@ -13,28 +13,12 @@ export function UserProvider({ children }) {
   const { data: loggedInUser, setUrl } = useFetch();
 
   useEffect(() => {
-    if (isLoggedIn) {
-      setUrl(`${API_BASE_URL}/users/current/`);
-    }
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("userId", currentUserId);
-      sessionStorage.setItem("username", currentUsername);
-      sessionStorage.setItem("userProfilePicture", currentUserProfilePicture);
-      sessionStorage.setItem("isLoggedIn", isLoggedIn);
-    }
-  }, [currentUserId, currentUsername, currentUserProfilePicture, isLoggedIn]);
-
-  useEffect(() => {
     if (typeof window !== "undefined") {
       const storedUserId = sessionStorage.getItem("userId");
       const storedUsername = sessionStorage.getItem("username");
       const storedUserProfilePicture =
         sessionStorage.getItem("userProfilePicture");
       const storedIsLoggedIn = sessionStorage.getItem("isLoggedIn");
-
       if (storedUserId) setCurrentUserId(parseInt(storedUserId));
       if (storedUsername) setCurrentUsername(storedUsername);
       if (storedUserProfilePicture)
@@ -42,6 +26,13 @@ export function UserProvider({ children }) {
       if (storedIsLoggedIn) setIsLoggedIn(storedIsLoggedIn === "true");
     }
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setUrl(`${API_BASE_URL}/users/current/`);
+      console.log(isLoggedIn);
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (loggedInUser && "id" in loggedInUser) {
@@ -55,6 +46,15 @@ export function UserProvider({ children }) {
       setIsLoggedIn(true);
     }
   }, [loggedInUser]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("userId", currentUserId);
+      sessionStorage.setItem("username", currentUsername);
+      sessionStorage.setItem("userProfilePicture", currentUserProfilePicture);
+      sessionStorage.setItem("isLoggedIn", isLoggedIn);
+    }
+  }, [currentUserId, currentUsername, currentUserProfilePicture, isLoggedIn]);
 
   return (
     <UserContext.Provider
