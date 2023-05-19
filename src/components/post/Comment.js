@@ -3,6 +3,8 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
+import Link from "next/link";
+import styles from "./Comment.module.css";
 
 const Comment = ({
   username,
@@ -52,8 +54,10 @@ const Comment = ({
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <p>{username}</p>
+    <div className={styles.commentWrapper}>
+      <Link href={`/users/${authorId}`} className={styles.commentUsername}>
+        <p>{username}</p>
+      </Link>
       {isEditing ? (
         <>
           <input
@@ -72,7 +76,7 @@ const Comment = ({
         <p>{commentText}</p>
       )}
       {canEditDelete && (
-        <>
+        <div className={styles.optionsButton}>
           <MoreHorizIcon onClick={handleClick} />
           <Menu
             anchorEl={anchorEl}
@@ -91,7 +95,7 @@ const Comment = ({
               Delete
             </MenuItem>
           </Menu>
-        </>
+        </div>
       )}
     </div>
   );

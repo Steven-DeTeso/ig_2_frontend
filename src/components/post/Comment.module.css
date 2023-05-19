@@ -1,0 +1,15 @@
+.commentWrapper {
+    display: flex;
+}
+
+.commentUsername {
+    text-decoration: none;
+    color: black;
+    margin-right: 10px;
+}
+
+.optionsButton {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}

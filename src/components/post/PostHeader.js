@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 import styles from "../post/Post.module.css";
+import Link from "next/link";
 import OptionsButton from "./OptionsButton";
 import ProfileImage from "./ProfileImage";
 import { useRouter } from "next/router";
 import { deletePost, followOrUnfollowUser } from "../../api";
+import { useUser } from "../../context/userContext";
 
 export default function PostHeader({ post, currentUserId, updatePost }) {
   const router = useRouter();
   const [isFollowing, setIsFollowing] = useState();
   const [imageUrl, setImageUrl] = useState(null);
 
+  const { currentUserFollowing, followOrUnfollow } = useUser();
+
   useEffect(() => {
     setImageUrl(post.author.profile_pic.signed_image_url);
-    // extract follower id numbers and store in new array under followerIds
-    const followerIds = post.author.followers.map((follower) => follower.id);
-    // checking to see if currentUserid is in new array, if so, isFollowing set to true
-    setIsFollowing(followerIds.includes(currentUserId));
-  }, [post, currentUserId]);
+    setIsFollowing(currentUserFollowing.includes(post.author.id));
+  }, [post, currentUserFollowing]);
 
   const handleDeletePost = async () => {
     const isDeleted = await deletePost(post.id);
@@ -35,6 +36,7 @@ export default function PostHeader({ post, currentUserId, updatePost }) {
       const isFollowed = await followOrUnfollowUser(postAuthorId, "follow");
       if (isFollowed) {
         setIsFollowing(true);
+        followOrUnfollow(postAuthorId, false);
         // Handle the success case, e.g., update the UI, show a notification, etc.
       } else {
         // Handle the error case
@@ -43,6 +45,7 @@ export default function PostHeader({ post, currentUserId, updatePost }) {
       const isUnfollowed = await followOrUnfollowUser(postAuthorId, "unfollow");
       if (isUnfollowed) {
         setIsFollowing(false);
+        followOrUnfollow(postAuthorId, true);
         // Handle the success case, e.g., update the UI, show a notification, etc.
       } else {
         // Handle the error case
@@ -53,8 +56,10 @@ export default function PostHeader({ post, currentUserId, updatePost }) {
   return (
     <div className={styles.topPost}>
       <div className={styles.profileWrapper}>
-        <ProfileImage imageUrl={imageUrl} />
-        <h3>{post.author.username}</h3>
+        <Link href={`/users/${currentUserId}/`}>
+          <ProfileImage imageUrl={imageUrl} />
+          <h3 className={styles.linkUsername}>{post.author.username}</h3>
+        </Link>
       </div>
       <OptionsButton
         post={post}

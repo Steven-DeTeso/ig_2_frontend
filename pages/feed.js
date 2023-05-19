@@ -1,13 +1,13 @@
 import HomePage from "../src/components/Home/HomePage";
 import cookie from "cookie";
 import { refreshAuthToken } from "../src/api";
-
-const API_BASE_URL = "http://localhost:8000";
+import API_BASE_URL from "../src/api";
 
 export default function Feed({ initialPosts }) {
   return <HomePage initialPosts={initialPosts} />;
 }
 
+// TODO: check if i don't need this cookie import anylonger
 export async function getServerSideProps(context) {
   const { req } = context;
   const cookies = cookie.parse(req.headers.cookie || "");

@@ -20,6 +20,7 @@
 .postImageContainer {
     margin: auto;
     border-bottom: 1px solid rgb(219,219,219);
+    width: max-content;
 }
 
 .topPost {
@@ -32,9 +33,14 @@
     justify-self: flex-end;
 }
 
-.profileWrapper {
+.profileWrapper > a {
     display: flex;
     align-items: center;
+    text-decoration: none;
+    color: black;
+}
+.linkUsername {
+    margin-left: 10px;
 }
 
 .profileWrapper > h3 {

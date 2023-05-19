@@ -11,8 +11,12 @@ import { useUser } from "../../context/userContext";
 import { CommentsProvider } from "../../context/commentsContext";
 
 export default function HomePage({ initialPosts }) {
-  const { currentUserId, currentUsername, currentUserProfilePicture } =
-    useUser();
+  const {
+    currentUserId,
+    currentUsername,
+    currentUserProfilePicture,
+    currentUserFollowing,
+  } = useUser();
 
   const [posts, setPosts] = useState(initialPosts || []);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
@@ -35,24 +39,30 @@ export default function HomePage({ initialPosts }) {
   useEffect(() => {
     console.log("User Data:", userData);
     if (userData && currentUserId) {
-      setCurrentUserData(userData.find((user) => user.id === currentUserId)); // Find and store the current user data
+      const currentUser = userData.find((user) => user.id === currentUserId);
+      setCurrentUserData(currentUser);
+
       const profiles = userData
         .filter(
           (user) =>
             user.id !== currentUserId && user.profile_pic?.signed_image_url
-        ) // Exclude the current user based on id and check if signed image url exists
-        .map((user) => (
-          <SuggestedProfile
-            key={user.id}
-            profilePicture={user.profile_pic.signed_image_url}
-            username={user.username}
-            userId={user.id}
-          />
-        ));
+        )
+        .map((user) => {
+          const isFollowing = currentUserFollowing.includes(user.id);
+          return (
+            <SuggestedProfile
+              key={user.id}
+              profilePicture={user.profile_pic.signed_image_url}
+              username={user.username}
+              userId={user.id}
+              currentUserId={currentUserId}
+              isFollowing={isFollowing}
+            />
+          );
+        });
       setSuggestedProfiles(profiles);
     }
-    console.log("Current User Data:", currentUserData);
-  }, [userData, currentUserId]);
+  }, [userData, currentUserId, currentUserFollowing]);
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
