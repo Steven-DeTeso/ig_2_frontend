@@ -9,6 +9,7 @@ export function UserProvider({ children }) {
   const [currentUsername, setCurrentUsername] = useState("");
   const [currentUserProfilePicture, setCurrentUserProfilePicture] =
     useState("");
+  const [currentUserFollowing, setCurrentUserFollowing] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { data: loggedInUser, setUrl } = useFetch();
 
@@ -18,11 +19,16 @@ export function UserProvider({ children }) {
       const storedUsername = sessionStorage.getItem("username");
       const storedUserProfilePicture =
         sessionStorage.getItem("userProfilePicture");
+      const storedCurrentUserFollowing = sessionStorage.getItem(
+        "currentUserFollowing"
+      );
       const storedIsLoggedIn = sessionStorage.getItem("isLoggedIn");
       if (storedUserId) setCurrentUserId(parseInt(storedUserId));
       if (storedUsername) setCurrentUsername(storedUsername);
       if (storedUserProfilePicture)
         setCurrentUserProfilePicture(storedUserProfilePicture);
+      if (storedCurrentUserFollowing)
+        setCurrentUserFollowing(JSON.parse(storedCurrentUserFollowing));
       if (storedIsLoggedIn) setIsLoggedIn(storedIsLoggedIn === "true");
     }
   }, []);
@@ -42,18 +48,43 @@ export function UserProvider({ children }) {
           ? loggedInUser.profile_pic.signed_image_url
           : null
       );
+      setCurrentUserFollowing(
+        loggedInUser.following
+          ? loggedInUser.following.map((follow) => follow.id)
+          : []
+      );
       setIsLoggedIn(true);
     }
   }, [loggedInUser]);
+
+  const followOrUnfollow = (userId, isFollowing) => {
+    if (isFollowing) {
+      setCurrentUserFollowing((prevFollowing) =>
+        prevFollowing.filter((id) => id !== userId)
+      );
+    } else {
+      setCurrentUserFollowing((prevFollowing) => [...prevFollowing, userId]);
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       sessionStorage.setItem("userId", currentUserId);
       sessionStorage.setItem("username", currentUsername);
       sessionStorage.setItem("userProfilePicture", currentUserProfilePicture);
+      sessionStorage.setItem(
+        "currentUserFollowing",
+        JSON.stringify(currentUserFollowing)
+      );
       sessionStorage.setItem("isLoggedIn", isLoggedIn);
     }
-  }, [currentUserId, currentUsername, currentUserProfilePicture, isLoggedIn]);
+  }, [
+    currentUserId,
+    currentUsername,
+    currentUserProfilePicture,
+    currentUserFollowing,
+    isLoggedIn,
+  ]);
 
   return (
     <UserContext.Provider
@@ -61,8 +92,10 @@ export function UserProvider({ children }) {
         currentUserId,
         currentUsername,
         currentUserProfilePicture,
+        currentUserFollowing,
         isLoggedIn,
         setIsLoggedIn,
+        followOrUnfollow,
       }}
     >
       {children}

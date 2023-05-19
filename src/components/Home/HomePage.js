@@ -11,8 +11,12 @@ import { useUser } from "../../context/userContext";
 import { CommentsProvider } from "../../context/commentsContext";
 
 export default function HomePage({ initialPosts }) {
-  const { currentUserId, currentUsername, currentUserProfilePicture } =
-    useUser();
+  const {
+    currentUserId,
+    currentUsername,
+    currentUserProfilePicture,
+    currentUserFollowing,
+  } = useUser();
 
   const [posts, setPosts] = useState(initialPosts || []);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
@@ -44,9 +48,7 @@ export default function HomePage({ initialPosts }) {
             user.id !== currentUserId && user.profile_pic?.signed_image_url
         )
         .map((user) => {
-          const isFollowing = currentUser.following.some(
-            (followingUser) => followingUser.id === user.id
-          );
+          const isFollowing = currentUserFollowing.includes(user.id);
           return (
             <SuggestedProfile
               key={user.id}
@@ -60,7 +62,7 @@ export default function HomePage({ initialPosts }) {
         });
       setSuggestedProfiles(profiles);
     }
-  }, [userData, currentUserId]);
+  }, [userData, currentUserId, currentUserFollowing]);
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
