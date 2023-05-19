@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../post/Post.module.css";
+import Link from "next/link";
 import OptionsButton from "./OptionsButton";
 import ProfileImage from "./ProfileImage";
 import { useRouter } from "next/router";
@@ -55,8 +56,10 @@ export default function PostHeader({ post, currentUserId, updatePost }) {
   return (
     <div className={styles.topPost}>
       <div className={styles.profileWrapper}>
-        <ProfileImage imageUrl={imageUrl} />
-        <h3>{post.author.username}</h3>
+        <Link href={`/users/${currentUserId}/`}>
+          <ProfileImage imageUrl={imageUrl} />
+          <h3 className={styles.linkUsername}>{post.author.username}</h3>
+        </Link>
       </div>
       <OptionsButton
         post={post}
