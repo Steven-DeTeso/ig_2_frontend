@@ -106,7 +106,7 @@ export default function LeftSidebar({ onPostCreated, loggedInUser }) {
           <h1 className={style.cloneFont}>Clone-a-gram</h1>
         )}
       </div>
-      <div className={styles.navLinks}>
+      <div className={(styles.navLinks, style.textFont)}>
         {navButtons.map((button, index) => (
           <NavButton
             key={index}

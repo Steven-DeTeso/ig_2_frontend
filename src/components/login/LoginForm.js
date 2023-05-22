@@ -60,7 +60,7 @@ export default function Login() {
           <FacebookBtn />
           <div className={styles.orContainer}>
             <div className={styles.orLine}></div>
-            <p className={styles.or}>OR</p>
+            <p className={(styles.or, style.textFont)}>OR</p>
             <div className={styles.orLine}></div>
           </div>
           {errorMessage && (

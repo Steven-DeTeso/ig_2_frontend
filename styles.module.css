@@ -7,9 +7,21 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'proximanova';
+    src: url('/fonts/proximanova-regular.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .cloneFont {
     font-family: 'Clone-a-gram', sans-serif;
     font-size: 50px;
     font-weight: normal;
     text-align: center;
+}
+
+.textFont {
+    font-family: 'proximanova', sans-serif;
+    font-size: medium;
 }
