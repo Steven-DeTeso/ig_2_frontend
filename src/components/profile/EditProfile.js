@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { Input } from "@mui/material";
 import styles from "./EditProfile.module.css";
-import style from "../../styles.module.css";
+import style from "../../../styles.module.css";
 import API_BASE_URL from "../../api";
+import { refreshAuthToken } from "../../api";
+import { useRouter } from "next/navigation";
+import { useUser } from "../../context/userContext";
 
 const EditProfile = ({ userData }) => {
+  const router = useRouter();
+  const { currentUserId } = useUser();
+  const userId = currentUserId;
+
   const [formData, setFormData] = useState({
     user: userData.id,
     first_name: userData.first_name,
@@ -49,13 +55,26 @@ const EditProfile = ({ userData }) => {
 
       const data = await response.json();
 
+      if (response.status === 401) {
+        refreshAuthToken();
+        const retryResponse = await fetch(
+          `${API_BASE_URL}/users/${userData.id}/update_profile_picture/`,
+          {
+            method: "PUT",
+            credentials: "include",
+            body: form,
+          }
+        );
+        const retryData = await retryResponse.json();
+      }
+
       if (!response.ok) {
         throw new Error(data.error || "Failed to update profile");
       }
 
       console.log("Profile updated successfully", data);
 
-      router.push(`/users/${userId}`);
+      router.push(`/users/${userId}/`);
     } catch (error) {
       console.error("Error updating profile:", error);
       setErrorMessage(error.message);
@@ -76,9 +95,6 @@ const EditProfile = ({ userData }) => {
         encType="multipart/form-data"
         className={styles.editForm}
       >
-        <label htmlFor="first_name" className={styles.editLabel}>
-          First Name
-        </label>
         <input
           type="text"
           name="first_name"
@@ -86,10 +102,6 @@ const EditProfile = ({ userData }) => {
           onChange={handleChange}
           className={styles.editInput}
         />
-
-        <label htmlFor="last_name" className={styles.editLabel}>
-          Last Name
-        </label>
         <input
           type="text"
           name="last_name"
@@ -97,10 +109,6 @@ const EditProfile = ({ userData }) => {
           onChange={handleChange}
           className={styles.editInput}
         />
-
-        <label htmlFor="username" className={styles.editLabel}>
-          Username
-        </label>
         <input
           type="text"
           name="username"
@@ -108,10 +116,6 @@ const EditProfile = ({ userData }) => {
           onChange={handleChange}
           className={styles.editInput}
         />
-
-        <label htmlFor="email" className={styles.editLabel}>
-          Email
-        </label>
         <input
           type="email"
           name="email"
@@ -119,7 +123,6 @@ const EditProfile = ({ userData }) => {
           onChange={handleChange}
           className={styles.editInput}
         />
-
         <input
           type="file"
           name="image"
@@ -127,7 +130,6 @@ const EditProfile = ({ userData }) => {
           onChange={handleChange}
           className={styles.editInput}
         />
-
         <button type="submit" className={styles.editButton}>
           {isLoading ? "Updating..." : "Save Changes"}
         </button>
