@@ -39,15 +39,15 @@ export default function Login() {
       });
 
       const data = await response.json();
-      if (!data.access) {
+      if (!data) {
         throw new Error("Invalid email or password.");
       }
+      router.push("/feed");
+      setIsLoggedIn(true);
     } catch (error) {
       console.log("Error: ", error);
       setErrorMessage(error.message);
     } finally {
-      router.push("/feed");
-      setIsLoggedIn(true);
       setIsLoading(false);
     }
   };

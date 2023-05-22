@@ -43,9 +43,10 @@ const EditProfile = ({ userData }) => {
       }
     }
 
+    let retryResponse = null;
     try {
       const response = await fetch(
-        `${API_BASE_URL}/users/${userData.id}/update_profile_picture/`,
+        `${API_BASE_URL}/users/${userData.id}/update_profile/`,
         {
           method: "PUT",
           credentials: "include",
@@ -58,17 +59,17 @@ const EditProfile = ({ userData }) => {
       if (response.status === 401) {
         refreshAuthToken();
         const retryResponse = await fetch(
-          `${API_BASE_URL}/users/${userData.id}/update_profile_picture/`,
+          `${API_BASE_URL}/users/${userData.id}/update_profile/`,
           {
             method: "PUT",
             credentials: "include",
             body: form,
           }
         );
-        const retryData = await retryResponse.json();
       }
+      const retryData = retryResponse ? await retryResponse.json() : null;
 
-      if (!response.ok) {
+      if (!response.ok || (retryResponse && !retryResponse.ok)) {
         throw new Error(data.error || "Failed to update profile");
       }
 
