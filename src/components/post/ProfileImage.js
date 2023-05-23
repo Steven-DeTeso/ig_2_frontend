@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./ProfileImage.module.css";
+import globalStyles from "../../../globalStyles.module.css";
 
 export default function ProfileImage({ imageUrl }) {
   return (
@@ -11,7 +12,7 @@ export default function ProfileImage({ imageUrl }) {
           alt="Profile photo"
         />
       ) : (
-        <p>Upload Photo</p>
+        <p>Upload A Photo</p>
       )}
     </>
   );

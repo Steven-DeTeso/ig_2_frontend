@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "@mui/material";
 import styles from "./Stories.module.css";
-import style from "../../../styles.module.css";
+import globalStyles from "../../../globalStyles.module.css";
 import Link from "next/link";
 
 export default function Stories({ suggestedProfiles }) {
@@ -29,11 +29,12 @@ export default function Stories({ suggestedProfiles }) {
                   />
                   <img
                     src="../../images/story_background.png"
-                    className={styles.storyBackground}
+                    className={globalStyles.profileCircleBackground}
                   />
                   <p
-                    className={style.textFont}
-                    style={{ textDecoration: "none", color: "black" }}
+                    className={
+                      (globalStyles.textFont, globalStyles.noTxtDecoration)
+                    }
                   >
                     {displayUsername}
                   </p>

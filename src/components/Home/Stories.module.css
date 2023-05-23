@@ -25,12 +25,3 @@
     z-index: 1;
 }
 
-.storyBackground {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 150%; /* Increase the size of the background image */
-    height: 130%; /* Increase the size of the background image */
-    transform: translate(-50%, -50%);
-    /* border-radius: 50%; To keep the circle shape */
-}

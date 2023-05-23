@@ -21,11 +21,6 @@
     height: 100vh;
 }
 
-.moreBurger {
-    text-decoration: none;
-    color: black;
-}
-
 .navLinks > a,
 .moreBurger {
     padding: 12px;
@@ -45,12 +40,15 @@
     align-items: center;
 }
 
+.moreBurger > a {
+    display: flex;
+    align-items: center;
+}
+
 .logo > h1 {
     font-size: 30px;
     margin: 0;
 }
-
-
 
 @media (min-width: 1264px) and (max-width: 1919px) {
     .leftSidebar {

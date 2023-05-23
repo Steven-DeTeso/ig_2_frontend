@@ -3,6 +3,7 @@ import styles from "./RightSidebar.module.css";
 import Link from "next/link";
 import Footer from "../login/Footer";
 import ProfileImage from "../post/ProfileImage";
+import globalStyles from "../../../globalStyles.module.css";
 
 export default function RightSidebar({
   currentUsername,
@@ -13,12 +14,14 @@ export default function RightSidebar({
     <div className={styles.rightContainer}>
       <div className={styles.userProfile}>
         <ProfileImage imageUrl={loggedInUserProfilePic} />
-        <p>{currentUsername}</p>
-        <Link href="/logout">Switch</Link>
+        <p className={globalStyles.textFont}>{currentUsername}</p>
+        <Link href="/logout" className={globalStyles.textFont}>
+          Switch
+        </Link>
       </div>
       <div>
         <div>
-          <p>suggestions for you</p>
+          <p className={globalStyles.textFont}>suggestions for you</p>
         </div>
         <div>{suggestedProfiles}</div>
       </div>

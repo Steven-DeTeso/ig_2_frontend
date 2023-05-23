@@ -15,6 +15,7 @@ export default function NavButton({
   label,
   href,
   onClick,
+  className,
 }) {
   return (
     <CustomLink href={href} component="a" aria-label={label} onClick={onClick}>

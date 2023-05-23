@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import styles from "./EditProfile.module.css";
-import style from "../../../styles.module.css";
-import API_BASE_URL from "../../api";
 import { refreshAuthToken } from "../../api";
 import { useRouter } from "next/navigation";
 import { useUser } from "../../context/userContext";
+import API_BASE_URL from "../../api";
+import LeftSidebar from "../Home/LeftSidebar";
+import styles from "./EditProfile.module.css";
+import globalStyles from "../../../globalStyles.module.css";
 
 const EditProfile = ({ userData }) => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const EditProfile = ({ userData }) => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -89,52 +90,58 @@ const EditProfile = ({ userData }) => {
 
   return (
     <div className={styles.editProfileWrapper}>
-      <h1 className={style.cloneFont}>Edit Profile</h1>
+      <LeftSidebar />
+      <h1 className={globalStyles.cloneFont}>Edit Profile</h1>
       {errorMessage && <p>{errorMessage}</p>}
-      <form
-        onSubmit={handleSubmit}
-        encType="multipart/form-data"
-        className={styles.editForm}
-      >
-        <input
-          type="text"
-          name="first_name"
-          value={formData.first_name}
-          onChange={handleChange}
-          className={styles.editInput}
-        />
-        <input
-          type="text"
-          name="last_name"
-          value={formData.last_name}
-          onChange={handleChange}
-          className={styles.editInput}
-        />
-        <input
-          type="text"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          className={styles.editInput}
-        />
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className={styles.editInput}
-        />
-        <input
-          type="file"
-          name="image"
-          accept="image/*"
-          onChange={handleChange}
-          className={styles.editInput}
-        />
-        <button type="submit" className={styles.editButton}>
-          {isLoading ? "Updating..." : "Save Changes"}
-        </button>
-      </form>
+      <div className={styles.formDiv}>
+        <p className={(globalStyles.textFont, styles.pText)}>
+          Edit your name, usersername, email address or profile picutre below
+        </p>
+        <form
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
+          className={styles.editForm}
+        >
+          <input
+            type="text"
+            name="first_name"
+            value={formData.first_name}
+            onChange={handleChange}
+            className={styles.editInput}
+          />
+          <input
+            type="text"
+            name="last_name"
+            value={formData.last_name}
+            onChange={handleChange}
+            className={styles.editInput}
+          />
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            className={styles.editInput}
+          />
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className={styles.editInput}
+          />
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleChange}
+            className={styles.editInput}
+          />
+          <button type="submit" className={styles.editButton}>
+            {isLoading ? "Updating..." : "Save Changes"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
