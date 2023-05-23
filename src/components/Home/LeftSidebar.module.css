@@ -16,9 +16,28 @@
     width: 200px;
 }
 
+.customLink {
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
 .navLinks{
     width: 220px;
     height: 100vh;
+}
+
+.iconContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navLinks:hover {
+    background-color: lightgrey;
 }
 
 .navLinks > a,
@@ -58,22 +77,28 @@
 
 @media screen and (max-width: 1263px) {
     .leftSidebar {
-        width: 72px;
+        width: fit-content;
     }
-    .logo {
-        width: 1rem;
-    }
-    .navLinks {
-        width: 4rem;
-    }
+    
     .navLinks > a {
         align-items: center;
         width: 2rem;
     }
-    .navLinks > a > p {
+    
+}
+
+@media screen and (max-width: 1159px) {
+    .pText {
         display: none;
     }
-    .moreBurger > p {
+    .iconContainer {
+        margin: 10px auto;
+    }
+    .logo {
+        justify-content: center;
+        width: 1rem;
+    }
+    .moreBurger > a > p {
         display: none;
     }
 }

@@ -57,30 +57,30 @@ export default function LeftSidebar({ onPostCreated, loggedInUser }) {
     },
 
     {
-      href: "/#",
+      href: "/feed#",
       iconComponent: SearchOutlinedIcon,
       label: "Search",
     },
 
     {
-      href: "/#",
+      href: "/feed#",
       iconComponent: ExploreOutlinedIcon,
       label: "Explore",
     },
 
     {
-      href: "/#",
+      href: "/feed#",
       iconComponent: GroupWorkOutlinedIcon,
       label: "Reels",
     },
 
     {
-      href: "/#",
+      href: "/feed#",
       iconComponent: MarkUnreadChatAltOutlinedIcon,
       label: "Messages",
     },
     {
-      href: "/#",
+      href: "/feed#",
       iconComponent: NotificationsOutlinedIcon,
       label: "Notifications",
     },
@@ -123,10 +123,7 @@ export default function LeftSidebar({ onPostCreated, loggedInUser }) {
         />
       </div>
       <div className={styles.moreBurger}>
-        <Link
-          href="/settings"
-          className={(globalStyles.textFont, globalStyles.noTxtDecoration)}
-        >
+        <Link href="/feed#" className={globalStyles.noTxtDecoration}>
           <MenuOutlinedIcon />
           <p>More</p>
         </Link>
