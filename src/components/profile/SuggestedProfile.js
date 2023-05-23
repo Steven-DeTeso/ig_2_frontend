@@ -1,4 +1,5 @@
 import React from "react";
+import globalStyles from "../../../globalStyles.module.css";
 import styles from "./FollowProfileLink.module.css";
 import Link from "next/link";
 import FollowUnfollowButton from "../Home/FollowUnfollowButton";
@@ -12,7 +13,7 @@ export default function SuggestedProfile({
   isFollowing,
 }) {
   return (
-    <>
+    <div className={styles.suggestedProfileContainer}>
       <Link href={`/users/${userId}/`} className={styles.noDecoration}>
         <div className={styles.suggestedProfile}>
           <img
@@ -20,9 +21,7 @@ export default function SuggestedProfile({
             alt={`${username}'s profile`}
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
           />
-          <p>
-            <strong>{username}</strong>
-          </p>
+          <p className={globalStyles.textFont}>{username}</p>
         </div>
       </Link>
       <FollowUnfollowButton
@@ -30,6 +29,6 @@ export default function SuggestedProfile({
         profileUserId={userId}
         initialFollowStatus={isFollowing}
       />
-    </>
+    </div>
   );
 }

@@ -29,7 +29,7 @@ export default function FollowProfileLink({
             alt={`${username}'s profile`}
           />
         </div>
-        <div className={styles.username}>
+        <div>
           <p>{username}</p>
         </div>
       </div>

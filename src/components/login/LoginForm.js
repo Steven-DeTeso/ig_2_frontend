@@ -54,7 +54,7 @@ export default function Login() {
     if (isLoading) {
       setTimeout(() => {
         setIsLoading(false);
-      }, 1500); // keeps spinner going during redirect.
+      }, 3500); // keeps spinner going during redirect.
     }
   }, [isLoading]);
 

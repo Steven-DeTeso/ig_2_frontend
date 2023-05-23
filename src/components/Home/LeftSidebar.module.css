@@ -36,7 +36,7 @@
     align-items: center;
 }
 
-.navLinks:hover {
+.customLink:hover {
     background-color: lightgrey;
 }
 

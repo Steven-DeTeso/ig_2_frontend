@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { followOrUnfollowUser } from "../../api";
 import { useUser } from "../../context/userContext";
+import styles from "./FollowUnfollowButton.module.css";
 
 export default function FollowUnfollowButton({
   currentUserId,
@@ -33,6 +34,8 @@ export default function FollowUnfollowButton({
     }
   };
   return (
-    <button onClick={handleClick}>{isFollowing ? "Unfollow" : "Follow"}</button>
+    <button className={styles.FollowUnfollowButton} onClick={handleClick}>
+      {isFollowing ? "Unfollow" : "Follow"}
+    </button>
   );
 }
