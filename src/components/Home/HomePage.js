@@ -96,6 +96,7 @@ export default function HomePage({ initialPosts }) {
           </main>
           <RightSidebar
             currentUsername={currentUsername}
+            currentUserId={currentUserId}
             loggedInUserProfilePic={currentUserProfilePicture}
             suggestedProfiles={suggestedProfiles}
           />

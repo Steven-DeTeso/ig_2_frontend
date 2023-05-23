@@ -7,14 +7,17 @@ import globalStyles from "../../../globalStyles.module.css";
 
 export default function RightSidebar({
   currentUsername,
+  currentUserId,
   loggedInUserProfilePic,
   suggestedProfiles,
 }) {
   return (
     <div className={styles.rightContainer}>
       <div className={styles.userProfile}>
-        <ProfileImage imageUrl={loggedInUserProfilePic} />
-        <p className={globalStyles.textFont}>{currentUsername}</p>
+        <Link href={`/users/${currentUserId}/`}>
+          <ProfileImage imageUrl={loggedInUserProfilePic} />
+          <p className={globalStyles.textFont}>{currentUsername}</p>
+        </Link>
         <Link href="/logout" className={globalStyles.textFont}>
           Switch
         </Link>
