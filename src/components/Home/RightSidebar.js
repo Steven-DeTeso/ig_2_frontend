@@ -14,11 +14,11 @@ export default function RightSidebar({
   return (
     <div className={styles.rightContainer}>
       <div className={styles.userProfile}>
-        <Link href={`/users/${currentUserId}/`}>
+        <Link href={`/users/${currentUserId}/`} className={styles.userLink}>
           <ProfileImage imageUrl={loggedInUserProfilePic} />
           <p className={globalStyles.textFont}>{currentUsername}</p>
         </Link>
-        <Link href="/logout" className={globalStyles.textFont}>
+        <Link href="/logout" className={globalStyles.textFont} id="logoutLink">
           Switch
         </Link>
       </div>

@@ -22,7 +22,7 @@
     text-decoration: none;
     display: flex;
     align-items: center;
-    margin-right: 10px;
+    margin: 0 0 0 10px;
 }
 
 .navLinks{
@@ -98,8 +98,15 @@
         justify-content: center;
         width: 1rem;
     }
+    .moreBurger {
+        margin: 0 auto;
+        padding: 0;
+    }
     .moreBurger > a > p {
         display: none;
+    }
+    .customLink {
+        margin: 0 auto;
     }
 }
 

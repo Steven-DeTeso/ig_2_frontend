@@ -9,6 +9,14 @@
     align-items: center;
 }
 
+.userLink {
+    display: flex;
+    text-decoration: none;
+    color: black;
+    margin-right: 10px;
+}
+
+
 .rightSidebarFooter > div {
     display: flex;
     justify-content: flex-start;

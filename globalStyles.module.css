@@ -24,6 +24,8 @@
 .textFont {
     font-family: 'proximanova', sans-serif;
     font-size: medium;
+    text-decoration: none;
+    color: black;
 }
 
 .noTxtDecoration {
