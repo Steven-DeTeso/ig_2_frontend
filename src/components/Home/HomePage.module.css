@@ -16,7 +16,7 @@
 .middleMain{
     width: 100%;
     max-width: 630px;
-    margin: 0 64px 0 auto;
+    margin: 0 auto;
 }
 
 .postArticle {
@@ -25,6 +25,16 @@
     flex-direction: column;
     margin: 0 auto 12px;
 
+}
+
+@media (min-width: 1390) and (max-width: 2400px) {
+    .middleMain {
+        margin: 0 auto;
+    }
+    .mainContainer {
+        width: 100vh;
+        margin: auto;
+    }
 }
 
 @media screen and (max-width: 1159px) {
@@ -37,15 +47,6 @@
     }
 }
 
-@media (min-width: 1264px) and (max-width: 1919px) {
-    .mainContainer {
-        width: calc(100% - 236px);
-        margin-left: 236px;
-    }
-}
-
-@media screen and (max-width: 1263px) {
-}
 
 @media screen and (max-width: 425px){
     .mainContainer {

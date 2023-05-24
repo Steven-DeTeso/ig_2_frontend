@@ -75,3 +75,9 @@
         display: none;
     }
 }
+
+@media screen and (min-width: 1570px) {
+    .rightContainer {
+        margin-right: auto;
+    }
+}

@@ -11,10 +11,16 @@ export const refreshAuthToken = async () => {
   });
 };
 
-async function apiCall(endpoint, options = {}) {
+export async function apiCall(endpoint, options = {}, retry = true) {
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
     if (!response.ok) {
+      // If the response is 401 Unauthorized and this is the first attempt,
+      // try refreshing the token and making the request again.
+      if (response.status === 401 && retry) {
+        await refreshAuthToken();
+        return apiCall(endpoint, options, false);
+      }
       const error = await response.json();
       throw new Error(`API request failed: ${error.message || error.detail}`);
     }

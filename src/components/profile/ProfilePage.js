@@ -8,7 +8,7 @@ import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
 import UserListDialog from "./UserListDialog";
 import { useUser } from "../../context/userContext";
 import { CommentsProvider, useComments } from "../../context/commentsContext";
-import API_BASE_URL from "../../api";
+import { apiCall } from "../../api";
 
 // used below in ProfilePage component
 const UserPosts = ({ userPosts, currentUserId, handleUpdatePost }) => {
@@ -101,7 +101,7 @@ const ProfilePage = ({ userId }) => {
 
   async function fetchUserData() {
     try {
-      const response = await fetch(`${API_BASE_URL}/users/${userId}/`, {
+      const response = await apiCall(`/users/${userId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +110,6 @@ const ProfilePage = ({ userId }) => {
       });
       console.log(response);
       const data = await response.json();
-      console.log(data);
       setUserData(data);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -123,16 +122,13 @@ const ProfilePage = ({ userId }) => {
 
   async function fetchUserPosts() {
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/posts/user_posts/${userId}/`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
+      const response = await apiCall(`/posts/user_posts/${userId}/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
       const data = await response.json();
       setUserPosts(data);
     } catch (error) {
