@@ -9,6 +9,10 @@
     align-items: center;
 }
 
+.textColor {
+    color: rgb(0, 149,246);
+}
+
 .userLink {
     display: flex;
     text-decoration: none;

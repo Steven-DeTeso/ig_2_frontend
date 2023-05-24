@@ -1,11 +1,12 @@
 .editProfileContainer {
-  display: flex;
+    display: flex;
 }
 
 .mainContent {
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
+    flex-grow: 1; 
+    display: flex;
+    justify-content: center;
+    margin-left: -100px;
 }
 
 .editProfileWrapper {
@@ -61,4 +62,12 @@
     color: white;
     text-align: center;
     margin: 10px auto;
+}
+
+@media screen and (max-width: 1159px) {
+    .mainContent {
+        display: flex;
+    justify-content: center;
+    margin: 0 auto; 
+    }
 }

@@ -20,7 +20,7 @@ export default function HomePage({ initialPosts }) {
 
   const [posts, setPosts] = useState(initialPosts || []);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  const [currentUserData, setCurrentUserData] = useState(null); // Store current user data
+  const [currentUserData, setCurrentUserData] = useState(null);
   const { data: userData, setUrl } = useFetch();
 
   const loggedInUser = {

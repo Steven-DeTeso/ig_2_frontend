@@ -18,7 +18,12 @@ export default function RightSidebar({
           <ProfileImage imageUrl={loggedInUserProfilePic} />
           <p className={globalStyles.textFont}>{currentUsername}</p>
         </Link>
-        <Link href="/logout" className={globalStyles.textFont} id="logoutLink">
+
+        <Link
+          href="/logout"
+          className={`${globalStyles.textFont} ${styles.textColor}`}
+          id="logoutLink"
+        >
           Switch
         </Link>
       </div>

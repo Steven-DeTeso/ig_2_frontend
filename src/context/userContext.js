@@ -7,6 +7,8 @@ export const UserContext = createContext();
 export function UserProvider({ children }) {
   const [currentUserId, setCurrentUserId] = useState(0);
   const [currentUsername, setCurrentUsername] = useState("");
+  const [currentUserFirstName, setCurrentUserFirstName] = useState("");
+  const [currentUserLastName, setCurrentUserLastName] = useState("");
   const [currentUserProfilePicture, setCurrentUserProfilePicture] =
     useState("");
   const [currentUserFollowing, setCurrentUserFollowing] = useState([]);
@@ -17,6 +19,8 @@ export function UserProvider({ children }) {
     if (typeof window !== "undefined") {
       const storedUserId = sessionStorage.getItem("userId");
       const storedUsername = sessionStorage.getItem("username");
+      const storedFirstName = sessionStorage.getItem("firstName");
+      const storedLastName = sessionStorage.getItem("lastName");
       const storedUserProfilePicture =
         sessionStorage.getItem("userProfilePicture");
       const storedCurrentUserFollowing = sessionStorage.getItem(
@@ -25,6 +29,8 @@ export function UserProvider({ children }) {
       const storedIsLoggedIn = sessionStorage.getItem("isLoggedIn");
       if (storedUserId) setCurrentUserId(parseInt(storedUserId));
       if (storedUsername) setCurrentUsername(storedUsername);
+      if (storedFirstName) setCurrentUserFirstName(storedFirstName);
+      if (storedLastName) setCurrentUserLastName(storedLastName);
       if (storedUserProfilePicture)
         setCurrentUserProfilePicture(storedUserProfilePicture);
       if (storedCurrentUserFollowing)
@@ -43,6 +49,8 @@ export function UserProvider({ children }) {
     if (loggedInUser && "id" in loggedInUser) {
       setCurrentUserId(loggedInUser.id);
       setCurrentUsername(loggedInUser.username);
+      setCurrentUserFirstName(loggedInUser.first_name);
+      setCurrentUserLastName(loggedInUser.last_name);
       setCurrentUserProfilePicture(
         loggedInUser.profile_pic
           ? loggedInUser.profile_pic.signed_image_url
@@ -71,6 +79,8 @@ export function UserProvider({ children }) {
     if (typeof window !== "undefined") {
       sessionStorage.setItem("userId", currentUserId);
       sessionStorage.setItem("username", currentUsername);
+      sessionStorage.setItem("firstName", currentUserFirstName);
+      sessionStorage.setItem("lastName", currentUserLastName);
       sessionStorage.setItem("userProfilePicture", currentUserProfilePicture);
       sessionStorage.setItem(
         "currentUserFollowing",
@@ -91,6 +101,8 @@ export function UserProvider({ children }) {
       value={{
         currentUserId,
         currentUsername,
+        currentUserFirstName,
+        currentUserLastName,
         currentUserProfilePicture,
         currentUserFollowing,
         isLoggedIn,
