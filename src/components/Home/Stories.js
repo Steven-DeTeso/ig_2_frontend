@@ -29,9 +29,11 @@ export default function Stories({ suggestedProfiles }) {
                   />
                   <img
                     src="../../images/story_background.png"
-                    className={globalStyles.profileCircleBackground}
+                    className={styles.profileCircleBackground}
                   />
-                  <p className={globalStyles.textFont}>{displayUsername}</p>
+                  <p className={`${globalStyles.textFont} ${styles.username}`}>
+                    {displayUsername}
+                  </p>
                 </div>
               </Link>
             </div>

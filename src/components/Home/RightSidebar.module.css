@@ -9,25 +9,47 @@
     align-items: center;
 }
 
-.textColor {
+.switchLink {
     color: rgb(0, 149,246);
+    font-size: 12px;
+    margin-left: auto;
+    font-family: 'proximanova', sans-serif;
+    text-decoration: none;
 }
 
-.nameColor {
-    color: rgb(115,115,115)
+.namesLink {
+    margin: 0;
+    color: rgb(115,115,115);
+    font-size: 14px;
+    font-family: 'proximanova', sans-serif;
+    text-decoration: none;
 }
 
 .userLink {
-    display: flex;
-    text-decoration: none;
     color: black;
-    margin-right: 10px;
+    margin: 0 10px 0 0;
+    font-family: 'proximanova', sans-serif;
+    text-decoration: none;
+    font-size: 14px;
 }
 
+.names{
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 0 10px;
+}
+
+.rightSidebarFooter {
+    margin: 10px 0 0 0;
+}
 
 .rightSidebarFooter > div {
     display: flex;
     justify-content: flex-start;
+}
+
+.suggestedColor {
+    color: rgb(142, 142, 142);
 }
 
 .rightSidebarFooter > div,

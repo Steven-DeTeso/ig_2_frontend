@@ -16,24 +16,26 @@ export default function RightSidebar({
   return (
     <div className={styles.rightContainer}>
       <div className={styles.userProfile}>
-        <Link href={`/users/${currentUserId}/`} className={styles.userLink}>
+        <Link href={`/users/${currentUserId}/`}>
           <ProfileImage imageUrl={loggedInUserProfilePic} />
-          <p className={globalStyles.textFont}>{currentUsername}</p>
         </Link>
-        <p className={`${globalStyles.textFont} ${styles.nameColor}`}>
-          {currentUserFirstName} {currentUserLastName}
-        </p>
-        <Link
-          href="/logout"
-          className={`${globalStyles.textFont} ${styles.textColor}`}
-          id="logoutLink"
-        >
+        <div className={styles.names}>
+          <Link href={`/users/${currentUserId}/`} className={styles.userLink}>
+            <p className={styles.userLink}>{currentUsername}</p>
+          </Link>
+          <p className={styles.namesLink}>
+            {currentUserFirstName} {currentUserLastName}
+          </p>
+        </div>
+        <Link href="/logout" className={styles.switchLink} id="logoutLink">
           Switch
         </Link>
       </div>
       <div>
         <div>
-          <p className={globalStyles.textFont}>suggestions for you</p>
+          <p className={`${globalStyles.textFont} ${styles.suggestedColor}`}>
+            Suggested for you
+          </p>
         </div>
         <div>{suggestedProfiles}</div>
       </div>

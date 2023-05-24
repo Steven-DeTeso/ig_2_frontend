@@ -108,7 +108,7 @@ export default function Post({
         <LikeButton isLiked={isLiked} handleLike={handleLike} />
         <LikesInfo totalLikes={totalLikes} likedUsers={likedUsers} />
         <p className={globalStyles.textFont}>
-          {post.author.username}: {post.caption}
+          <strong>{post.author.username}:</strong> {post.caption}
         </p>
         <CommentSection
           comments={comments}
