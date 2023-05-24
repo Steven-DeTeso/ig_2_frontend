@@ -22,7 +22,7 @@ const EditProfile = ({ userData }) => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -71,7 +71,9 @@ const EditProfile = ({ userData }) => {
       const retryData = retryResponse ? await retryResponse.json() : null;
 
       if (!response.ok || (retryResponse && !retryResponse.ok)) {
-        throw new Error(data.error || "Failed to update profile");
+        throw new Error(
+          data.detail || data.status || "Failed to update profile"
+        );
       }
 
       console.log("Profile updated successfully", data);
@@ -94,12 +96,16 @@ const EditProfile = ({ userData }) => {
       <div className={styles.mainContent}>
         <div className={styles.editProfileWrapper}>
           <h1 className={globalStyles.cloneFont}>Edit Profile</h1>
-          {errorMessage && <p>{errorMessage}</p>}
           <div className={styles.formDiv}>
-            <p className={styles.pText}>
+            <p className={`${styles.pText} ${globalStyles.textFont}`}>
               Edit your name, usersername, email address or profile picutre
               below
             </p>
+            {errorMessage && (
+              <p className={`${globalStyles.textFont} ${styles.errorMessage}`}>
+                {errorMessage}
+              </p>
+            )}
             <form
               onSubmit={handleSubmit}
               encType="multipart/form-data"
