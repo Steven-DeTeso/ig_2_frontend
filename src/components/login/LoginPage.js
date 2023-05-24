@@ -5,7 +5,6 @@ import Footer from "./Footer";
 import styles from "./LoginPage.module.css";
 import API_BASE_URL from "../../api";
 import { useUser } from "../../context/userContext";
-import { RotatingLines } from "react-loader-spinner";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -48,17 +47,7 @@ const LoginPage = () => {
             <img src="/images/IG_login_img.png" alt="ig_logo" />
           </div>
           <div className={styles.loginFormContainer}>
-            {loading ? (
-              <RotatingLines
-                strokeColor="grey"
-                strokeWidth="5"
-                animationDuration="0.75"
-                width="96"
-                visible={true}
-              />
-            ) : (
-              <LoginForm />
-            )}
+            <LoginForm />
           </div>
         </div>
         <img

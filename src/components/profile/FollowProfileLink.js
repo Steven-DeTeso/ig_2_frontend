@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import styles from "./FollowProfileLink.module.css";
+import globalStyles from "../../../globalStyles.module.css";
 import ProfileImage from "../post/ProfileImage";
 
 export default function FollowProfileLink({
@@ -19,7 +20,7 @@ export default function FollowProfileLink({
     <Link
       href={`/users/${userId}`}
       onClick={onLinkClick}
-      style={{ textDecoration: "none", color: "inherit" }}
+      className={globalStyles.textFont}
     >
       <div className={styles.profileLink}>
         <div className={styles.image}>
@@ -28,10 +29,8 @@ export default function FollowProfileLink({
             alt={`${username}'s profile`}
           />
         </div>
-        <div className={styles.username}>
-          <p>
-            <strong>{username}</strong>
-          </p>
+        <div>
+          <p>{username}</p>
         </div>
       </div>
     </Link>

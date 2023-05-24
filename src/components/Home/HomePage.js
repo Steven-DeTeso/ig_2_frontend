@@ -14,13 +14,15 @@ export default function HomePage({ initialPosts }) {
   const {
     currentUserId,
     currentUsername,
+    currentUserFirstName,
+    currentUserLastName,
     currentUserProfilePicture,
     currentUserFollowing,
   } = useUser();
 
   const [posts, setPosts] = useState(initialPosts || []);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  const [currentUserData, setCurrentUserData] = useState(null); // Store current user data
+  const [currentUserData, setCurrentUserData] = useState(null);
   const { data: userData, setUrl } = useFetch();
 
   const loggedInUser = {
@@ -95,7 +97,10 @@ export default function HomePage({ initialPosts }) {
             </CommentsProvider>
           </main>
           <RightSidebar
+            currentUserId={currentUserId}
             currentUsername={currentUsername}
+            currentUserFirstName={currentUserFirstName}
+            currentUserLastName={currentUserLastName}
             loggedInUserProfilePic={currentUserProfilePicture}
             suggestedProfiles={suggestedProfiles}
           />

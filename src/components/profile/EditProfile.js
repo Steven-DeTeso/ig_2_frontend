@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import { Input } from "@mui/material";
+import { refreshAuthToken } from "../../api";
+import { useRouter } from "next/navigation";
+import { useUser } from "../../context/userContext";
+import API_BASE_URL from "../../api";
+import LeftSidebar from "../Home/LeftSidebar";
+import styles from "./EditProfile.module.css";
+import globalStyles from "../../../globalStyles.module.css";
 
 const EditProfile = ({ userData }) => {
-  const API_BASE_URL = "http://localhost:8000";
+  const router = useRouter();
+  const { currentUserId } = useUser();
+  const userId = currentUserId;
 
   const [formData, setFormData] = useState({
     user: userData.id,
@@ -12,6 +20,9 @@ const EditProfile = ({ userData }) => {
     email: userData.email,
     image: userData.profile_pic,
   });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -24,22 +35,21 @@ const EditProfile = ({ userData }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+
+    setIsLoading(true);
     const form = new FormData();
     for (const key in formData) {
       if (formData[key] !== null) {
         form.append(key, formData[key]);
       }
     }
-    for (const [key, value] of form.entries()) {
-      console.log(`${key}:`, value);
-    }
 
+    let retryResponse = null;
     try {
       const response = await fetch(
-        `${API_BASE_URL}/users/${userData.id}/update_profile_picture/`,
+        `${API_BASE_URL}/users/${userData.id}/update_profile/`,
         {
-          method: "PATCH",
+          method: "PUT",
           credentials: "include",
           body: form,
         }
@@ -47,67 +57,102 @@ const EditProfile = ({ userData }) => {
 
       const data = await response.json();
 
-      if (response.ok) {
-        console.log("Profile updated successfully", data);
-        // You can navigate back to the profile page or show a success message
-      } else {
-        console.error("Error updating profile:", data);
+      if (response.status === 401) {
+        refreshAuthToken();
+        const retryResponse = await fetch(
+          `${API_BASE_URL}/users/${userData.id}/update_profile/`,
+          {
+            method: "PUT",
+            credentials: "include",
+            body: form,
+          }
+        );
       }
+      const retryData = retryResponse ? await retryResponse.json() : null;
+
+      if (!response.ok || (retryResponse && !retryResponse.ok)) {
+        throw new Error(
+          data.detail || data.status || "Failed to update profile"
+        );
+      }
+
+      console.log("Profile updated successfully", data);
+
+      router.push(`/users/${userId}/`);
     } catch (error) {
       console.error("Error updating profile:", error);
+      setErrorMessage(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
-
   if (!userData) {
-    return <div>Loading...</div>;
+    return <div>ERROR, try a differnt route</div>;
   }
 
   return (
-    <div>
-      <h1>Edit Profile</h1>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <label htmlFor="first_name">First Name</label>
-        <input
-          type="text"
-          name="first_name"
-          value={formData.first_name}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="last_name">Last Name</label>
-        <input
-          type="text"
-          name="last_name"
-          value={formData.last_name}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-
-        <Input
-          type="file"
-          name="image"
-          accept="image/*"
-          // style={{ display: "none" }}
-          onChange={handleChange}
-        />
-
-        <button type="submit">Save Changes</button>
-      </form>
+    <div className={styles.editProfileContainer}>
+      <LeftSidebar />
+      <div className={styles.mainContent}>
+        <div className={styles.editProfileWrapper}>
+          <h1 className={globalStyles.cloneFont}>Edit Profile</h1>
+          <div className={styles.formDiv}>
+            <p className={`${styles.pText} ${globalStyles.textFont}`}>
+              Edit your name, usersername, email address or profile picutre
+              below
+            </p>
+            {errorMessage && (
+              <p className={`${globalStyles.textFont} ${styles.errorMessage}`}>
+                {errorMessage}
+              </p>
+            )}
+            <form
+              onSubmit={handleSubmit}
+              encType="multipart/form-data"
+              className={styles.editForm}
+            >
+              <input
+                type="text"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleChange}
+                className={styles.editInput}
+              />
+              <input
+                type="text"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleChange}
+                className={styles.editInput}
+              />
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                className={styles.editInput}
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className={styles.editInput}
+              />
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleChange}
+                className={styles.editInput}
+              />
+              <button type="submit" className={styles.editButton}>
+                {isLoading ? "Updating..." : "Save Changes"}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

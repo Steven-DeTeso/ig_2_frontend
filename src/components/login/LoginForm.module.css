@@ -6,6 +6,8 @@
     border: 1px solid rgb(219, 219, 219);
     margin: auto;
     position: relative;
+    justify-content: center;
+    align-items: center;
 }
 
 .loginForm {

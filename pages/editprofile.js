@@ -1,11 +1,11 @@
 import EditProfile from "../src/components/profile/editProfile";
+import API_BASE_URL from "../src/api";
 
 const EditProfilePage = ({ userData }) => {
   return <EditProfile userData={userData} />;
 };
 
 export async function getServerSideProps(context) {
-  const API_BASE_URL = "http://localhost:8000";
   const { userId } = context.query;
 
   try {

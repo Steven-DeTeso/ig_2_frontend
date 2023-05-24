@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import globalStyles from "../../../globalStyles.module.css";
 import styles from "../post/Post.module.css";
 import Link from "next/link";
 import OptionsButton from "./OptionsButton";
@@ -58,7 +59,9 @@ export default function PostHeader({ post, currentUserId, updatePost }) {
       <div className={styles.profileWrapper}>
         <Link href={`/users/${currentUserId}/`}>
           <ProfileImage imageUrl={imageUrl} />
-          <h3 className={styles.linkUsername}>{post.author.username}</h3>
+          <h3 className={(styles.linkUsername, globalStyles.textFont)}>
+            {post.author.username}
+          </h3>
         </Link>
       </div>
       <OptionsButton

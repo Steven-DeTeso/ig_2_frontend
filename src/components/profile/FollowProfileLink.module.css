@@ -4,6 +4,10 @@
     align-items: center;
 }
 
+.suggestedProfileContainer {
+    display: flex;
+}
+
 .suggestedProfile {
     display: flex;
     flex-direction: row;

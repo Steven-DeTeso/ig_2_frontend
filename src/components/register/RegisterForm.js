@@ -40,6 +40,19 @@ export default function RegisterForm() {
         throw new Error("Invalid entry");
       }
 
+      const loginResponse = await fetch("http://localhost:8000/api/token/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formData),
+      });
+      const loginData = await loginResponse.json();
+      if (!loginResponse.ok) {
+        throw new Error(loginData.detail || "Failed to log in");
+      }
+
       router.push("/feed");
     } catch (error) {
       console.error("Error:", error);

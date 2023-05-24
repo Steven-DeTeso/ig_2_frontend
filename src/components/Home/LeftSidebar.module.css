@@ -4,7 +4,7 @@
     border-right: 1px solid rgb(219, 219, 219);
     height: 100vh;
     width: 220px;
-    /* position: fixed; */
+    position: fixed;
 }
 
 .logo {
@@ -16,14 +16,28 @@
     width: 200px;
 }
 
+.customLink {
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 10px;
+}
+
 .navLinks{
     width: 220px;
     height: 100vh;
 }
 
-.moreBurger {
-    text-decoration: none;
-    color: black;
+.iconContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.customLink:hover {
+    background-color: lightgrey;
 }
 
 .navLinks > a,
@@ -45,12 +59,15 @@
     align-items: center;
 }
 
+.moreBurger > a {
+    display: flex;
+    align-items: center;
+}
+
 .logo > h1 {
     font-size: 30px;
     margin: 0;
 }
-
-
 
 @media (min-width: 1264px) and (max-width: 1919px) {
     .leftSidebar {
@@ -60,27 +77,40 @@
 
 @media screen and (max-width: 1263px) {
     .leftSidebar {
-        width: 72px;
+        width: fit-content;
     }
-    .logo {
-        width: 1rem;
-    }
-    .navLinks {
-        width: 4rem;
-    }
+    
     .navLinks > a {
         align-items: center;
         width: 2rem;
     }
-    .navLinks > a > p {
+    
+}
+
+@media screen and (max-width: 1159px) {
+    .pText {
         display: none;
     }
-    .moreBurger > p {
+    .iconContainer {
+        margin: 10px auto;
+    }
+    .logo {
+        justify-content: center;
+        width: 1rem;
+    }
+    .moreBurger {
+        margin: 0 auto;
+        padding: 0;
+    }
+    .moreBurger > a > p {
         display: none;
+    }
+    .customLink {
+        margin: 0 auto;
     }
 }
 
-@media screen and (max-width: 425px){
+@media screen and (max-width: 730px){
     .leftSidebar {
         display: none;
     }

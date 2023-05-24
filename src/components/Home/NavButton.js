@@ -1,14 +1,5 @@
 import React from "react";
-import { styled } from "@mui/system";
-import { Box } from "@mui/material";
-
-const CustomLink = styled(Box)(({ theme }) => ({
-  color: "black",
-  cursor: "pointer",
-  textDecoration: "none",
-  display: "flex",
-  alignItems: "center",
-}));
+import styles from "./LeftSidebar.module.css";
 
 export default function NavButton({
   iconComponent: Icon,
@@ -17,9 +8,16 @@ export default function NavButton({
   onClick,
 }) {
   return (
-    <CustomLink href={href} component="a" aria-label={label} onClick={onClick}>
-      <Icon />
-      <p>{label}</p>
-    </CustomLink>
+    <a
+      className={styles.customLink}
+      href={href}
+      aria-label={label}
+      onClick={onClick}
+    >
+      <div className={styles.iconContainer}>
+        <Icon />
+      </div>
+      <p className={styles.pText}>{label}</p>
+    </a>
   );
 }

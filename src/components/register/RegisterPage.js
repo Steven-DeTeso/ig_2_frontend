@@ -2,7 +2,7 @@ import Link from "next/link";
 import FacebookBtn from "../login/FacebookBtn";
 import RegisterForm from "./RegisterForm";
 import styles from "./RegisterPage.module.css";
-import style from "/styles.module.css";
+import globalStyles from "/globalStyles.module.css";
 import Footer from "../login/Footer";
 
 const RegisterPage = () => {
@@ -10,7 +10,7 @@ const RegisterPage = () => {
     <>
       <div className={styles.registerPageWrapper}>
         <div className={styles.registerTopLvl}>
-          <h1 className={style.cloneFont}>Clone-a-gram</h1>
+          <h1 className={globalStyles.cloneFont}>Clone-a-gram</h1>
           <h4 className={styles.regTopTxt}>
             Sign up to see photos and videos from your friends.
           </h4>

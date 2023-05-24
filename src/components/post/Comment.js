@@ -5,6 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import Link from "next/link";
 import styles from "./Comment.module.css";
+import globalStyles from "../../../globalStyles.module.css";
 
 const Comment = ({
   username,
@@ -56,7 +57,7 @@ const Comment = ({
   return (
     <div className={styles.commentWrapper}>
       <Link href={`/users/${authorId}`} className={styles.commentUsername}>
-        <p>{username}</p>
+        <p className={globalStyles.textFont}>{username}</p>
       </Link>
       {isEditing ? (
         <>
@@ -73,7 +74,7 @@ const Comment = ({
           </button>
         </>
       ) : (
-        <p>{commentText}</p>
+        <p className={globalStyles.textFont}>{commentText}</p>
       )}
       {canEditDelete && (
         <div className={styles.optionsButton}>

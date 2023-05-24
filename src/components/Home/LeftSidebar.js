@@ -14,8 +14,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import LocalSeeOutlinedIcon from "@mui/icons-material/LocalSeeOutlined";
 
 import styles from "./LeftSidebar.module.css";
-// style is global css
-import style from "/styles.module.css";
+import globalStyles from "../../../globalStyles.module.css";
 import CreatePostDialog from "./CreatePost";
 
 export default function LeftSidebar({ onPostCreated, loggedInUser }) {
@@ -58,30 +57,30 @@ export default function LeftSidebar({ onPostCreated, loggedInUser }) {
     },
 
     {
-      href: "/search",
+      href: "/feed#",
       iconComponent: SearchOutlinedIcon,
       label: "Search",
     },
 
     {
-      href: "/explore",
+      href: "/feed#",
       iconComponent: ExploreOutlinedIcon,
       label: "Explore",
     },
 
     {
-      href: "/reels",
+      href: "/feed#",
       iconComponent: GroupWorkOutlinedIcon,
       label: "Reels",
     },
 
     {
-      href: "/messages",
+      href: "/feed#",
       iconComponent: MarkUnreadChatAltOutlinedIcon,
       label: "Messages",
     },
     {
-      href: "/notifications",
+      href: "/feed#",
       iconComponent: NotificationsOutlinedIcon,
       label: "Notifications",
     },
@@ -103,10 +102,10 @@ export default function LeftSidebar({ onPostCreated, loggedInUser }) {
         {isSmallScren ? (
           <LocalSeeOutlinedIcon />
         ) : (
-          <h1 className={style.cloneFont}>Clone-a-gram</h1>
+          <h1 className={globalStyles.cloneFont}>Clone-a-gram</h1>
         )}
       </div>
-      <div className={styles.navLinks}>
+      <div className={globalStyles.textFont}>
         {navButtons.map((button, index) => (
           <NavButton
             key={index}
@@ -114,6 +113,7 @@ export default function LeftSidebar({ onPostCreated, loggedInUser }) {
             iconComponent={button.iconComponent}
             label={button.label}
             onClick={button.onClick}
+            className={styles.navLinks}
           />
         ))}
         <CreatePostDialog
@@ -122,8 +122,8 @@ export default function LeftSidebar({ onPostCreated, loggedInUser }) {
           onPostCreated={handlePostCreated}
         />
       </div>
-      <div>
-        <Link href="/settings" className={styles.moreBurger}>
+      <div className={styles.moreBurger}>
+        <Link href="/feed#" className={globalStyles.noTxtDecoration}>
           <MenuOutlinedIcon />
           <p>More</p>
         </Link>

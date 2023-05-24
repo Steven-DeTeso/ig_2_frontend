@@ -35,6 +35,7 @@ const CommentForm = ({ postId, handleCommentSubmit }) => {
           outline: "none",
           border: "none",
           resize: "none",
+          marginBottom: "5px",
         }}
       />
     </form>

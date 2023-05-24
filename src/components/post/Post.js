@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import globalStyles from "../../../globalStyles.module.css";
 import styles from "../post/Post.module.css";
 import LikeButton from "./LikeButton";
 import PostHeader from "./PostHeader";
@@ -106,8 +107,8 @@ export default function Post({
         <br />
         <LikeButton isLiked={isLiked} handleLike={handleLike} />
         <LikesInfo totalLikes={totalLikes} likedUsers={likedUsers} />
-        <p>
-          {post.author.username}: {post.caption}
+        <p className={globalStyles.textFont}>
+          <strong>{post.author.username}:</strong> {post.caption}
         </p>
         <CommentSection
           comments={comments}
