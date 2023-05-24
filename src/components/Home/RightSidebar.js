@@ -6,8 +6,10 @@ import ProfileImage from "../post/ProfileImage";
 import globalStyles from "../../../globalStyles.module.css";
 
 export default function RightSidebar({
-  currentUsername,
   currentUserId,
+  currentUsername,
+  currentUserFirstName,
+  currentUserLastName,
   loggedInUserProfilePic,
   suggestedProfiles,
 }) {
@@ -18,7 +20,9 @@ export default function RightSidebar({
           <ProfileImage imageUrl={loggedInUserProfilePic} />
           <p className={globalStyles.textFont}>{currentUsername}</p>
         </Link>
-
+        <p className={`${globalStyles.textFont} ${styles.nameColor}`}>
+          {currentUserFirstName} {currentUserLastName}
+        </p>
         <Link
           href="/logout"
           className={`${globalStyles.textFont} ${styles.textColor}`}

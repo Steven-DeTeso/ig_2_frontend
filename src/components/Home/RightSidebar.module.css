@@ -13,6 +13,10 @@
     color: rgb(0, 149,246);
 }
 
+.nameColor {
+    color: rgb(115,115,115)
+}
+
 .userLink {
     display: flex;
     text-decoration: none;

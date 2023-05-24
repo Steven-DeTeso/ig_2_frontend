@@ -14,6 +14,8 @@ export default function HomePage({ initialPosts }) {
   const {
     currentUserId,
     currentUsername,
+    currentUserFirstName,
+    currentUserLastName,
     currentUserProfilePicture,
     currentUserFollowing,
   } = useUser();
@@ -95,8 +97,10 @@ export default function HomePage({ initialPosts }) {
             </CommentsProvider>
           </main>
           <RightSidebar
-            currentUsername={currentUsername}
             currentUserId={currentUserId}
+            currentUsername={currentUsername}
+            currentUserFirstName={currentUserFirstName}
+            currentUserLastName={currentUserLastName}
             loggedInUserProfilePic={currentUserProfilePicture}
             suggestedProfiles={suggestedProfiles}
           />
