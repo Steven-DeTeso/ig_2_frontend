@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import styles from "./PostModal.module.css";
+import globalStyles from "../../../globalStyles.module.css";
 import CommentSection from "../post/CommentSection";
 
 // TODO: reorder styling so comments appear on left side.
@@ -40,7 +41,7 @@ const PostModal = ({
             onClick={(e) => e.stopPropagation()}
           />
         )}
-        <p>
+        <p className={globalStyles.textFont}>
           {author.username}: {caption}
         </p>
         <CommentSection

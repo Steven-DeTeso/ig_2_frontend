@@ -3,6 +3,7 @@ import PostPhoto from "../post/PostPhoto";
 import PostModal from "../Home/PostModal";
 import Link from "next/link";
 import LeftSidebar from "../Home/LeftSidebar";
+import gloablStyles from "../../../globalStyles.module.css";
 import styles from "./ProfilePage.module.css";
 import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
 import UserListDialog from "./UserListDialog";
@@ -122,7 +123,7 @@ const ProfilePage = ({ userId }) => {
 
   async function fetchUserPosts() {
     try {
-      const response = await apiCall(`/posts/user_posts/${userId}/`, {
+      const response = await apiCall(`posts/user_posts/${userId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -148,7 +149,11 @@ const ProfilePage = ({ userId }) => {
               <div className={styles.profilePictureContainer}>
                 <img
                   className={styles.profilePicture}
-                  src={userData.profile_pic.signed_image_url}
+                  src={
+                    userData && userData.profile_pic
+                      ? userData.profile_pic.signed_image_url
+                      : "/images/story_background.png"
+                  }
                 />
               </div>
               <div className={styles.profileInfoContainer}>
@@ -168,7 +173,7 @@ const ProfilePage = ({ userId }) => {
                   <SettingsTwoToneIcon />
                 </div>
                 <div className={styles.profileInfoMiddle}>
-                  <p>{userPosts.length}posts</p>
+                  <p>{userPosts.length} posts</p>
                   <p onClick={handleFollowingDialogOpen}>
                     {userData.following.length} following
                   </p>
@@ -189,10 +194,10 @@ const ProfilePage = ({ userId }) => {
                   />
                 </div>
                 <div className={styles.profileInfoBottom}>
-                  <p>
+                  <p className={gloablStyles.textFont}>
                     {userData.first_name} {userData.last_name}
                   </p>
-                  <p>Bio text placeholder</p>
+                  <p className={gloablStyles.textFont}>Bio text placeholder</p>
                 </div>
               </div>
             </header>
