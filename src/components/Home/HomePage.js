@@ -49,6 +49,7 @@ export default function HomePage({ initialPosts }) {
           (user) =>
             user.id !== currentUserId && user.profile_pic?.signed_image_url
         )
+        .slice(0, 8)
         .map((user) => {
           const isFollowing = currentUserFollowing.includes(user.id);
           return (

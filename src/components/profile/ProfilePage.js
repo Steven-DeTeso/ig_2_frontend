@@ -30,7 +30,7 @@ const UserPosts = ({ userPosts, currentUserId, handleUpdatePost }) => {
   return (
     <div className={styles.photoDisplay}>
       {userPosts.map((post) => (
-        <article key={post.id}>
+        <article key={post.id} className={styles.article}>
           <PostPhoto
             id={post.postId}
             key={post.id}
@@ -117,10 +117,6 @@ const ProfilePage = ({ userId }) => {
     }
   }
 
-  if (!userData) {
-    return <div>Downloading...</div>;
-  }
-
   async function fetchUserPosts() {
     try {
       const response = await apiCall(`posts/user_posts/${userId}/`, {
@@ -135,6 +131,10 @@ const ProfilePage = ({ userId }) => {
     } catch (error) {
       console.error("Error fetching user posts:", error);
     }
+  }
+
+  if (!userData) {
+    return <div>Error, no user data!</div>;
   }
 
   return (
@@ -158,15 +158,16 @@ const ProfilePage = ({ userId }) => {
               </div>
               <div className={styles.profileInfoContainer}>
                 <div className={styles.profileInfoTop}>
-                  <h2>{userData.username}</h2>
+                  <h2 className={gloablStyles.textFontLarge}>
+                    {userData.username}
+                  </h2>
                   {userData.is_current ? (
-                    <button>
-                      <Link
-                        href={{ pathname: "/editprofile", query: { userId } }}
-                      >
-                        Edit Profile
-                      </Link>
-                    </button>
+                    <Link
+                      href={{ pathname: "/editprofile", query: { userId } }}
+                      className={gloablStyles.noTxtDecoration}
+                    >
+                      Edit Profile
+                    </Link>
                   ) : (
                     ""
                   )}
@@ -174,10 +175,16 @@ const ProfilePage = ({ userId }) => {
                 </div>
                 <div className={styles.profileInfoMiddle}>
                   <p>{userPosts.length} posts</p>
-                  <p onClick={handleFollowingDialogOpen}>
+                  <p
+                    onClick={handleFollowingDialogOpen}
+                    className={styles.pointer}
+                  >
                     {userData.following.length} following
                   </p>
-                  <p onClick={handleFollowersDialogOpen}>
+                  <p
+                    onClick={handleFollowersDialogOpen}
+                    className={styles.pointer}
+                  >
                     {userData.followers.length} followers
                   </p>
                   <UserListDialog

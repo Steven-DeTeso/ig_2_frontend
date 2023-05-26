@@ -41,18 +41,20 @@ const PostModal = ({
             onClick={(e) => e.stopPropagation()}
           />
         )}
-        <p className={globalStyles.textFont}>
-          {author.username}: {caption}
-        </p>
-        <CommentSection
-          key={id}
-          comments={comments}
-          currentUserId={currentUserId}
-          postId={post.id}
-          handleCommentSubmit={handleCommentSubmit}
-          handleCommentEdit={handleCommentEdit}
-          handleCommentDelete={handleCommentDelete}
-        />
+        <div className={styles.commentsOnModal}>
+          <p className={globalStyles.textFont}>
+            {author.username}: {caption}
+          </p>
+          <CommentSection
+            key={id}
+            comments={comments}
+            currentUserId={currentUserId}
+            postId={post.id}
+            handleCommentSubmit={handleCommentSubmit}
+            handleCommentEdit={handleCommentEdit}
+            handleCommentDelete={handleCommentDelete}
+          />
+        </div>
       </div>
     </div>
   );
