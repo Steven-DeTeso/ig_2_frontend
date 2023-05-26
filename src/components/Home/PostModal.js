@@ -43,8 +43,6 @@ const PostModal = ({
         <p>
           {author.username}: {caption}
         </p>
-        {/* <LikeButton isLiked={isLiked} handleLike={handleLike} />
-        <LikesInfo totalLikes={totalLikes} likedUsers={likedUsers} /> */}
         <CommentSection
           key={id}
           comments={comments}

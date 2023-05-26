@@ -90,6 +90,10 @@ export default function Post({
           handleCommentSubmit={handleCommentSubmit}
           handleCommentEdit={handleCommentEdit}
           handleCommentDelete={handleCommentDelete}
+          isLiked={isLiked}
+          handleLike={handleLike}
+          totalLikes={totalLikes}
+          likedUsers={likedUsers}
         />
       )}
       <div className={styles.postImageContainer}>

@@ -20,6 +20,12 @@ export default function PostHeader({ post, currentUserId, updatePost }) {
     setIsFollowing(currentUserFollowing.includes(post.author.id));
   }, [post, currentUserFollowing]);
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleDeletePost = async () => {
     const isDeleted = await deletePost(post.id);
     if (isDeleted) {
