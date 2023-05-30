@@ -79,6 +79,10 @@ const ProfilePage = ({ userId }) => {
   const [followingDialogOpen, setFollowingDialogOpen] = useState(false);
   const [followersDialogOpen, setFollowersDialogOpen] = useState(false);
 
+  const loggedInUser = {
+    id: currentUserId,
+  };
+
   useEffect(() => {
     if (userId) {
       fetchUserData();
@@ -154,7 +158,7 @@ const ProfilePage = ({ userId }) => {
     <>
       <CommentsProvider posts={userPosts || []}>
         <div className={styles.pageWrapper}>
-          <LeftSidebar loggedInUser={currentUserId} />
+          <LeftSidebar loggedInUser={loggedInUser} />
           {/* need to pass in props for /profile link to work */}
           <div className={styles.mainSection}>
             {/* Modal pop up for following */}

@@ -12,6 +12,10 @@ const EditProfile = ({ userData }) => {
   const { currentUserId } = useUser();
   const userId = currentUserId;
 
+  const loggedInUser = {
+    id: currentUserId,
+  };
+
   const [formData, setFormData] = useState({
     user: userData.id,
     first_name: userData.first_name,
@@ -92,7 +96,7 @@ const EditProfile = ({ userData }) => {
 
   return (
     <div className={styles.editProfileContainer}>
-      <LeftSidebar />
+      <LeftSidebar loggedInUser={loggedInUser} />
       <div className={styles.mainContent}>
         <div className={styles.editProfileWrapper}>
           <h1 className={globalStyles.cloneFont}>Edit Profile</h1>
