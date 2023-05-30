@@ -22,9 +22,9 @@ export default function HomePage({ initialPosts }) {
 
   const [posts, setPosts] = useState(initialPosts || []);
   const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  // const [currentUserData, setCurrentUserData] = useState(null);
+  const [currentUserData, setCurrentUserData] = useState(null);
   const { data: userData, setUrl } = useFetch();
-  const { data: currentUserData, setUrl: setCurrentUserUrl } = useFetch();
+  const { setUrl: setCurrentUserUrl } = useFetch();
 
   const loggedInUser = {
     id: currentUserId,
@@ -48,6 +48,7 @@ export default function HomePage({ initialPosts }) {
     console.log("User Data:", userData);
     if (userData && currentUserId) {
       const currentUser = userData.find((user) => user.id === currentUserId);
+      setCurrentUserData(currentUser);
 
       const profiles = userData
         .filter(

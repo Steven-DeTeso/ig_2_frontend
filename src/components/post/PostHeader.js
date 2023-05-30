@@ -63,7 +63,7 @@ export default function PostHeader({ post, currentUserId, updatePost }) {
   return (
     <div className={styles.topPost}>
       <div className={styles.profileWrapper}>
-        <Link href={`/users/${currentUserId}/`}>
+        <Link href={`/users/${post.author.id}/`}>
           <ProfileImage imageUrl={imageUrl} />
           <h3 className={(styles.linkUsername, globalStyles.textFont)}>
             {post.author.username}

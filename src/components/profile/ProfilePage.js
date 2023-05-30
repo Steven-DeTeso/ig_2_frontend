@@ -221,7 +221,7 @@ const ProfilePage = ({ userId }) => {
                   <p className={gloablStyles.textFont}>
                     {userData.first_name} {userData.last_name}
                   </p>
-                  <p className={gloablStyles.textFont}>Bio text placeholder</p>
+                  <p className={gloablStyles.textFont}>{userData.bio}</p>
                 </div>
               </div>
             </header>
