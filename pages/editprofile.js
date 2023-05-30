@@ -17,7 +17,6 @@ export async function getServerSideProps(context) {
       credentials: "include",
     });
     const userData = await response.json();
-    console.log(userData);
 
     return {
       props: {

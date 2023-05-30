@@ -32,7 +32,6 @@ export default function HomePage({ initialPosts }) {
   };
 
   useEffect(() => {
-    console.log("Current User ID:", currentUserId);
     if (currentUserId) {
       setUrl(`${API_BASE_URL}/users/`);
     }
@@ -49,6 +48,7 @@ export default function HomePage({ initialPosts }) {
           (user) =>
             user.id !== currentUserId && user.profile_pic?.signed_image_url
         )
+        .slice(0, 8)
         .map((user) => {
           const isFollowing = currentUserFollowing.includes(user.id);
           return (

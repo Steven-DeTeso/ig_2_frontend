@@ -10,7 +10,6 @@ export default function HomePageFeed({ posts, updatePost }) {
     handleCommentDelete,
   } = useComments();
 
-  console.log(comments);
   return (
     <>
       {posts &&
@@ -20,6 +19,7 @@ export default function HomePageFeed({ posts, updatePost }) {
               <Post
                 post={post}
                 comments={comments[post.id] || []}
+                likes={post.likes}
                 updatePost={updatePost}
                 showPostModal={false}
                 handleCommentSubmit={handleCommentSubmit}

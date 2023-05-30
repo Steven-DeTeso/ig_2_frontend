@@ -3,17 +3,28 @@ import PostPhoto from "../post/PostPhoto";
 import PostModal from "../Home/PostModal";
 import Link from "next/link";
 import LeftSidebar from "../Home/LeftSidebar";
+import gloablStyles from "../../../globalStyles.module.css";
 import styles from "./ProfilePage.module.css";
 import SettingsTwoToneIcon from "@mui/icons-material/SettingsTwoTone";
 import UserListDialog from "./UserListDialog";
 import { useUser } from "../../context/userContext";
 import { CommentsProvider, useComments } from "../../context/commentsContext";
-import API_BASE_URL from "../../api";
+import { apiCall } from "../../api";
 
 // used below in ProfilePage component
 const UserPosts = ({ userPosts, currentUserId, handleUpdatePost }) => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [showPostModal, setShowPostModal] = useState(false);
+
+  const [totalLikes, setTotalLikes] = useState(0);
+  const [likedUsers, setLikedUsers] = useState([]);
+
+  useEffect(() => {
+    if (selectedPost) {
+      setTotalLikes(selectedPost.total_likes);
+      setLikedUsers(selectedPost.likes);
+    }
+  }, [selectedPost]);
 
   const {
     comments,
@@ -29,12 +40,11 @@ const UserPosts = ({ userPosts, currentUserId, handleUpdatePost }) => {
   return (
     <div className={styles.photoDisplay}>
       {userPosts.map((post) => (
-        <article key={post.id}>
+        <article key={post.id} className={styles.article}>
           <PostPhoto
             id={post.postId}
             key={post.id}
             post={post}
-            updatePost={handleUpdatePost}
             showModal={() => {
               setSelectedPost(post);
               showModal();
@@ -48,10 +58,14 @@ const UserPosts = ({ userPosts, currentUserId, handleUpdatePost }) => {
           show={!!selectedPost}
           onClose={() => setSelectedPost(null)}
           currentUserId={currentUserId}
+          likes={selectedPost.likes}
+          updatePost={handleUpdatePost}
           handleCommentSubmit={handleCommentSubmit}
           handleCommentEdit={handleCommentEdit}
           handleCommentDelete={handleCommentDelete}
           comments={comments[selectedPost?.id]}
+          totalLikes={totalLikes}
+          likedUsers={likedUsers}
         />
       )}
     </div>
@@ -65,10 +79,15 @@ const ProfilePage = ({ userId }) => {
   const [followingDialogOpen, setFollowingDialogOpen] = useState(false);
   const [followersDialogOpen, setFollowersDialogOpen] = useState(false);
 
+  const loggedInUser = {
+    id: currentUserId,
+  };
+
   useEffect(() => {
     if (userId) {
       fetchUserData();
       fetchUserPosts();
+      console.log(currentUserId);
     }
   }, [userId]);
 
@@ -101,38 +120,29 @@ const ProfilePage = ({ userId }) => {
 
   async function fetchUserData() {
     try {
-      const response = await fetch(`${API_BASE_URL}/users/${userId}/`, {
+      const response = await apiCall(`users/${userId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
       });
-      console.log(response);
       const data = await response.json();
-      console.log(data);
       setUserData(data);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   }
 
-  if (!userData) {
-    return <div>Downloading...</div>;
-  }
-
   async function fetchUserPosts() {
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/posts/user_posts/${userId}/`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
+      const response = await apiCall(`posts/user_posts/${userId}/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
       const data = await response.json();
       setUserPosts(data);
     } catch (error) {
@@ -140,11 +150,15 @@ const ProfilePage = ({ userId }) => {
     }
   }
 
+  if (!userData) {
+    return <div>Downloading...</div>;
+  }
+
   return (
     <>
       <CommentsProvider posts={userPosts || []}>
         <div className={styles.pageWrapper}>
-          <LeftSidebar />
+          <LeftSidebar loggedInUser={loggedInUser} />
           {/* need to pass in props for /profile link to work */}
           <div className={styles.mainSection}>
             {/* Modal pop up for following */}
@@ -152,31 +166,42 @@ const ProfilePage = ({ userId }) => {
               <div className={styles.profilePictureContainer}>
                 <img
                   className={styles.profilePicture}
-                  src={userData.profile_pic.signed_image_url}
+                  src={
+                    userData && userData.profile_pic
+                      ? userData.profile_pic.signed_image_url
+                      : "/images/story_background.png"
+                  }
                 />
               </div>
               <div className={styles.profileInfoContainer}>
                 <div className={styles.profileInfoTop}>
-                  <h2>{userData.username}</h2>
+                  <h2 className={gloablStyles.textFontLarge}>
+                    {userData.username}
+                  </h2>
                   {userData.is_current ? (
-                    <button>
-                      <Link
-                        href={{ pathname: "/editprofile", query: { userId } }}
-                      >
-                        Edit Profile
-                      </Link>
-                    </button>
+                    <Link
+                      href={{ pathname: "/editprofile", query: { userId } }}
+                      className={gloablStyles.noTxtDecoration}
+                    >
+                      Edit Profile
+                    </Link>
                   ) : (
                     ""
                   )}
                   <SettingsTwoToneIcon />
                 </div>
                 <div className={styles.profileInfoMiddle}>
-                  <p>{userPosts.length}posts</p>
-                  <p onClick={handleFollowingDialogOpen}>
+                  <p>{userPosts.length} posts</p>
+                  <p
+                    onClick={handleFollowingDialogOpen}
+                    className={styles.pointer}
+                  >
                     {userData.following.length} following
                   </p>
-                  <p onClick={handleFollowersDialogOpen}>
+                  <p
+                    onClick={handleFollowersDialogOpen}
+                    className={styles.pointer}
+                  >
                     {userData.followers.length} followers
                   </p>
                   <UserListDialog
@@ -193,10 +218,10 @@ const ProfilePage = ({ userId }) => {
                   />
                 </div>
                 <div className={styles.profileInfoBottom}>
-                  <p>
+                  <p className={gloablStyles.textFont}>
                     {userData.first_name} {userData.last_name}
                   </p>
-                  <p>Bio text placeholder</p>
+                  <p className={gloablStyles.textFont}>Bio text placeholder</p>
                 </div>
               </div>
             </header>

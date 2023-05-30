@@ -4,8 +4,14 @@
     align-items: center;
 }
 
+.links {
+    display: flex;
+    padding: 10px;
+}
+
 .suggestedProfileContainer {
     display: flex;
+    margin: 5px 0;
 }
 
 .suggestedProfile {

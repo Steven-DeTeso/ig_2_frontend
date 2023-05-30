@@ -3,7 +3,6 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
-import Link from "next/link";
 import styles from "./Comment.module.css";
 import globalStyles from "../../../globalStyles.module.css";
 
@@ -56,9 +55,9 @@ const Comment = ({
 
   return (
     <div className={styles.commentWrapper}>
-      <Link href={`/users/${authorId}`} className={styles.commentUsername}>
-        <p className={globalStyles.textFont}>{username}</p>
-      </Link>
+      <p className={`${globalStyles.textFont} ${styles.commentUsername}`}>
+        {username}
+      </p>
       {isEditing ? (
         <>
           <input

@@ -17,9 +17,26 @@
 }
 
 .modalContent {
+    display: flex;
     background-color: white;
     padding: 20px;
     max-width: 90%; /* Adjust as needed */
     max-height: 90%; /* Adjust as needed */
     overflow: auto; /* Allows scrolling within the modal if the content is too large */
+}
+
+.modalLikes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.commentsOnModal {
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px 10px 10px;
+}
+
+.commentsMapped {
+    margin-top: auto;
 }

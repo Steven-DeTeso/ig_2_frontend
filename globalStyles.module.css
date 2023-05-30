@@ -21,11 +21,16 @@
     text-align: center;
 }
 
-.textFont {
+.textFont, 
+.textFontLarge {
     font-family: 'proximanova', sans-serif;
     font-size: medium;
     text-decoration: none;
     color: black;
+}
+
+.textFontLarge {
+    font-size: 26px;
 }
 
 .noTxtDecoration {

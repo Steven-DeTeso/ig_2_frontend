@@ -11,10 +11,16 @@ export const refreshAuthToken = async () => {
   });
 };
 
-async function apiCall(endpoint, options = {}) {
+export async function apiCall(endpoint, options = {}, retry = true) {
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+    const response = await fetch(`${API_BASE_URL}/${endpoint}`, options);
     if (!response.ok) {
+      // If the response is 401 Unauthorized and this is the first attempt,
+      // try refreshing the token and making the request again.
+      if (response.status === 401 && retry) {
+        await refreshAuthToken();
+        return apiCall(endpoint, options, false);
+      }
       const error = await response.json();
       throw new Error(`API request failed: ${error.message || error.detail}`);
     }
@@ -28,7 +34,7 @@ async function apiCall(endpoint, options = {}) {
 export async function followOrUnfollowUser(userId, action) {
   try {
     const endpoint = action === "follow" ? "follow" : "unfollow";
-    const response = await apiCall(`/followers/${userId}/${endpoint}/`, {
+    const response = await apiCall(`followers/${userId}/${endpoint}/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,6 +50,22 @@ export async function followOrUnfollowUser(userId, action) {
     }
   } catch (error) {
     console.error(`Error ${action}ing user:`, error);
+    return false;
+  }
+}
+
+export async function deletePost(postId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/posts/${postId}/`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    return response.ok;
+  } catch (error) {
+    console.error("Error deleting post:", error);
     return false;
   }
 }

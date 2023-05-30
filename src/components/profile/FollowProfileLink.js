@@ -20,7 +20,7 @@ export default function FollowProfileLink({
     <Link
       href={`/users/${userId}`}
       onClick={onLinkClick}
-      className={globalStyles.textFont}
+      className={`${globalStyles.textFont} ${styles.links}`}
     >
       <div className={styles.profileLink}>
         <div className={styles.image}>

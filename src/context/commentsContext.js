@@ -5,7 +5,7 @@ import React, {
   useContext,
   useCallback,
 } from "react";
-import API_BASE_URL from "../api";
+import { apiCall } from "../api";
 
 const CommentsContext = createContext();
 
@@ -20,17 +20,18 @@ export const CommentsProvider = ({ children, posts }) => {
     const fetchCommentsForPosts = async () => {
       const comments = {};
       for (let post of posts) {
-        const response = await fetch(
-          `${API_BASE_URL}/posts/${post.id}/post_comments/`,
-          {
+        try {
+          const response = await apiCall(`posts/${post.id}/post_comments/`, {
             method: "GET",
-            headers: { "Content-Type": "application/json" },
             credentials: "include",
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            comments[post.id] = data;
           }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          comments[post.id] = data;
+        } catch (error) {
+          console.error(`Error fetching comments for post ${post.id}:`, error);
         }
       }
       setComments(comments);
@@ -49,7 +50,7 @@ export const CommentsProvider = ({ children, posts }) => {
   const handleCommentSubmit = useCallback(
     async (postId, commentText, currentUserId) => {
       try {
-        const response = await fetch(`${API_BASE_URL}/comments/${postId}/`, {
+        const response = await apiCall(`comments/${postId}/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -84,8 +85,8 @@ export const CommentsProvider = ({ children, posts }) => {
   const handleCommentEdit = useCallback(
     async (commentId, postId, updatedText) => {
       try {
-        const response = await fetch(
-          `${API_BASE_URL}/comments/${commentId}/update_comment/`,
+        const response = await apiCall(
+          `comments/${commentId}/update_comment/`,
           {
             method: "PUT",
             headers: {
@@ -121,8 +122,8 @@ export const CommentsProvider = ({ children, posts }) => {
   const handleCommentDelete = useCallback(
     async (commentId, postId) => {
       try {
-        const response = await fetch(
-          `${API_BASE_URL}/comments/${commentId}/delete_comment/`,
+        const response = await apiCall(
+          `comments/${commentId}/delete_comment/`,
           {
             method: "DELETE",
             headers: {
@@ -158,7 +159,6 @@ export const CommentsProvider = ({ children, posts }) => {
     handleCommentEdit,
     handleCommentDelete,
   };
-  console.log(value);
 
   return (
     <CommentsContext.Provider value={value}>

@@ -11,7 +11,10 @@ export default function ProfileImage({ imageUrl }) {
           alt="Profile photo"
         />
       ) : (
-        <p>Upload A Photo</p>
+        <img
+          src="/images/story_background.png"
+          className={styles.profileImage}
+        />
       )}
     </>
   );

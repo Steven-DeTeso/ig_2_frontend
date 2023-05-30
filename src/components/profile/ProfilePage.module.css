@@ -1,10 +1,15 @@
 .pageWrapper {
     display: flex;
+    justify-content: flex-start;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
 }
 
 .mainSection {
-    margin: 0 auto;
-    padding: 30px 20px;
+    padding: 30px 50px;
+    position: absolute;
+    margin-left: 300px;
 }
 
 .profilePicture {
@@ -12,6 +17,10 @@
     width: 150px;
     height: 150px;
     object-fit: cover;
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 .profilePictureContainer {
@@ -34,6 +43,12 @@
 
 .profileInfoTop {
     display: flex;
+    align-items: center;
+}
+
+.profileInfoTop > h2,
+.profileInfoTop > a {
+    margin-right: 10px;
 }
 
 .profileInfoMiddle {
@@ -41,7 +56,12 @@
 }
 
 .profileInfoMiddle > p {
-    margin: 0 10px;
+    margin: 0 0 0 10px;
+}
+
+.article {
+    display: flex;
+    align-items: center;
 }
 
 .photoDisplay {
@@ -59,4 +79,9 @@
     padding: 2.5px;
 }
 
+@media screen and (max-width: 1159px) {
+    .mainSection {
+        margin-left: 0;
+    }
+}
 
