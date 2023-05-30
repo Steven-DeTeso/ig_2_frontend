@@ -5,7 +5,7 @@ import React, {
   useContext,
   useCallback,
 } from "react";
-import API_BASE_URL, { apiCall } from "../api";
+import { apiCall } from "../api";
 
 const CommentsContext = createContext();
 
@@ -159,7 +159,6 @@ export const CommentsProvider = ({ children, posts }) => {
     handleCommentEdit,
     handleCommentDelete,
   };
-  console.log(value);
 
   return (
     <CommentsContext.Provider value={value}>

@@ -32,7 +32,6 @@ export default function HomePage({ initialPosts }) {
   };
 
   useEffect(() => {
-    console.log("Current User ID:", currentUserId);
     if (currentUserId) {
       setUrl(`${API_BASE_URL}/users/`);
     }

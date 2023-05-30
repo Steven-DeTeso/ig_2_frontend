@@ -70,6 +70,7 @@ const ProfilePage = ({ userId }) => {
     if (userId) {
       fetchUserData();
       fetchUserPosts();
+      console.log(currentUserId);
     }
   }, [userId]);
 
@@ -102,14 +103,13 @@ const ProfilePage = ({ userId }) => {
 
   async function fetchUserData() {
     try {
-      const response = await apiCall(`/users/${userId}/`, {
+      const response = await apiCall(`users/${userId}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
       });
-      console.log(response);
       const data = await response.json();
       setUserData(data);
     } catch (error) {
@@ -141,7 +141,7 @@ const ProfilePage = ({ userId }) => {
     <>
       <CommentsProvider posts={userPosts || []}>
         <div className={styles.pageWrapper}>
-          <LeftSidebar />
+          <LeftSidebar loggedInUser={currentUserId} />
           {/* need to pass in props for /profile link to work */}
           <div className={styles.mainSection}>
             {/* Modal pop up for following */}

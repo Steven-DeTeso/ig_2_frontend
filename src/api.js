@@ -34,7 +34,7 @@ export async function apiCall(endpoint, options = {}, retry = true) {
 export async function followOrUnfollowUser(userId, action) {
   try {
     const endpoint = action === "follow" ? "follow" : "unfollow";
-    const response = await apiCall(`/followers/${userId}/${endpoint}/`, {
+    const response = await apiCall(`followers/${userId}/${endpoint}/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

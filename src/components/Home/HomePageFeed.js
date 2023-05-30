@@ -10,7 +10,6 @@ export default function HomePageFeed({ posts, updatePost }) {
     handleCommentDelete,
   } = useComments();
 
-  console.log(comments);
   return (
     <>
       {posts &&

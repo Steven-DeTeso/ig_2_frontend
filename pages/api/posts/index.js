@@ -6,10 +6,8 @@ import cookie from "cookie";
 export default async function handler(req, res) {
   try {
     const cookies = cookie.parse(req.headers.cookie || "");
-    console.log("handler function in index printing: ", cookies);
     const accessToken = cookies.access;
     const refreshToken = cookies.refresh;
-    console.log(refreshToken);
 
     if (req.method === "GET") {
       const response = await fetch("http://localhost:8000/posts/", {
