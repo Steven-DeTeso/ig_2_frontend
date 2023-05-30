@@ -25,7 +25,6 @@ export default function useFetch(initialUrl) {
         const response = await fetch(url, options);
         if (response.ok) {
           const data = await response.json();
-          console.log("Response:", data);
           setData(data);
         } else {
           throw new Error(`Error fetching data from ${url}`);

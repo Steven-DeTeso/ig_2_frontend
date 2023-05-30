@@ -43,10 +43,11 @@ export default function Login() {
         throw new Error("Invalid email or password.");
       }
       setIsLoggedIn(true);
-      router.push("/feed");
     } catch (error) {
       console.log("Error: ", error);
       setErrorMessage(error.message);
+    } finally {
+      router.push("/feed");
     }
   };
 

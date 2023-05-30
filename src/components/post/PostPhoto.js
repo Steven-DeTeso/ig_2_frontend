@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./Post.module.css";
 
 export default function PostPhoto({ post, showModal }) {
-  if (!post.images || !post.images[0].signed_image_url) {
+  if (!post.image || !post.image.signed_image_url) {
     return null;
   }
 
@@ -11,7 +11,7 @@ export default function PostPhoto({ post, showModal }) {
     <>
       <img
         className={styles.postImgSmall}
-        src={post.images[0].signed_image_url}
+        src={post.image.signed_image_url}
         alt={post.caption}
         onClick={showModal}
       />

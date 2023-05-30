@@ -16,6 +16,12 @@ export function UserProvider({ children }) {
   const { data: loggedInUser, setUrl } = useFetch();
 
   useEffect(() => {
+    if (loggedInUser) {
+      setUrl(`${API_BASE_URL}/users/current/`);
+    }
+  }, [loggedInUser]);
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       const storedUserId = sessionStorage.getItem("userId");
       const storedUsername = sessionStorage.getItem("username");
@@ -38,12 +44,6 @@ export function UserProvider({ children }) {
       if (storedIsLoggedIn) setIsLoggedIn(storedIsLoggedIn === "true");
     }
   }, []);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      setUrl(`${API_BASE_URL}/users/current/`);
-    }
-  }, [isLoggedIn]);
 
   useEffect(() => {
     if (loggedInUser && "id" in loggedInUser) {

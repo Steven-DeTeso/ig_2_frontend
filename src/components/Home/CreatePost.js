@@ -49,6 +49,8 @@ export default function CreatePostDialog({ open, onClose, onPostCreated }) {
     caption: "",
   });
 
+  const [uploading, setUploading] = useState(false);
+
   const setCaption = (event) => {
     const caption = event.target.value;
     setFormData({ ...formData, caption: caption });
@@ -63,6 +65,7 @@ export default function CreatePostDialog({ open, onClose, onPostCreated }) {
     event.preventDefault();
 
     try {
+      setUploading(true);
       const postFormData = new FormData();
       postFormData.append("image", formData.image);
       postFormData.append("caption", formData.caption);
@@ -85,6 +88,8 @@ export default function CreatePostDialog({ open, onClose, onPostCreated }) {
       onPostCreated(data);
     } catch (error) {
       console.log("Error: ", error.message);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -125,8 +130,13 @@ export default function CreatePostDialog({ open, onClose, onPostCreated }) {
               <Button onClick={onClose} color="primary">
                 Cancel
               </Button>
-              <Button type="submit" color="primary" variant="contained">
-                Create Post
+              <Button
+                type="submit"
+                color="primary"
+                variant="contained"
+                disabled={uploading}
+              >
+                {uploading ? "Uploading..." : "Create Post"}
               </Button>
             </DialogActions>
           </form>

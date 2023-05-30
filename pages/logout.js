@@ -13,7 +13,7 @@ const refreshAuthToken = async () => {
 };
 
 export default function Logout() {
-  const { setIsLoggedIn } = useUser();
+  const { isLoggedIn, setIsLoggedIn } = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -30,6 +30,10 @@ export default function Logout() {
         credentials: "include",
       });
 
+      if (response.status === 204) {
+        sessionStorage.clear();
+      }
+
       if (response.status === 401) {
         await refreshAuthToken();
         response = await fetch("http://localhost:8000/api/logout/", {
@@ -44,10 +48,8 @@ export default function Logout() {
       if (!response.ok) {
         throw new Error("Logout failed.");
       }
-      if (typeof window !== "undefined") {
-        sessionStorage.clear();
-        console.log("Cleared sessionStroage data");
-      }
+      console.log("Cleared sessionStroage data");
+      console.log(sessionStorage);
       router.push("/");
       setIsLoggedIn(false);
     } catch (error) {
