@@ -25,6 +25,12 @@
     overflow: auto; /* Allows scrolling within the modal if the content is too large */
 }
 
+.modalLikes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .commentsOnModal {
     display: flex;
     flex-direction: column;

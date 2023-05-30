@@ -16,6 +16,16 @@ const UserPosts = ({ userPosts, currentUserId, handleUpdatePost }) => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [showPostModal, setShowPostModal] = useState(false);
 
+  const [totalLikes, setTotalLikes] = useState(0);
+  const [likedUsers, setLikedUsers] = useState([]);
+
+  useEffect(() => {
+    if (selectedPost) {
+      setTotalLikes(selectedPost.total_likes);
+      setLikedUsers(selectedPost.likes);
+    }
+  }, [selectedPost]);
+
   const {
     comments,
     handleCommentSubmit,
@@ -35,7 +45,6 @@ const UserPosts = ({ userPosts, currentUserId, handleUpdatePost }) => {
             id={post.postId}
             key={post.id}
             post={post}
-            updatePost={handleUpdatePost}
             showModal={() => {
               setSelectedPost(post);
               showModal();
@@ -49,10 +58,14 @@ const UserPosts = ({ userPosts, currentUserId, handleUpdatePost }) => {
           show={!!selectedPost}
           onClose={() => setSelectedPost(null)}
           currentUserId={currentUserId}
+          likes={selectedPost.likes}
+          updatePost={handleUpdatePost}
           handleCommentSubmit={handleCommentSubmit}
           handleCommentEdit={handleCommentEdit}
           handleCommentDelete={handleCommentDelete}
           comments={comments[selectedPost?.id]}
+          totalLikes={totalLikes}
+          likedUsers={likedUsers}
         />
       )}
     </div>
@@ -134,7 +147,7 @@ const ProfilePage = ({ userId }) => {
   }
 
   if (!userData) {
-    return <div>Error, no user data!</div>;
+    return <div>Downloading...</div>;
   }
 
   return (

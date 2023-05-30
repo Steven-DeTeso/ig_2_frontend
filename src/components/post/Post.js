@@ -9,7 +9,7 @@ import CommentSection from "./CommentSection";
 import { useUser } from "../../context/userContext";
 import API_BASE_URL from "../../api";
 
-async function toggleLike(postId, currentUsername, like = true) {
+export async function toggleLike(postId, currentUsername, like = true) {
   try {
     const endpoint = like ? "like" : "unlike";
     const response = await fetch(
@@ -43,6 +43,7 @@ export default function Post({
     return null;
   }
   const { currentUserId, currentUsername } = useUser();
+  // Do i need showModal here? double check if terinary operator ever gets called.
   const [showModal, setShowModal] = useState(showPostModal);
   const [isLiked, setIsLiked] = useState(post.is_liked_by_user);
   const [totalLikes, setTotalLikes] = useState(post.total_likes);
