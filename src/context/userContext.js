@@ -12,12 +12,14 @@ export function UserProvider({ children }) {
   const [currentUserProfilePicture, setCurrentUserProfilePicture] =
     useState("");
   const [currentUserFollowing, setCurrentUserFollowing] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { data: loggedInUser, setUrl } = useFetch();
 
   useEffect(() => {
     if (loggedInUser) {
       setUrl(`${API_BASE_URL}/users/current/`);
+      console.log(`CurrentUserFollowing Array: ${currentUserFollowing}`);
     }
   }, [loggedInUser]);
 
@@ -70,10 +72,18 @@ export function UserProvider({ children }) {
       setCurrentUserFollowing(
         currentUserFollowing.filter((id) => id !== userId)
       );
+      console.log(`shouldUnfollow: ${currentUserFollowing}`);
     } else {
       setCurrentUserFollowing([...currentUserFollowing, userId]);
+      console.log(`ShouldFollow: ${currentUserFollowing}`);
     }
   };
+
+  useEffect(() => {
+    console.log(
+      `currentUserFollowing Array after button click: ${currentUserFollowing}`
+    );
+  }, [currentUserFollowing]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -108,6 +118,8 @@ export function UserProvider({ children }) {
         isLoggedIn,
         setIsLoggedIn,
         followOrUnfollow,
+        isFollowing,
+        setIsFollowing,
       }}
     >
       {children}

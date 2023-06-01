@@ -10,14 +10,12 @@ import { useUser } from "../../context/userContext";
 
 export default function PostHeader({ post, currentUserId, updatePost }) {
   const router = useRouter();
-  const [isFollowing, setIsFollowing] = useState();
   const [imageUrl, setImageUrl] = useState(null);
 
   const { currentUserFollowing } = useUser();
 
   useEffect(() => {
     setImageUrl(post.author.profile_pic.signed_image_url);
-    setIsFollowing(currentUserFollowing.includes(post.author.id));
   }, [post, currentUserFollowing]);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -49,9 +47,6 @@ export default function PostHeader({ post, currentUserId, updatePost }) {
       <OptionsButton
         post={post}
         currentUserId={currentUserId}
-        isFollowing={isFollowing}
-        setIsFollowing={setIsFollowing}
-        // handleFollowOrUnfollowUser={handleFollowOrUnfollowUser}
         handleDeletePost={handleDeletePost}
         router={router}
       />

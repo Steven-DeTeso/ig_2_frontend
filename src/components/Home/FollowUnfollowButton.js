@@ -1,31 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { followOrUnfollowUser } from "../../api";
 import { useUser } from "../../context/userContext";
 import styles from "./FollowUnfollowButton.module.css";
 
-export default function FollowUnfollowButton({
-  profileUserId,
-  initialFollowStatus,
-}) {
-  console.log(
-    `FollowUnfollowButton, initialFollowStatus: ${initialFollowStatus}`
-  );
-  const [isFollowing, setIsFollowing] = useState(initialFollowStatus);
-
-  const { followOrUnfollow } = useUser();
-
-  useEffect(() => {
-    setIsFollowing(initialFollowStatus);
-  }, [initialFollowStatus]);
+export default function FollowUnfollowButton({ profileUserId }) {
+  const { isFollowing, setIsFollowing, followOrUnfollow } = useUser();
 
   const handleClick = async () => {
     // Toggle the following state
     const newFollowingState = !isFollowing;
+    console.log(`${newFollowingState}`);
     setIsFollowing(newFollowingState);
 
     // Send the follow/unfollow request to the API
     const action = newFollowingState ? "follow" : "unfollow";
+    console.log(`Action: ${action}`);
     const success = await followOrUnfollowUser(profileUserId, action);
+    console.log(`Success: ${success}`);
 
     if (success) {
       followOrUnfollow(profileUserId, !newFollowingState);

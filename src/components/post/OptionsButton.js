@@ -9,17 +9,10 @@ import ButtonBase from "@mui/material/ButtonBase";
 import { followOrUnfollowUser } from "../../api";
 import { useUser } from "../../context/userContext";
 
-const OptionsButton = ({
-  post,
-  currentUserId,
-  isFollowing,
-  setIsFollowing,
-  handleDeletePost,
-  router,
-}) => {
+const OptionsButton = ({ post, currentUserId, handleDeletePost, router }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const { followOrUnfollow } = useUser();
+  const { isFollowing, setIsFollowing, followOrUnfollow } = useUser();
 
   const handleFollowOrUnfollowUser = async () => {
     const postAuthorId = post.author.id;
