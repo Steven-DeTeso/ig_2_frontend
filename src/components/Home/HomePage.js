@@ -7,24 +7,22 @@ import Stories from "./Stories";
 import SuggestedProfile from "../profile/SuggestedProfile";
 import HomePageFeed from "./HomePageFeed";
 import API_BASE_URL from "../../api";
-import { useUser } from "../../context/userContext";
 import { CommentsProvider } from "../../context/commentsContext";
 
-export default function HomePage({ initialPosts }) {
+export default function HomePage({ initialPosts, currentUser }) {
   const {
-    currentUserId,
-    currentUsername,
-    currentUserFirstName,
-    currentUserLastName,
-    currentUserProfilePicture,
-    currentUserFollowing,
-  } = useUser();
+    id: currentUserId,
+    username: currentUsername,
+    first_name: currentUserFirstName,
+    last_name: currentUserLastName,
+    profile_pic: currentUserProfilePicture,
+    following: currentUserFollowing,
+  } = currentUser;
 
   const [posts, setPosts] = useState(initialPosts || []);
-  const [suggestedProfiles, setSuggestedProfiles] = useState([]);
-  const [currentUserData, setCurrentUserData] = useState(null);
+  const [suggestedProfilesData, setSuggestedProfilesData] = useState([]);
+
   const { data: userData, setUrl } = useFetch();
-  const { setUrl: setCurrentUserUrl } = useFetch();
 
   const loggedInUser = {
     id: currentUserId,
@@ -35,43 +33,44 @@ export default function HomePage({ initialPosts }) {
   useEffect(() => {
     if (currentUserId) {
       setUrl(`${API_BASE_URL}/users/`);
+      console.log(currentUserFollowing);
     }
   }, [currentUserId, setUrl]);
 
   useEffect(() => {
-    if (currentUserId) {
-      setCurrentUserUrl(`${API_BASE_URL}/users/current/`);
-    }
-  }, [currentUserId, setCurrentUserUrl]);
-
-  useEffect(() => {
     console.log("User Data:", userData);
     if (userData && currentUserId) {
-      const currentUser = userData.find((user) => user.id === currentUserId);
-      setCurrentUserData(currentUser);
-
-      const profiles = userData
+      const profilesData = userData
         .filter(
           (user) =>
             user.id !== currentUserId && user.profile_pic?.signed_image_url
         )
         .slice(0, 8)
-        .map((user) => {
-          const isFollowing = currentUserFollowing.includes(user.id);
-          return (
-            <SuggestedProfile
-              key={user.id}
-              profilePicture={user.profile_pic.signed_image_url}
-              username={user.username}
-              userId={user.id}
-              currentUserId={currentUserId}
-              isFollowing={isFollowing}
-            />
-          );
-        });
-      setSuggestedProfiles(profiles);
+        .map((user) => ({
+          id: user.id,
+          profilePicture: user.profile_pic.signed_image_url,
+          username: user.username,
+          userId: user.id,
+          currentUserId: currentUserId,
+          isFollowing: currentUserFollowing.some(
+            (followedUser) => followedUser.id === user.id
+          ),
+        }));
+
+      setSuggestedProfilesData(profilesData);
     }
   }, [userData, currentUserId, currentUserFollowing]);
+
+  const suggestedProfiles = suggestedProfilesData.map((profile) => (
+    <SuggestedProfile
+      key={profile.id}
+      profilePicture={profile.profilePicture}
+      username={profile.username}
+      userId={profile.userId}
+      currentUserId={profile.currentUserId}
+      isFollowing={profile.isFollowing}
+    />
+  ));
 
   const handlePostCreated = (newPost) => {
     setPosts((prevPosts) => [newPost, ...prevPosts]);
@@ -81,7 +80,10 @@ export default function HomePage({ initialPosts }) {
     if (updatedPost.isDeleted) {
       setPosts(posts.filter((post) => post.id !== updatedPost.id));
     } else {
-      // When called, takes the updated post object and maps over the current list of posts. For each post in the list, it checks if the post ID matches the ID of the updated post. If it does, it replaces the current post object with the updated post object. If it doesn't, it keeps the current post object. Sets the state of the Posts with new array.
+      // When called, takes the updated post object and maps over the current list of posts.
+      //For each post in the list, it checks if the post ID matches the ID of the updated post.
+      //If it does, it replaces the current post object with the updated post object.
+      //If it doesn't, it keeps the current post object. Sets the state of the Posts with new array.
       const newPosts = posts.map((post) =>
         post.id === updatedPost.id ? updatedPost : post
       );

@@ -6,16 +6,44 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ButtonBase from "@mui/material/ButtonBase";
+import { followOrUnfollowUser } from "../../api";
+import { useUser } from "../../context/userContext";
 
 const OptionsButton = ({
   post,
   currentUserId,
   isFollowing,
-  handleFollowOrUnfollowUser,
+  setIsFollowing,
   handleDeletePost,
   router,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const { followOrUnfollow } = useUser();
+
+  const handleFollowOrUnfollowUser = async () => {
+    const postAuthorId = post.author.id;
+
+    if (!isFollowing) {
+      const isFollowed = await followOrUnfollowUser(postAuthorId, "follow");
+      if (isFollowed) {
+        setIsFollowing(true);
+        followOrUnfollow(postAuthorId, false);
+        // Handle the success case, e.g., update the UI, show a notification, etc.
+      } else {
+        // Handle the error case
+      }
+    } else {
+      const isUnfollowed = await followOrUnfollowUser(postAuthorId, "unfollow");
+      if (isUnfollowed) {
+        setIsFollowing(false);
+        followOrUnfollow(postAuthorId, true);
+        // Handle the success case, e.g., update the UI, show a notification, etc.
+      } else {
+        // Handle the error case
+      }
+    }
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

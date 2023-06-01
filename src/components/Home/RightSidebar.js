@@ -17,7 +17,7 @@ export default function RightSidebar({
     <div className={styles.rightContainer}>
       <div className={styles.userProfile}>
         <Link href={`/users/${currentUserId}/`}>
-          <ProfileImage imageUrl={loggedInUserProfilePic} />
+          <ProfileImage imageUrl={loggedInUserProfilePic.signed_image_url} />
         </Link>
         <div className={styles.names}>
           <Link href={`/users/${currentUserId}/`} className={styles.userLink}>

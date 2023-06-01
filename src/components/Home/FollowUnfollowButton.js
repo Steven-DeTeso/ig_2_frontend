@@ -4,10 +4,12 @@ import { useUser } from "../../context/userContext";
 import styles from "./FollowUnfollowButton.module.css";
 
 export default function FollowUnfollowButton({
-  currentUserId,
   profileUserId,
   initialFollowStatus,
 }) {
+  console.log(
+    `FollowUnfollowButton, initialFollowStatus: ${initialFollowStatus}`
+  );
   const [isFollowing, setIsFollowing] = useState(initialFollowStatus);
 
   const { followOrUnfollow } = useUser();

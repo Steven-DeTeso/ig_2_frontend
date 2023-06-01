@@ -65,13 +65,13 @@ export function UserProvider({ children }) {
     }
   }, [loggedInUser]);
 
-  const followOrUnfollow = (userId, isFollowing) => {
-    if (isFollowing) {
-      setCurrentUserFollowing((prevFollowing) =>
-        prevFollowing.filter((id) => id !== userId)
+  const followOrUnfollow = (userId, shouldUnfollow) => {
+    if (shouldUnfollow) {
+      setCurrentUserFollowing(
+        currentUserFollowing.filter((id) => id !== userId)
       );
     } else {
-      setCurrentUserFollowing((prevFollowing) => [...prevFollowing, userId]);
+      setCurrentUserFollowing([...currentUserFollowing, userId]);
     }
   };
 

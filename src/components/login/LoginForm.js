@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./LoginForm.module.css";
-import globalStyles from "/globalStyles.module.css";
 import Link from "next/link";
 import FacebookBtn from "./FacebookBtn";
 import { useUser } from "../../context/userContext";
 import { RotatingLines } from "react-loader-spinner";
+import styles from "./LoginForm.module.css";
+import globalStyles from "/globalStyles.module.css";
 
 export default function Login() {
   const { setIsLoggedIn } = useUser();
@@ -87,6 +87,7 @@ export default function Login() {
                 type="email"
                 name="email"
                 placeholder="Email"
+                autoComplete="email"
                 value={formData.email}
                 onChange={handleInputChange}
                 className={styles.loginInput}
@@ -95,13 +96,14 @@ export default function Login() {
                 type="password"
                 name="password"
                 placeholder="Password"
+                autoComplete="current-password"
                 value={formData.password}
                 onChange={handleInputChange}
                 className={styles.loginInput}
               />
               <div className={styles.forgotPasswordContainer}>
                 <a href="#">
-                  <span className={styles.forgotPassword}>
+                  <span className={`${styles.forgotPassword}`}>
                     Forgot Password?
                   </span>
                 </a>

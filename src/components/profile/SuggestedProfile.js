@@ -12,6 +12,8 @@ export default function SuggestedProfile({
   currentUserId,
   isFollowing,
 }) {
+  console.log(`SuggestedProfile: isFollowing: ${isFollowing}`);
+
   return (
     <div className={styles.suggestedProfileContainer}>
       <Link href={`/users/${userId}/`} className={styles.noDecoration}>
@@ -25,7 +27,6 @@ export default function SuggestedProfile({
         </div>
       </Link>
       <FollowUnfollowButton
-        currentUserId={currentUserId}
         profileUserId={userId}
         initialFollowStatus={isFollowing}
       />
