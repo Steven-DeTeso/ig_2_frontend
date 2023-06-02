@@ -6,38 +6,27 @@ export default function useFetch(initialUrl) {
   const [error, setError] = useState(null);
   const [url, setUrl] = useState(initialUrl);
 
-  const options = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  };
-
   useEffect(() => {
-    const fetchData = async () => {
-      if (!url) {
-        return;
-      }
+    if (url) {
       setLoading(true);
-      console.log(`Fetching data from: ${url}`); // Add console log to print the URL
-      try {
-        const response = await fetch(url, options);
-        if (response.ok) {
-          const data = await response.json();
-          setData(data);
-        } else {
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      })
+        .then((res) => {
+          if (res.ok) return res.json();
           throw new Error(`Error fetching data from ${url}`);
-        }
-      } catch (error) {
-        console.error("Fetch error:", error);
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+        })
+        .then((data) => setData(data))
+        .catch((error) => {
+          console.error("Fetch error:", error);
+          setError(error);
+        })
+        .finally(() => setLoading(false));
+    }
   }, [url]);
 
   return { data, loading, error, setUrl };

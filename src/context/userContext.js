@@ -64,26 +64,19 @@ export function UserProvider({ children }) {
           : []
       );
       setIsLoggedIn(true);
+      console.log(`CurrentUserFollowing Array: ${currentUserFollowing}`);
     }
   }, [loggedInUser]);
 
-  const followOrUnfollow = (userId, shouldUnfollow) => {
+  const followOrUnfollowFunction = (userId, shouldUnfollow) => {
     if (shouldUnfollow) {
       setCurrentUserFollowing(
         currentUserFollowing.filter((id) => id !== userId)
       );
-      console.log(`shouldUnfollow: ${currentUserFollowing}`);
     } else {
       setCurrentUserFollowing([...currentUserFollowing, userId]);
-      console.log(`ShouldFollow: ${currentUserFollowing}`);
     }
   };
-
-  useEffect(() => {
-    console.log(
-      `currentUserFollowing Array after button click: ${currentUserFollowing}`
-    );
-  }, [currentUserFollowing]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -117,7 +110,7 @@ export function UserProvider({ children }) {
         currentUserFollowing,
         isLoggedIn,
         setIsLoggedIn,
-        followOrUnfollow,
+        followOrUnfollowFunction,
         isFollowing,
         setIsFollowing,
       }}

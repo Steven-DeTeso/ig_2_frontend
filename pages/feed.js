@@ -11,8 +11,7 @@ export default function Feed({ initialPosts, currentUser }) {
 export async function getServerSideProps(context) {
   const { req } = context;
   const cookies = cookie.parse(req.headers.cookie || "");
-  const { access: accessToken, refresh: refreshToken } = cookies;
-
+  const { access: accessToken } = cookies;
   const userResponse = await fetch(`${API_BASE_URL}/users/current/`, {
     method: "GET",
     headers: {
@@ -21,6 +20,7 @@ export async function getServerSideProps(context) {
     credentials: "include",
   });
 
+  console.log(`Fetching from serversideprops: ${userResponse}`);
   if (userResponse.status === 401) {
     await refreshAuthToken();
     return {

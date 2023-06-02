@@ -33,7 +33,9 @@ export default function HomePage({ initialPosts, currentUser }) {
   useEffect(() => {
     if (currentUserId) {
       setUrl(`${API_BASE_URL}/users/`);
-      console.log(currentUserFollowing);
+      console.log(
+        `Homepage: currentUserFollowing Array ${currentUser.following}`
+      );
     }
   }, [currentUserId, setUrl]);
 
@@ -67,7 +69,6 @@ export default function HomePage({ initialPosts, currentUser }) {
       profilePicture={profile.profilePicture}
       username={profile.username}
       userId={profile.userId}
-      currentUserId={profile.currentUserId}
       isFollowing={profile.isFollowing}
     />
   ));

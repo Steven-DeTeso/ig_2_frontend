@@ -8,7 +8,7 @@ import styles from "./LoginForm.module.css";
 import globalStyles from "/globalStyles.module.css";
 
 export default function Login() {
-  const { setIsLoggedIn } = useUser();
+  const { isLoggedIn, setIsLoggedIn } = useUser();
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -46,10 +46,14 @@ export default function Login() {
     } catch (error) {
       console.log("Error: ", error);
       setErrorMessage(error.message);
-    } finally {
-      router.push("/feed");
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/feed");
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (isLoading) {

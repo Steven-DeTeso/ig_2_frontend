@@ -6,31 +6,34 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ButtonBase from "@mui/material/ButtonBase";
-import { followOrUnfollowUser } from "../../api";
+import { followOrUnfollowApiCall } from "../../api";
 import { useUser } from "../../context/userContext";
 
 const OptionsButton = ({ post, currentUserId, handleDeletePost, router }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const { isFollowing, setIsFollowing, followOrUnfollow } = useUser();
+  const { isFollowing, setIsFollowing, followOrUnfollowFunction } = useUser();
 
-  const handleFollowOrUnfollowUser = async () => {
+  const handlefollowOrUnfollowApiCall = async () => {
     const postAuthorId = post.author.id;
 
     if (!isFollowing) {
-      const isFollowed = await followOrUnfollowUser(postAuthorId, "follow");
+      const isFollowed = await followOrUnfollowApiCall(postAuthorId, "follow");
       if (isFollowed) {
         setIsFollowing(true);
-        followOrUnfollow(postAuthorId, false);
+        followOrUnfollowFunction(postAuthorId, false);
         // Handle the success case, e.g., update the UI, show a notification, etc.
       } else {
         // Handle the error case
       }
     } else {
-      const isUnfollowed = await followOrUnfollowUser(postAuthorId, "unfollow");
+      const isUnfollowed = await followOrUnfollowApiCall(
+        postAuthorId,
+        "unfollow"
+      );
       if (isUnfollowed) {
         setIsFollowing(false);
-        followOrUnfollow(postAuthorId, true);
+        followOrUnfollowFunction(postAuthorId, true);
         // Handle the success case, e.g., update the UI, show a notification, etc.
       } else {
         // Handle the error case
@@ -81,7 +84,7 @@ const OptionsButton = ({ post, currentUserId, handleDeletePost, router }) => {
 
           {post.author.id !== currentUserId && (
             <ListItem>
-              <ButtonBase onClick={handleFollowOrUnfollowUser}>
+              <ButtonBase onClick={handlefollowOrUnfollowApiCall}>
                 <ListItemText
                   primary={
                     isFollowing
