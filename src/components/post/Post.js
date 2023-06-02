@@ -39,7 +39,7 @@ export default function Post({
   handleCommentEdit,
   handleCommentDelete,
 }) {
-  if (!post.images || !post.images[0].signed_image_url) {
+  if (!post.image || !post.image.signed_image_url) {
     return null;
   }
   const { currentUserId, currentUsername } = useUser();
@@ -105,7 +105,7 @@ export default function Post({
         />
         <img
           className={styles.postImage}
-          src={post.images[0].signed_image_url}
+          src={post.image.signed_image_url}
           alt={post.caption}
           onClick={handleImageClick}
         />

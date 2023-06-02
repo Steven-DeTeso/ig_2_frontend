@@ -8,8 +8,14 @@ import { useUser } from "../../context/userContext";
 
 const LoginPage = () => {
   const router = useRouter();
-  const { setIsLoggedIn } = useUser();
+  const { isLoggedIn, setIsLoggedIn } = useUser();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isLoggedIn === false) {
+      sessionStorage.clear();
+    }
+  }, []);
 
   const verifyToken = async () => {
     try {

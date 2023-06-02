@@ -23,6 +23,7 @@ const EditProfile = ({ userData }) => {
     username: userData.username,
     email: userData.email,
     image: userData.profile_pic,
+    bio: userData.bio,
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -147,6 +148,14 @@ const EditProfile = ({ userData }) => {
                 type="file"
                 name="image"
                 accept="image/*"
+                onChange={handleChange}
+                className={styles.editInput}
+              />
+              <input
+                type="text"
+                name="bio"
+                placeholder="Bio"
+                value={formData.bio}
                 onChange={handleChange}
                 className={styles.editInput}
               />

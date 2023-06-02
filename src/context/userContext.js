@@ -12,8 +12,16 @@ export function UserProvider({ children }) {
   const [currentUserProfilePicture, setCurrentUserProfilePicture] =
     useState("");
   const [currentUserFollowing, setCurrentUserFollowing] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { data: loggedInUser, setUrl } = useFetch();
+
+  useEffect(() => {
+    if (loggedInUser) {
+      setUrl(`${API_BASE_URL}/users/current/`);
+      console.log(`CurrentUserFollowing Array: ${currentUserFollowing}`);
+    }
+  }, [loggedInUser]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -40,13 +48,7 @@ export function UserProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      setUrl(`${API_BASE_URL}/users/current/`);
-    }
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    if (loggedInUser && "id" in loggedInUser) {
+    if (loggedInUser) {
       setCurrentUserId(loggedInUser.id);
       setCurrentUsername(loggedInUser.username);
       setCurrentUserFirstName(loggedInUser.first_name);
@@ -62,16 +64,17 @@ export function UserProvider({ children }) {
           : []
       );
       setIsLoggedIn(true);
+      console.log(`CurrentUserFollowing Array: ${currentUserFollowing}`);
     }
   }, [loggedInUser]);
 
-  const followOrUnfollow = (userId, isFollowing) => {
-    if (isFollowing) {
-      setCurrentUserFollowing((prevFollowing) =>
-        prevFollowing.filter((id) => id !== userId)
+  const followOrUnfollowFunction = (userId, shouldUnfollow) => {
+    if (shouldUnfollow) {
+      setCurrentUserFollowing(
+        currentUserFollowing.filter((id) => id !== userId)
       );
     } else {
-      setCurrentUserFollowing((prevFollowing) => [...prevFollowing, userId]);
+      setCurrentUserFollowing([...currentUserFollowing, userId]);
     }
   };
 
@@ -107,7 +110,9 @@ export function UserProvider({ children }) {
         currentUserFollowing,
         isLoggedIn,
         setIsLoggedIn,
-        followOrUnfollow,
+        followOrUnfollowFunction,
+        isFollowing,
+        setIsFollowing,
       }}
     >
       {children}

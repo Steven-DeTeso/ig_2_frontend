@@ -1,17 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import globalStyles from "../../../globalStyles.module.css";
 import styles from "./FollowProfileLink.module.css";
 import Link from "next/link";
 import FollowUnfollowButton from "../Home/FollowUnfollowButton";
+import { useUser } from "../../context/userContext";
 
 // recieving its props from Homepage component
-export default function SuggestedProfile({
-  profilePicture,
-  username,
-  userId,
-  currentUserId,
-  isFollowing,
-}) {
+export default function SuggestedProfile({ profilePicture, username, userId }) {
+  const {
+    isFollowing,
+    setIsFollowing,
+    currentUserFollowing,
+    followOrUnfollowFunction,
+  } = useUser();
+
+  // Check if the user is following on component mount or user following list change
+  useEffect(() => {
+    setIsFollowing(currentUserFollowing.includes(userId));
+  }, [currentUserFollowing, userId]);
+
+  const handleFollowOrUnfollow = () => {
+    followOrUnfollowFunction(userId, isFollowing);
+    setIsFollowing(!isFollowing); // Update isFollowing state immediately after click
+  };
+
+  console.log(`SuggestedProfile: isFollowing: ${isFollowing}`);
+
   return (
     <div className={styles.suggestedProfileContainer}>
       <Link href={`/users/${userId}/`} className={styles.noDecoration}>
@@ -25,9 +39,8 @@ export default function SuggestedProfile({
         </div>
       </Link>
       <FollowUnfollowButton
-        currentUserId={currentUserId}
-        profileUserId={userId}
-        initialFollowStatus={isFollowing}
+        isFollowing={isFollowing}
+        onButtonClick={handleFollowOrUnfollow}
       />
     </div>
   );

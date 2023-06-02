@@ -22,8 +22,8 @@ const PostModal = ({
     return null;
   }
   const modalContentRef = useRef();
-  const { images, author, caption, id } = post;
-  const imageUrl = images && images[0] && images[0].signed_image_url;
+  const { image, author, caption, id } = post;
+  const imageUrl = image && image.signed_image_url;
 
   const { currentUserId, currentUsername } = useUser();
 

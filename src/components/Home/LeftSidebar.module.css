@@ -30,6 +30,10 @@
     height: 100vh;
 }
 
+.pText {
+    margin-left: 5px;
+}
+
 .iconContainer {
     display: flex;
     justify-content: center;

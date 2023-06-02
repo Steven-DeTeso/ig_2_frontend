@@ -125,7 +125,7 @@ export default function LeftSidebar({ onPostCreated, loggedInUser }) {
       <div className={styles.moreBurger}>
         <Link href="/feed#" className={globalStyles.noTxtDecoration}>
           <MenuOutlinedIcon />
-          <p>More</p>
+          <p className={styles.pText}>More</p>
         </Link>
       </div>
     </section>

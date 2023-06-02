@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./LoginForm.module.css";
-import globalStyles from "/globalStyles.module.css";
 import Link from "next/link";
 import FacebookBtn from "./FacebookBtn";
 import { useUser } from "../../context/userContext";
 import { RotatingLines } from "react-loader-spinner";
+import styles from "./LoginForm.module.css";
+import globalStyles from "/globalStyles.module.css";
 
 export default function Login() {
-  const { setIsLoggedIn } = useUser();
+  const { isLoggedIn, setIsLoggedIn } = useUser();
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -43,12 +43,17 @@ export default function Login() {
         throw new Error("Invalid email or password.");
       }
       setIsLoggedIn(true);
-      router.push("/feed");
     } catch (error) {
       console.log("Error: ", error);
       setErrorMessage(error.message);
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/feed");
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (isLoading) {
@@ -86,6 +91,7 @@ export default function Login() {
                 type="email"
                 name="email"
                 placeholder="Email"
+                autoComplete="email"
                 value={formData.email}
                 onChange={handleInputChange}
                 className={styles.loginInput}
@@ -94,13 +100,14 @@ export default function Login() {
                 type="password"
                 name="password"
                 placeholder="Password"
+                autoComplete="current-password"
                 value={formData.password}
                 onChange={handleInputChange}
                 className={styles.loginInput}
               />
               <div className={styles.forgotPasswordContainer}>
                 <a href="#">
-                  <span className={styles.forgotPassword}>
+                  <span className={`${styles.forgotPassword}`}>
                     Forgot Password?
                   </span>
                 </a>
