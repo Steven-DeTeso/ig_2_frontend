@@ -48,7 +48,7 @@ export function UserProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    if (loggedInUser && "id" in loggedInUser) {
+    if (loggedInUser) {
       setCurrentUserId(loggedInUser.id);
       setCurrentUsername(loggedInUser.username);
       setCurrentUserFirstName(loggedInUser.first_name);
